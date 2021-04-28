@@ -25,7 +25,7 @@ import {
   CardBody,
   Container,
   Row,
-  Col,
+  Col, 
   UncontrolledTooltip,
 } from "reactstrap";
 // core components
