@@ -3,14 +3,15 @@ import { Redirect, Route, Switch } from "react-router";
 import DataBarang from "./DataBarang";
 import TambahBarang from "./TambahBarang";
 
-const Barang = () => {
+const Barang = ({match}) => {
+	const {path} = match;
 	return (
 		<>
 			<Switch>
-				<Route exact path="/admin/barang/" render={() => <DataBarang />} />
+				<Route exact path={path} render={() => <DataBarang path={path} />} />
 				<Route
 					exact
-					path="/admin/barang/tambah"
+					path={path + '/tambah'}
 					render={() => <TambahBarang />}
 				/>
 				<Redirect from="/admin/barang/*" to="/admin/index" />

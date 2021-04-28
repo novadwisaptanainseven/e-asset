@@ -1,7 +1,7 @@
 const customStyles = {
 	headCells: {
 		style: {
-			fontSize: "1.15em",
+			fontSize: "0.9em",
 		},
 	},
 };

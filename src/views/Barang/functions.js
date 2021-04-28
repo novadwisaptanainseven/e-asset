@@ -1,6 +1,6 @@
 
-export const goToTambah = (history) => {
-	alert("Go to tambah");
+export const goToTambah = (history, path) => {
+	history.push(`${path}/tambah`);
 };
 
 export const goToEdit = (id, history) => {

@@ -39,7 +39,7 @@ const Admin = (props) => {
 
 	const getRoutes = (routes) => {
 		return routes.map((prop, key) => {
-			if (prop.layout === "/admin") {
+			if (prop.layout === "/easset/admin") {
 				return (
 					<Route
 						path={prop.layout + prop.path}
@@ -87,7 +87,7 @@ const Admin = (props) => {
 				<Container className="mt--7" fluid>
 					<Switch>
 						{getRoutes(routes)}
-						<Redirect from="*" to="/admin/index" />
+						<Redirect from="*" to="/easset/admin/index" />
 					</Switch>
 				</Container>
 				<Container fluid>

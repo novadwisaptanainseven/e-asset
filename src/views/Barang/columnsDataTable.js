@@ -46,21 +46,21 @@ const columnsDataTable = [
 						className="btn btn-sm"
 						onClick={() => goToDetail(row.id_barang)}
 					>
-						Kelengkapan
+						<i className="fas fa-info"></i>
 					</Button>
 					<Button
 						color="success"
 						className="btn btn-sm"
 						onClick={() => goToEdit(row.id_barang)}
 					>
-						Edit
+						<i className="fas fa-edit"></i>
 					</Button>
 					<Button
 						color="danger"
 						className="btn btn-sm"
 						onClick={() => handleDelete(row.id_barang)}
 					>
-						Hapus
+					<i className="fas fa-trash"></i>
 					</Button>
 				</ButtonGroup>
 			</div>

@@ -45,7 +45,7 @@ const Auth = (props) => {
 
 	const getRoutes = (routes) => {
 		return routes.map((prop, key) => {
-			if (prop.layout === "/auth") {
+			if (prop.layout === "/easset/auth") {
 				return (
 					<Route
 						path={prop.layout + prop.path}
@@ -106,7 +106,7 @@ const Auth = (props) => {
 					<Row className="justify-content-center">
 						<Switch>
 							{getRoutes(routes)}
-							<Redirect from="*" to="/auth/login" />
+							<Redirect from="*" to="/easset/auth/login" />
 						</Switch>
 					</Row>
 				</Container>
