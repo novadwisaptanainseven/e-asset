@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Card,
   Col,
@@ -11,6 +11,35 @@ import {
 } from "reactstrap";
 
 const TambahBarang = () => {
+  const [selectedFile, setSelectedFile] = useState();
+  const [preview, setPreview] = useState();
+
+  // Menangani preview input gambar setelah dipilih
+  const handleSelectedFile = useCallback(() => {
+    if (!selectedFile) {
+      setPreview(null);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(selectedFile);
+    setPreview(objectUrl);
+
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [selectedFile]);
+
+  const onSelectFile = (e) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      setSelectedFile(undefined);
+      return;
+    }
+
+    setSelectedFile(e.target.files[0]);
+  };
+
+  useEffect(() => {
+    handleSelectedFile();
+  }, [handleSelectedFile]);
+
   return (
     <>
       <Row>
@@ -140,138 +169,103 @@ const TambahBarang = () => {
                           }}
                         />
                       </FormGroup>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col lg="6">
                       <FormGroup>
-                        <label
-                          className="form-control-label"
-                          htmlFor="input-first-name"
-                        >
-                          First name
+                        <label className="form-control-label" htmlFor="file">
+                          File
                         </label>
                         <Input
                           className="form-control-alternative"
-                          defaultValue="Lucky"
-                          id="input-first-name"
-                          placeholder="First name"
-                          type="text"
+                          id="file"
+                          placeholder="File"
+                          type="file"
                         />
                       </FormGroup>
-                    </Col>
-                    <Col lg="6">
                       <FormGroup>
-                        <label
-                          className="form-control-label"
-                          htmlFor="input-last-name"
-                        >
-                          Last name
+                        <label className="form-control-label" htmlFor="foto">
+                          Foto
                         </label>
                         <Input
-                          className="form-control-alternative"
-                          defaultValue="Jesse"
-                          id="input-last-name"
-                          placeholder="Last name"
-                          type="text"
+                          className="form-control-alternative mb-3"
+                          id="foto"
+                          placeholder="Foto"
+                          type="file"
+                          onChange={(e) => onSelectFile(e)}
                         />
+                        {preview && (
+                          <img
+                            src={preview}
+                            alt="img-preview"
+                            className="img-thumbnail"
+                            width={180}
+                          />
+                        )}
                       </FormGroup>
                     </Col>
-                  </Row>
-                </div>
-                <hr className="my-4" />
-                {/* Address */}
-                <h6 className="heading-small text-muted mb-4">
-                  Contact information
-                </h6>
-                <div className="pl-lg-4">
-                  <Row>
-                    <Col md="12">
+                    <Col>
+                      <FormGroup>
+                        <label className="form-control-label" htmlFor="bahan">
+                          Bidang
+                        </label>
+                        <Input
+                          type="select"
+                          name="bidang"
+                          id="bidang"
+                          className="form-control-alternative"
+                        >
+                          <option value="">-- Pilih Bidang --</option>
+                          <option value="1">Perumahan</option>
+                          <option value="2">Permukiman</option>
+                          <option value="3">PSU</option>
+                          <option value="4">Sekretariat</option>
+                        </Input>
+                      </FormGroup>
                       <FormGroup>
                         <label
                           className="form-control-label"
-                          htmlFor="input-address"
+                          htmlFor="jumlah_baik"
                         >
-                          Address
+                          Jumlah Baik
                         </label>
                         <Input
                           className="form-control-alternative"
-                          defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
-                          id="input-address"
-                          placeholder="Home Address"
-                          type="text"
+                          id="jumlah_baik"
+                          name="jumlah_baik"
+                          placeholder="Jumlah Baik"
+                          type="number"
                         />
                       </FormGroup>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col lg="4">
                       <FormGroup>
                         <label
                           className="form-control-label"
-                          htmlFor="input-city"
+                          htmlFor="jumlah_rusak"
                         >
-                          City
+                          Jumlah Rusak
                         </label>
                         <Input
                           className="form-control-alternative"
-                          defaultValue="New York"
-                          id="input-city"
-                          placeholder="City"
-                          type="text"
+                          id="jumlah_rusak"
+                          name="jumlah_rusak"
+                          placeholder="Jumlah Rusak"
+                          type="number"
                         />
                       </FormGroup>
-                    </Col>
-                    <Col lg="4">
                       <FormGroup>
                         <label
                           className="form-control-label"
-                          htmlFor="input-country"
+                          htmlFor="jumlah_rusak_ringan"
                         >
-                          Country
+                          Jumlah Rusak Ringan
                         </label>
                         <Input
                           className="form-control-alternative"
-                          defaultValue="United States"
-                          id="input-country"
-                          placeholder="Country"
-                          type="text"
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col lg="4">
-                      <FormGroup>
-                        <label
-                          className="form-control-label"
-                          htmlFor="input-country"
-                        >
-                          Postal code
-                        </label>
-                        <Input
-                          className="form-control-alternative"
-                          id="input-postal-code"
-                          placeholder="Postal code"
+                          id="jumlah_rusak_ringan"
+                          name="jumlah_rusak_ringan"
+                          placeholder="Jumlah Rusak Ringan"
                           type="number"
                         />
                       </FormGroup>
                     </Col>
                   </Row>
-                </div>
-                <hr className="my-4" />
-                {/* Description */}
-                <h6 className="heading-small text-muted mb-4">About me</h6>
-                <div className="pl-lg-4">
-                  <FormGroup>
-                    <label>About Me</label>
-                    <Input
-                      className="form-control-alternative"
-                      placeholder="A few words about you ..."
-                      rows="4"
-                      defaultValue="A beautiful Dashboard for Bootstrap 4. It is Free and
-                        Open Source."
-                      type="textarea"
-                    />
-                  </FormGroup>
                 </div>
               </Form>
             </CardBody>
