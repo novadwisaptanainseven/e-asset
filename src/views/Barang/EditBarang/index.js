@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useHistory } from "react-router";
+import { useHistory, useRouteMatch } from "react-router";
 import {
 	Card,
 	Col,
@@ -12,19 +12,18 @@ import {
 	Button,
 	CardFooter,
 } from "reactstrap";
-import {
-	goBackToPrevPage,
-	handleHapusRincianBarang,
-	handleTambahRincianBarang,
-} from "../functions";
-import RincianBarang from "./RincianBarang";
+import { goBackToPrevPage } from "../functions";
 
-const TambahBarang = () => {
+const EditBarang = () => {
 	const history = useHistory();
+	const match = useRouteMatch();
+	const { params } = match;
 	const [selectedFile, setSelectedFile] = useState();
 	const [preview, setPreview] = useState();
-	const [rincianBarang, setRincianBarang] = useState([]);
-	const [inputVal, setInputVal] = useState({});
+
+	useEffect(() => {
+		console.log(params);
+	}, [params]);
 
 	// Menangani preview input gambar setelah dipilih
 	const handleSelectedFile = useCallback(() => {
@@ -64,7 +63,7 @@ const TambahBarang = () => {
 									style={{ cursor: "pointer" }}
 									className="fas fa-long-arrow-alt-left text-primary mr-3"
 								></i>{" "}
-								Tambah Barang
+								Edit Barang
 							</h2>
 						</CardHeader>
 						<CardBody className="bg-secondary">
@@ -72,9 +71,6 @@ const TambahBarang = () => {
 								<div className="pl-lg-4">
 									<Row>
 										<Col lg="6">
-											<h6 className="heading-small text-muted mb-4">
-												Data Barang
-											</h6>
 											<FormGroup>
 												<label
 													className="form-control-label"
@@ -163,6 +159,8 @@ const TambahBarang = () => {
 													type="text"
 												/>
 											</FormGroup>
+										</Col>
+										<Col>
 											<FormGroup>
 												<label className="form-control-label" htmlFor="harga">
 													Harga
@@ -225,135 +223,6 @@ const TambahBarang = () => {
 												)}
 											</FormGroup>
 										</Col>
-										<Col>
-											<h6 className="heading-small text-muted mb-4">
-												Bidang - bidang yang menggunakan barang
-											</h6>
-											<FormGroup>
-												<label className="form-control-label" htmlFor="bahan">
-													Bidang
-												</label>
-												<Input
-													type="select"
-													name="bidang"
-													id="bidang"
-													className="form-control-alternative"
-													onChange={(e) =>
-														setInputVal({
-															...inputVal,
-															[e.target.name]: e.target.value,
-														})
-													}
-												>
-													<option value="">-- Pilih Bidang --</option>
-													<option value="1 - Perumahan">Perumahan</option>
-													<option value="2 - Permukiman">Permukiman</option>
-													<option value="3 - PSU">PSU</option>
-													<option value="4 - Sekretariat">Sekretariat</option>
-												</Input>
-											</FormGroup>
-											<FormGroup>
-												<label
-													className="form-control-label"
-													htmlFor="jumlah_baik"
-												>
-													Jumlah Baik
-												</label>
-												<Input
-													className="form-control-alternative"
-													id="jumlah_baik"
-													name="jumlah_baik"
-													placeholder="Jumlah Baik"
-													type="number"
-													onChange={(e) =>
-														setInputVal({
-															...inputVal,
-															[e.target.name]: parseInt(e.target.value),
-														})
-													}
-												/>
-											</FormGroup>
-											<FormGroup>
-												<label
-													className="form-control-label"
-													htmlFor="jumlah_rusak"
-												>
-													Jumlah Rusak
-												</label>
-												<Input
-													className="form-control-alternative"
-													id="jumlah_rusak"
-													name="jumlah_rusak"
-													placeholder="Jumlah Rusak"
-													type="number"
-													onChange={(e) =>
-														setInputVal({
-															...inputVal,
-															[e.target.name]: parseInt(e.target.value),
-														})
-													}
-												/>
-											</FormGroup>
-											<FormGroup>
-												<label
-													className="form-control-label"
-													htmlFor="jumlah_rusak_ringan"
-												>
-													Jumlah Rusak Ringan
-												</label>
-												<Input
-													className="form-control-alternative"
-													id="jumlah_rusak_ringan"
-													name="jumlah_rusak_ringan"
-													placeholder="Jumlah Rusak Ringan"
-													type="number"
-													onChange={(e) =>
-														setInputVal({
-															...inputVal,
-															[e.target.name]: parseInt(e.target.value),
-														})
-													}
-												/>
-											</FormGroup>
-											{/* Tabel Rincian Barang */}
-											<Button
-												type="button"
-												color="success"
-												style={{ fontSize: "1.2em" }}
-												disabled={
-													inputVal.bidang &&
-													inputVal.jumlah_baik &&
-													inputVal.jumlah_rusak &&
-													inputVal.jumlah_rusak_ringan
-														? false
-														: true
-												}
-												onClick={() => {
-													handleTambahRincianBarang(
-														{ ...inputVal },
-														setRincianBarang
-													);
-												}}
-											>
-												+
-											</Button>
-											<Button
-												type="button"
-												color="danger"
-												style={{ fontSize: "1.2em" }}
-												disabled={rincianBarang.length === 0 ? true : false}
-												onClick={() => {
-													handleHapusRincianBarang(
-														rincianBarang,
-														setRincianBarang
-													);
-												}}
-											>
-												-
-											</Button>
-											<RincianBarang data={rincianBarang} />
-											{/* End of tabel Rincian Barang */}
-										</Col>
 									</Row>
 								</div>
 							</Form>
@@ -368,4 +237,4 @@ const TambahBarang = () => {
 	);
 };
 
-export default TambahBarang;
+export default EditBarang;

@@ -3,13 +3,21 @@ import barang from "assets/dummyData/barang";
 import customStyles from "datatableStyle/customStyles";
 import { FilterComponent } from "datatableStyle/filterPencarian";
 import DataTable from "react-data-table-component";
-import { Card, Col, Row, CardHeader, CardBody, Button } from "reactstrap";
-import columnsDataTable from "../columnsDataTable";
-import { goToTambah } from "../functions";
+import {
+	Card,
+	Col,
+	Row,
+	CardHeader,
+	CardBody,
+	Button,
+	ButtonGroup,
+} from "reactstrap";
+// import columnsDataTable from "../columnsDataTable";
+import { goToDetail, goToEdit, goToTambah, handleDelete } from "../functions";
 import ExpandableComponent from "./ExpandableComponent";
 import { useHistory } from "react-router";
 
-const DataBarang = ({path}) => {
+const DataBarang = ({ path }) => {
 	const history = useHistory();
 	const [filterText, setFilterText] = useState("");
 	const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
@@ -26,6 +34,74 @@ const DataBarang = ({path}) => {
 		}
 		return false;
 	});
+
+	// Columns DataTable
+	const columnsDataTable = [
+		{
+			name: "No",
+			selector: "no",
+			sortable: true,
+			width: "50px",
+		},
+		{
+			name: "No. Barang",
+			selector: "no_barang",
+			sortable: true,
+			wrap: true,
+			// maxWidth: "200px",
+		},
+		{
+			name: "Nama Barang",
+			selector: "nama",
+			sortable: true,
+			// maxWidth: "200px",
+			wrap: true,
+		},
+		{
+			name: "Merk",
+			selector: "merk",
+			sortable: true,
+			wrap: true,
+		},
+		{
+			name: "Ukuran",
+			selector: "ukuran",
+			sortable: true,
+			wrap: true,
+		},
+		{
+			// maxWidth: "150px",
+			name: "Action",
+			sortable: true,
+			cell: (row) => (
+				<div data-tag="allowRowEvents">
+					<ButtonGroup>
+						<Button
+							color="info"
+							className="btn btn-sm"
+							onClick={() => goToDetail(path, history, row.id_barang)}
+						>
+							<i className="fas fa-info"></i>
+						</Button>
+						<Button
+							color="success"
+							className="btn btn-sm"
+							onClick={() => goToEdit(path, history, row.id_barang)}
+						>
+							<i className="fas fa-edit"></i>
+						</Button>
+						<Button
+							color="danger"
+							className="btn btn-sm"
+							onClick={() => handleDelete(row.id_barang)}
+						>
+							<i className="fas fa-trash"></i>
+						</Button>
+					</ButtonGroup>
+				</div>
+			),
+		},
+	];
 
 	// Sub Header Component
 	const SubHeaderComponentMemo = React.useMemo(() => {
