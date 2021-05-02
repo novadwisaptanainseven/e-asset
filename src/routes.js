@@ -18,11 +18,11 @@
 import Index from "views/Dashboard/Index.js";
 import Register from "views/Auth/Register";
 import Login from "views/Auth/Login";
-import Tables from "views/examples/Tables.js";
 import Barang from "views/Barang";
 import RincianBarang from "views/RincianBarang";
 import IndexBarangPindah from "views/BarangPindah";
 import IndexBarangMasuk from "views/BarangMasuk";
+import Kendaraan from "views/Kendaraan";
 
 const layoutAdmin = "/easset/admin";
 const layoutAuth = "/easset/auth";
@@ -64,10 +64,10 @@ var routes = [
     layout: layoutAdmin,
   },
   {
-    path: "/tables",
+    path: "/kendaraan",
     name: "Kendaraan",
     icon: "ni ni-delivery-fast text-red",
-    component: Tables,
+    component: Kendaraan,
     layout: layoutAdmin,
   },
   {

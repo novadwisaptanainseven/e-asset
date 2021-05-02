@@ -21,7 +21,7 @@ const ModalTambah = ({ modal, setModal, barang }) => {
       >
         <div className="modal-header">
           <h3 className="modal-title" id="modal-title-default">
-            Form Pindah Barang
+            Form Barang Masuk
           </h3>
           <button
             aria-label="Close"
@@ -38,24 +38,15 @@ const ModalTambah = ({ modal, setModal, barang }) => {
             <Row>
               <Col>
                 <FormGroup>
-                  <Label>Barang yang Dipindahkan</Label>
+                  <Label>Barang yang Dimasukkan</Label>
                   <Input
                     type="text"
                     id="barang"
                     name="barang"
-                    placeholder="Barang yang dipindahkan"
+                    placeholder="Barang yang dimasukkan"
                     value={barang}
                     readOnly
                   />
-                </FormGroup>
-                <FormGroup>
-                  <Label>Dari Bidang</Label>
-                  <Input type="select" id="dari_bidang" name="dari_bidang">
-                    <option value="">-- Pilih Bidang --</option>
-                    <option value="Perumahan">Perumahan</option>
-                    <option value="Permukiman">Permukiman</option>
-                    <option value="PSU">PSU</option>
-                  </Input>
                 </FormGroup>
                 <FormGroup>
                   <Label>Ke Bidang</Label>

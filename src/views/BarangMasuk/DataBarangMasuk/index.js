@@ -1,4 +1,4 @@
-import barangPindah from "assets/dummyData/barangPindah";
+import barangMasuk from "assets/dummyData/barangMasuk";
 import customStyles from "datatableStyle/customStyles";
 import { FilterComponent } from "datatableStyle/filterPencarian";
 import React, { useState } from "react";
@@ -32,13 +32,11 @@ const DataBarangMasuk = ({ path }) => {
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [filterText, setFilterText] = useState("");
 
-  const filteredData = barangPindah.filter((item) => {
-    if (item.tanggal && item.dari_bidang && item.ke_bidang && item.keterangan) {
+  const filteredData = barangMasuk.filter((item) => {
+    if (item.tanggal && item.ke_bidang) {
       if (
         item.tanggal.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.dari_bidang.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.ke_bidang.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.keterangan.toLowerCase().includes(filterText.toLowerCase())
+        item.ke_bidang.toLowerCase().includes(filterText.toLowerCase())
       ) {
         return true;
       }
@@ -62,23 +60,32 @@ const DataBarangMasuk = ({ path }) => {
       maxWidth: "200px",
     },
     {
-      name: "Dari Bidang",
-      selector: "dari_bidang",
-      sortable: true,
-      maxWidth: "200px",
-      wrap: true,
-    },
-    {
       name: "Ke Bidang",
       selector: "ke_bidang",
       sortable: true,
       wrap: true,
-      maxWidth: "200px",
+    },
+    {
+      name: "Jml. Baik",
+      selector: "jumlah_baik",
+      sortable: true,
+      wrap: true,
+    },
+    {
+      name: "Jml. Rusak",
+      selector: "jumlah_rusak",
+      sortable: true,
+      wrap: true,
+    },
+    {
+      name: "Jml. Rusak Ringan",
+      selector: "jumlah_rusak_ringan",
+      sortable: true,
+      wrap: true,
     },
     {
       maxWidth: "150px",
       name: "Action",
-      sortable: true,
       cell: (row) => (
         <div data-tag="allowRowEvents">
           <Button

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Modal } from "reactstrap";
 
-const ModalDetail = ({ modalDetail, setModalDetail}) => {
+const ModalDetail = ({ modalDetail, setModalDetail }) => {
   const { id, modal } = modalDetail;
 
   useEffect(() => {
@@ -66,6 +66,11 @@ const ModalDetail = ({ modalDetail, setModalDetail}) => {
                 <th>Dari Bidang</th>
                 <th>:</th>
                 <td>Perumahan</td>
+              </tr>
+              <tr>
+                <th>Ke Bidang</th>
+                <th>:</th>
+                <td>Permukiman</td>
               </tr>
               <tr>
                 <th>Jumlah Baik</th>

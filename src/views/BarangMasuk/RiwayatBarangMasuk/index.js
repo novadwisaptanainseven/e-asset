@@ -62,24 +62,7 @@ const RiwayatBarangMasuk = ({ path }) => {
       selector: "tanggal",
       sortable: true,
       wrap: true,
-    },
-    {
-      name: "Barang",
-      selector: "barang",
-      sortable: true,
-      wrap: true,
-    },
-    {
-      name: "Merk",
-      selector: "merk",
-      sortable: true,
-      wrap: true,
-    },
-    {
-      name: "Dari Bidang",
-      selector: "dari_bidang",
-      sortable: true,
-      wrap: true,
+      maxWidth: "200px",
     },
     {
       name: "Ke Bidang",
@@ -88,9 +71,26 @@ const RiwayatBarangMasuk = ({ path }) => {
       wrap: true,
     },
     {
+      name: "Jml. Baik",
+      selector: "jumlah_baik",
+      sortable: true,
+      wrap: true,
+    },
+    {
+      name: "Jml. Rusak",
+      selector: "jumlah_rusak",
+      sortable: true,
+      wrap: true,
+    },
+    {
+      name: "Jml. Rusak Ringan",
+      selector: "jumlah_rusak_ringan",
+      sortable: true,
+      wrap: true,
+    },
+    {
       maxWidth: "150px",
       name: "Action",
-      sortable: true,
       cell: (row) => (
         <div data-tag="allowRowEvents">
           <Button
@@ -143,7 +143,7 @@ const RiwayatBarangMasuk = ({ path }) => {
                   style={{ cursor: "pointer" }}
                   className="fas fa-long-arrow-alt-left text-primary mr-3"
                 ></i>{" "}
-                Semua Riwayat Barang Pindah
+                Semua Riwayat Barang Masuk
               </h2>
             </CardHeader>
             <CardBody>

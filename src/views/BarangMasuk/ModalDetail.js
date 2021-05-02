@@ -26,7 +26,7 @@ const ModalDetail = ({ modalDetail, setModalDetail}) => {
       >
         <div className="modal-header">
           <h3 className="modal-title" id="modal-title-default">
-            Detail Barang Pindah
+            Detail Barang Masuk
           </h3>
           <button
             aria-label="Close"
@@ -63,7 +63,7 @@ const ModalDetail = ({ modalDetail, setModalDetail}) => {
                 <td>Lenovo</td>
               </tr>
               <tr>
-                <th>Dari Bidang</th>
+                <th>Ke Bidang</th>
                 <th>:</th>
                 <td>Perumahan</td>
               </tr>
