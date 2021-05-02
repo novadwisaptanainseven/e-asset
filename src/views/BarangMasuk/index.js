@@ -1,9 +1,9 @@
 import React from "react";
 import { Redirect, Route, Switch } from "react-router";
-import DataBarangPindah from "./DataBarangPindah";
-import RiwayatBarangPindah from "./RiwayatBarangPindah";
+import DataBarangMasuk from "./DataBarangMasuk";
+import RiwayatBarangMasuk from "./RiwayatBarangMasuk";
 
-const IndexBarangPindah = ({ match }) => {
+const IndexBarangMasuk = ({ match }) => {
   const { path } = match;
   return (
     <>
@@ -11,12 +11,12 @@ const IndexBarangPindah = ({ match }) => {
         <Route
           exact
           path={path}
-          render={() => <DataBarangPindah path={path} />}
+          render={() => <DataBarangMasuk path={path} />}
         />
         <Route
           exact
           path={path + "/riwayat"}
-          render={() => <RiwayatBarangPindah path={path + "/riwayat"} />}
+          render={() => <RiwayatBarangMasuk path={path + "/riwayat"} />}
         />
         <Redirect from="/admin/barang/*" to="/admin/index" />
       </Switch>
@@ -24,4 +24,4 @@ const IndexBarangPindah = ({ match }) => {
   );
 };
 
-export default IndexBarangPindah;
+export default IndexBarangMasuk;

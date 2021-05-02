@@ -19,9 +19,9 @@ import {
 import { goToRiwayat, goToDetailBarang } from "../functions";
 import ModalDetail from "../ModalDetail";
 import ModalTambah from "../ModalTambah";
-import ExpandableComponent from "../RiwayatBarangPindah/ExpandableComponent";
+import ExpandableComponent from "../RiwayatBarangMasuk/ExpandableComponent";
 
-const DataBarangPindah = ({ path }) => {
+const DataBarangMasuk = ({ path }) => {
   const history = useHistory();
   const [modal, setModal] = useState(false);
   const [modalDetail, setModalDetail] = useState({
@@ -135,13 +135,13 @@ const DataBarangPindah = ({ path }) => {
         <Col>
           <Card className="shadow">
             <CardHeader>
-              <h2>Barang Pindah</h2>
+              <h2>Barang Masuk</h2>
             </CardHeader>
             <CardBody>
               <Row>
-                <Col md="6">
+                <Col md="7">
                   <FormGroup>
-                    <Label>Barang yang akan dipindahkan</Label>
+                    <Label>Barang yang akan dimasukkan</Label>
                     <div className="d-flex" style={{ columnGap: "10px" }}>
                       <Select
                         styles={{
@@ -167,10 +167,10 @@ const DataBarangPindah = ({ path }) => {
 
                       <Button
                         color="primary"
-                        style={{ width: "40%" }}
+                        style={{ width: "60%" }}
                         onClick={() => setModal(!modal)}
                       >
-                        Pindah Barang
+                        Tambah Barang Masuk
                       </Button>
                     </div>
                   </FormGroup>
@@ -178,7 +178,7 @@ const DataBarangPindah = ({ path }) => {
               </Row>
               <Row>
                 <Col>
-                  <h1>Riwayat Barang Pindah</h1>
+                  <h1>Riwayat Barang Masuk</h1>
                   <h2 className="text-muted">{barang}</h2>
                   <DataTable
                     columns={columnsDataTable}
@@ -212,4 +212,4 @@ const DataBarangPindah = ({ path }) => {
   );
 };
 
-export default DataBarangPindah;
+export default DataBarangMasuk;
