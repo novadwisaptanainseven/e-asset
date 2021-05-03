@@ -26,7 +26,7 @@ const ModalDetail = ({ modalDetail, setModalDetail }) => {
       >
         <div className="modal-header">
           <h3 className="modal-title" id="modal-title-default">
-            Detail Barang Pindah
+            Detail Kendaraan Pindah
           </h3>
           <button
             aria-label="Close"
@@ -53,39 +53,24 @@ const ModalDetail = ({ modalDetail, setModalDetail }) => {
                 <td>27/11/2021</td>
               </tr>
               <tr>
-                <th>Barang</th>
+                <th>Merk Kendaraan</th>
                 <th>:</th>
-                <td>Komputer</td>
+                <td>Avanza</td>
               </tr>
               <tr>
-                <th>Merk</th>
+                <th>Tipe Kendaraan</th>
                 <th>:</th>
-                <td>Lenovo</td>
+                <td>Lorem</td>
               </tr>
               <tr>
-                <th>Dari Bidang</th>
+                <th>Dari Pegawai</th>
                 <th>:</th>
-                <td>Perumahan</td>
+                <td>Nova Dwi Sapta</td>
               </tr>
               <tr>
-                <th>Ke Bidang</th>
+                <th>Ke Pegawai</th>
                 <th>:</th>
-                <td>Permukiman</td>
-              </tr>
-              <tr>
-                <th>Jumlah Baik</th>
-                <th>:</th>
-                <td>10</td>
-              </tr>
-              <tr>
-                <th>Jumlah Rusak</th>
-                <th>:</th>
-                <td>10</td>
-              </tr>
-              <tr>
-                <th>Jumlah Rusak Ringan</th>
-                <th>:</th>
-                <td>10</td>
+                <td>Purwanto</td>
               </tr>
               <tr>
                 <th valign="top">Keterangan</th>

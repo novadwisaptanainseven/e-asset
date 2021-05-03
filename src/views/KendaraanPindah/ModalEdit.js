@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Modal,
   Button,
@@ -12,25 +12,44 @@ import {
 import Select from "react-select";
 import optionsPegawai from "assets/dummyData/optionsPegawai";
 
-const ModalTambah = ({ modal, setModal, kendaraan }) => {
+const ModalEdit = ({ modalEdit, setModalEdit, kendaraan }) => {
+  const { id } = modalEdit;
+
+  useEffect(() => {
+    if (id) {
+      console.log(id);
+    }
+  }, [id]);
+
   return (
     <>
       <Modal
         className="modal-dialog-centered"
-        isOpen={modal}
-        toggle={() => setModal(!modal)}
+        isOpen={modalEdit.modal}
+        toggle={() =>
+          setModalEdit({
+            ...modalEdit,
+            modal: !modalEdit.modal,
+          })
+        }
         size="lg"
       >
         <div className="modal-header">
           <h3 className="modal-title" id="modal-title-default">
-            Form Pindah Kendaraan
+            Edit Pindah Kendaraan
           </h3>
           <button
             aria-label="Close"
             className="close"
             data-dismiss="modal"
             type="button"
-            onClick={() => setModal(false)}
+            onClick={() =>
+              setModalEdit({
+                ...modalEdit,
+                id: null,
+                modal: false,
+              })
+            }
           >
             <span aria-hidden={true}>×</span>
           </button>
@@ -107,7 +126,13 @@ const ModalTambah = ({ modal, setModal, kendaraan }) => {
               color="link"
               data-dismiss="modal"
               type="button"
-              onClick={() => setModal(false)}
+              onClick={() =>
+                setModalEdit({
+                  ...modalEdit,
+                  id: null,
+                  modal: false,
+                })
+              }
             >
               Tutup
             </Button>
@@ -118,4 +143,4 @@ const ModalTambah = ({ modal, setModal, kendaraan }) => {
   );
 };
 
-export default ModalTambah;
+export default ModalEdit;

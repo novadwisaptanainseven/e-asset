@@ -15,15 +15,22 @@ import {
   CardFooter,
   FormGroup,
   Label,
+  ButtonGroup,
 } from "reactstrap";
-import { goToRiwayat, goToDetailBarang } from "../functions";
+import { handleDelete } from "views/Kendaraan/functions";
+import { goToRiwayat, goToDetailKendaraan } from "../functions";
 import ModalDetail from "../ModalDetail";
 import ModalTambah from "../ModalTambah";
+import ModalEdit from "../ModalEdit";
 import ExpandableComponent from "../RiwayatKendaraanPindah/ExpandableComponent";
 
 const DataKendaraanPindah = ({ path }) => {
   const history = useHistory();
   const [modal, setModal] = useState(false);
+  const [modalEdit, setModalEdit] = useState({
+    id: null,
+    modal: false,
+  });
   const [modalDetail, setModalDetail] = useState({
     id: null,
     modal: false,
@@ -45,6 +52,22 @@ const DataKendaraanPindah = ({ path }) => {
     }
     return false;
   });
+
+  // Dummy Data
+  const options = [
+    {
+      value: "Avanza",
+      label: "Avanza",
+    },
+    {
+      value: "Kijang Inova",
+      label: "Kijang Inova",
+    },
+    {
+      value: "Mitsubisi",
+      label: "Mitsubisi",
+    },
+  ];
 
   // Columns DataTable
   const columnsDataTable = [
@@ -81,19 +104,41 @@ const DataKendaraanPindah = ({ path }) => {
       sortable: true,
       cell: (row) => (
         <div data-tag="allowRowEvents">
-          <Button
-            color="info"
-            className="btn btn-sm"
-            onClick={() =>
-              setModalDetail({
-                ...modalDetail,
-                id: row.id_kendaraan_pindah,
-                modal: true,
-              })
-            }
-          >
-            <i className="fas fa-info"></i>
-          </Button>
+          <ButtonGroup>
+            <Button
+              color="info"
+              className="btn btn-sm"
+              onClick={() =>
+                setModalDetail({
+                  ...modalDetail,
+                  id: row.id_kendaraan_pindah,
+                  modal: true,
+                })
+              }
+            >
+              <i className="fas fa-info"></i>
+            </Button>
+            <Button
+              color="success"
+              className="btn btn-sm"
+              onClick={() =>
+                setModalEdit({
+                  ...modalEdit,
+                  id: row.id_kendaraan_pindah,
+                  modal: true,
+                })
+              }
+            >
+              <i className="fas fa-edit"></i>
+            </Button>
+            <Button
+              color="danger"
+              className="btn btn-sm"
+              onClick={() => handleDelete(row.id_kendaraan_pindah)}
+            >
+              <i className="fas fa-trash"></i>
+            </Button>
+          </ButtonGroup>
         </div>
       ),
     },
@@ -116,7 +161,7 @@ const DataKendaraanPindah = ({ path }) => {
         <Button
           color="success"
           disabled={!kendaraan ? true : false}
-          onClick={() => goToDetailBarang(history, 1)}
+          onClick={() => goToDetailKendaraan(history, 1)}
         >
           Lihat Kendaraan
         </Button>
@@ -158,17 +203,14 @@ const DataKendaraanPindah = ({ path }) => {
                         defaultInputValue={kendaraan}
                         isSearchable
                         isClearable
-                        options={[
-                          { value: "Komputer", label: "Komputer (Acer)" },
-                          { value: "Laptop", label: "Laptop (Lenovo)" },
-                          { value: "Printer", label: "Printer (Epson)" },
-                        ]}
+                        options={options}
                       />
 
                       <Button
                         color="primary"
                         style={{ width: "40%" }}
                         onClick={() => setModal(!modal)}
+                        disabled={!kendaraan ? true : false}
                       >
                         Pindah Kendaraan
                       </Button>
@@ -204,10 +246,13 @@ const DataKendaraanPindah = ({ path }) => {
       </Row>
 
       {/* Modal Tambah */}
-      {/* <ModalTambah modal={modal} setModal={setModal} barang={barang} /> */}
+      <ModalTambah modal={modal} setModal={setModal} kendaraan={kendaraan} />
 
       {/* Modal Detail */}
-      {/* <ModalDetail modalDetail={modalDetail} setModalDetail={setModalDetail} /> */}
+      <ModalDetail modalDetail={modalDetail} setModalDetail={setModalDetail} />
+
+      {/* Modal Edit */}
+      <ModalEdit modalEdit={modalEdit} setModalEdit={setModalEdit} />
     </>
   );
 };

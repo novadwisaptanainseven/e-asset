@@ -17,13 +17,13 @@
 */
 import Index from "views/Dashboard/Index.js";
 import Register from "views/Auth/Register";
-import Login from "views/Auth/Login";
 import Barang from "views/Barang";
 import RincianBarang from "views/RincianBarang";
 import IndexBarangPindah from "views/BarangPindah";
 import IndexBarangMasuk from "views/BarangMasuk";
 import Kendaraan from "views/Kendaraan";
 import IndexKendaraanPindah from "views/KendaraanPindah";
+import IndexPengaturanAkun from "views/PengaturanAkun";
 
 const layoutAdmin = "/easset/admin";
 const layoutAuth = "/easset/auth";
@@ -79,11 +79,11 @@ var routes = [
     layout: layoutAdmin,
   },
   {
-    path: "/login",
+    path: "/pengaturan-akun",
     name: "Pengaturan Akun",
     icon: "ni ni-single-02 text-info",
-    component: Login,
-    layout: layoutAuth,
+    component: IndexPengaturanAkun,
+    layout: layoutAdmin,
   },
   {
     path: "/register",

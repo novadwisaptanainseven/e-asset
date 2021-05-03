@@ -10,6 +10,6 @@ export const goBackToPrevPage = (history) => {
   history.goBack();
 };
 
-export const goToDetailBarang = (history, id) => {
-  history.push(`/easset/admin/barang/${id}/detail`);
+export const goToDetailKendaraan = (history, id) => {
+  history.push(`/easset/admin/kendaraan/${id}/detail`);
 };

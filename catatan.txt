@@ -1,0 +1,9 @@
+Hal yang perlu ditambahkan di Backend
+1. Dashboard
+   - Total Barang
+   - Total Kendaraan
+   - Riwayat Barang Pindah
+   - Riwayat Kendaraan Pindah
+2. Pengaturan Akun
+   - Edit Akun (Username, Nama, dan Foto Profil)
+   - Edit Password (Password, Konfirmasi Password)
