@@ -23,6 +23,7 @@ import RincianBarang from "views/RincianBarang";
 import IndexBarangPindah from "views/BarangPindah";
 import IndexBarangMasuk from "views/BarangMasuk";
 import Kendaraan from "views/Kendaraan";
+import IndexKendaraanPindah from "views/KendaraanPindah";
 
 const layoutAdmin = "/easset/admin";
 const layoutAuth = "/easset/auth";
@@ -71,11 +72,11 @@ var routes = [
     layout: layoutAdmin,
   },
   {
-    path: "/login",
+    path: "/kendaraan-pindah",
     name: "Kendaraan Pindah",
     icon: "ni ni-spaceship text-info",
-    component: Login,
-    layout: layoutAuth,
+    component: IndexKendaraanPindah,
+    layout: layoutAdmin,
   },
   {
     path: "/login",
