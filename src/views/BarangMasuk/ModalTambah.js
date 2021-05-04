@@ -44,7 +44,7 @@ const ModalTambah = ({ modal, setModal, barang }) => {
                     id="barang"
                     name="barang"
                     placeholder="Barang yang dimasukkan"
-                    value={barang}
+                    value={barang.value}
                     readOnly
                   />
                 </FormGroup>

@@ -1,6 +1,6 @@
 import kendaraanPindah from "assets/dummyData/kendaraanPindah";
+import SubHeaderComponentMemo from "components/DataTable/SubHeaderComponentMemo";
 import customStyles from "datatableStyle/customStyles";
-import { FilterComponent } from "datatableStyle/filterPencarian";
 import React, { useState } from "react";
 import DataTable from "react-data-table-component";
 import { useHistory } from "react-router";
@@ -83,7 +83,7 @@ const RiwayatKendaraanPindah = ({ path }) => {
       name: "Ke",
       selector: "ke",
       sortable: true,
-      wrap: true
+      wrap: true,
     },
     {
       maxWidth: "150px",
@@ -130,26 +130,6 @@ const RiwayatKendaraanPindah = ({ path }) => {
     },
   ];
 
-  // Sub Header Component
-  const SubHeaderComponentMemo = React.useMemo(() => {
-    const handleClear = () => {
-      if (filterText) {
-        setResetPaginationToggle(!resetPaginationToggle);
-        setFilterText("");
-      }
-    };
-
-    return (
-      <>
-        <FilterComponent
-          onFilter={(e) => setFilterText(e.target.value)}
-          onClear={handleClear}
-          filterText={filterText}
-        />
-      </>
-    );
-  }, [filterText, resetPaginationToggle]);
-
   return (
     <>
       <Row>
@@ -175,7 +155,15 @@ const RiwayatKendaraanPindah = ({ path }) => {
                 pagination
                 paginationResetDefaultPage={resetPaginationToggle}
                 subHeader
-                subHeaderComponent={SubHeaderComponentMemo}
+                subHeaderComponent={
+                  <SubHeaderComponentMemo
+                    filterText={filterText}
+                    setFilterText={setFilterText}
+                    resetPaginationToggle={resetPaginationToggle}
+                    setResetPaginationToggle={setResetPaginationToggle}
+                    isPrintingButtonActive={true}
+                  />
+                }
                 expandableRows
                 highlightOnHover
                 expandOnRowClicked

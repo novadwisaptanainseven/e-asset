@@ -1,4 +1,5 @@
 import barangPindah from "assets/dummyData/barangPindah";
+import optionsBarang from "assets/dummyData/optionsBarang";
 import customStyles from "datatableStyle/customStyles";
 import { FilterComponent } from "datatableStyle/filterPencarian";
 import React, { useState } from "react";
@@ -154,15 +155,11 @@ const DataBarangPindah = ({ path }) => {
                         id="barang"
                         name="barang"
                         placeholder="-- Pilih Barang --"
-                        onChange={(opt) => setBarang(opt ? opt.value : "")}
-                        defaultInputValue={barang}
+                        onChange={(opt) => setBarang(opt ? opt : "")}
+                        defaultInputValue={barang.value}
                         isSearchable
                         isClearable
-                        options={[
-                          { value: "Komputer", label: "Komputer (Acer)" },
-                          { value: "Laptop", label: "Laptop (Lenovo)" },
-                          { value: "Printer", label: "Printer (Epson)" },
-                        ]}
+                        options={optionsBarang}
                       />
 
                       <Button
@@ -179,7 +176,7 @@ const DataBarangPindah = ({ path }) => {
               <Row>
                 <Col>
                   <h1>Riwayat Barang Pindah</h1>
-                  <h2 className="text-muted">{barang}</h2>
+                  <h2 className="text-muted">{barang.label}</h2>
                   <DataTable
                     columns={columnsDataTable}
                     data={filteredData}

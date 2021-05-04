@@ -1,6 +1,6 @@
 import barangPindah from "assets/dummyData/barangPindah";
+import SubHeaderComponentMemo from "components/DataTable/SubHeaderComponentMemo";
 import customStyles from "datatableStyle/customStyles";
-import { FilterComponent } from "datatableStyle/filterPencarian";
 import React, { useState } from "react";
 import DataTable from "react-data-table-component";
 import { useHistory } from "react-router";
@@ -111,26 +111,6 @@ const RiwayatBarangMasuk = ({ path }) => {
     },
   ];
 
-  // Sub Header Component
-  const SubHeaderComponentMemo = React.useMemo(() => {
-    const handleClear = () => {
-      if (filterText) {
-        setResetPaginationToggle(!resetPaginationToggle);
-        setFilterText("");
-      }
-    };
-
-    return (
-      <>
-        <FilterComponent
-          onFilter={(e) => setFilterText(e.target.value)}
-          onClear={handleClear}
-          filterText={filterText}
-        />
-      </>
-    );
-  }, [filterText, resetPaginationToggle]);
-
   return (
     <>
       <Row>
@@ -156,7 +136,15 @@ const RiwayatBarangMasuk = ({ path }) => {
                 pagination
                 paginationResetDefaultPage={resetPaginationToggle}
                 subHeader
-                subHeaderComponent={SubHeaderComponentMemo}
+                subHeaderComponent={
+                  <SubHeaderComponentMemo
+                    filterText={filterText}
+                    setFilterText={setFilterText}
+                    resetPaginationToggle={resetPaginationToggle}
+                    setResetPaginationToggle={setResetPaginationToggle}
+                    isPrintingButtonActive={true}
+                  />
+                }
                 expandableRows
                 highlightOnHover
                 expandOnRowClicked

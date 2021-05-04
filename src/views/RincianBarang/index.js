@@ -10,17 +10,18 @@ import {
   CardFooter,
   FormGroup,
   Label,
-  Input,
   Table,
 } from "reactstrap";
 import { handleDelete } from "./functions";
 import ModalTambah from "./ModalTambah";
+import Select from "react-select";
+import optionsBarang from "assets/dummyData/optionsBarang";
 
 const RincianBarang = () => {
   const match = useRouteMatch();
   const { params } = match;
   const [modal, setModal] = useState(false);
-  const [bidang, setBidang] = useState("");
+  const [barang, setBarang] = useState("");
 
   useEffect(() => {
     console.log(params);
@@ -39,31 +40,43 @@ const RincianBarang = () => {
                 <Col md="4">
                   <FormGroup>
                     <Label>Barang</Label>
-                    <Input
-                      type="select"
-                      name="barang"
+                    <Select
+                      styles={{
+                        control: (provided, state) => ({
+                          // none of react-select's styles are passed to <Control />
+                          ...provided,
+                          width: 300,
+                        }),
+                      }}
                       id="barang"
-                      value={bidang}
-                      onChange={(e) => setBidang(e.target.value)}
-                    >
-                      <option value="">-- Pilih Barang --</option>
-                      <option value="komputer">Komputer</option>
-                      <option value="komputer">Komputer</option>
-                      <option value="komputer">Komputer</option>
-                    </Input>
+                      name="barang"
+                      placeholder="-- Pilih Barang --"
+                      onChange={(opt) => setBarang(opt ? opt : "")}
+                      defaultInputValue={barang.value}
+                      isSearchable
+                      isClearable
+                      options={optionsBarang}
+                    />
                   </FormGroup>
                 </Col>
               </Row>
               <Row>
                 <Col>
-                  <Button
-                    color="primary"
-                    className="mb-3"
-                    onClick={() => setModal(!modal)}
-                    disabled={!bidang ? true : false}
-                  >
-                    Tambah Rincian
-                  </Button>
+                  <div className="d-flex justify-content-between">
+                    <Button
+                      color="primary"
+                      className="mb-3"
+                      onClick={() => setModal(!modal)}
+                      disabled={!barang ? true : false}
+                    >
+                      Tambah Rincian
+                    </Button>
+                    <div>
+                      <Button color="warning">Cetak Rincian Barang {barang.label}</Button>
+                    </div>
+                  </div>
+
+                  <h3>Daftar Rincian Barang {barang.label}</h3>
                   <Table className="align-items-center" responsive>
                     <thead className="thead-light">
                       <tr>
