@@ -1,103 +1,185 @@
 import React from "react";
 import {
-	Modal,
-	Button,
-	Row,
-	Col,
-	Form,
-	Input,
-	FormGroup,
-	Label,
+  Modal,
+  Button,
+  Row,
+  Col,
+  Form,
+  Input,
+  FormGroup,
+  Label,
 } from "reactstrap";
 
-const ModalTambah = ({ modal, setModal }) => {
-	return (
-		<>
-			<Modal
-				className="modal-dialog-centered"
-				isOpen={modal}
-				toggle={() => setModal(!modal)}
-				size="lg"
-			>
-				<div className="modal-header">
-					<h3 className="modal-title" id="modal-title-default">
-						Tambah Rincian Barang <br />
-						<br />
-						<span className="text-muted">Komputer</span>
-					</h3>
-					<button
-						aria-label="Close"
-						className="close"
-						data-dismiss="modal"
-						type="button"
-						onClick={() => setModal(false)}
-					>
-						<span aria-hidden={true}>×</span>
-					</button>
-				</div>
-				<Form>
-					<div className="modal-body">
-						<Row>
-							<Col>
-								<FormGroup>
-									<Label>Bidang</Label>
-									<Input type="select" id="bidang" name="bidang">
-										<option value="">-- Pilih Bidang --</option>
-										<option value="permukiman">Permukiman</option>
-										<option value="permukiman">Permukiman</option>
-										<option value="permukiman">Permukiman</option>
-									</Input>
-								</FormGroup>
-								<FormGroup>
-									<Label>Jumlah Baik</Label>
-									<Input
-										type="number"
-										id="jumlah_baik"
-										name="jumlah_baik"
-										placeholder="Jumlah Baik"
-									/>
-								</FormGroup>
-							</Col>
-							<Col>
-								<FormGroup>
-									<Label>Jumlah Rusak</Label>
-									<Input
-										type="number"
-										id="jumlah_rusak"
-										name="jumlah_rusak"
-										placeholder="Jumlah Rusak"
-									/>
-								</FormGroup>
-								<FormGroup>
-									<Label>Jumlah Rusak Ringan</Label>
-									<Input
-										type="number"
-										id="jumlah_rusak_ringan"
-										name="jumlah_rusak_ringan"
-										placeholder="Jumlah Rusak Ringan"
-									/>
-								</FormGroup>
-							</Col>
-						</Row>
-					</div>
-					<div className="modal-footer">
-						<Button color="primary" type="button">
-							Simpan
-						</Button>
-						<Button
-							className="ml-auto"
-							color="link"
-							data-dismiss="modal"
-							type="button"
-							onClick={() => setModal(false)}
-						>
-							Tutup
-						</Button>
-					</div>
-				</Form>
-			</Modal>
-		</>
-	);
+import { Formik } from "formik";
+import initState from "./Formik/initState";
+import validationSchema from "./Formik/validationSchema";
+
+const ModalTambah = ({ modal, setModal, value, label }) => {
+  const handleFormSubmit = (values) => {
+    console.log(values);
+  };
+
+  return (
+    <>
+      <Modal
+        className="modal-dialog-centered"
+        isOpen={modal}
+        toggle={() => setModal(!modal)}
+        size="lg"
+      >
+        <div className="modal-header">
+          <h3 className="modal-title" id="modal-title-default">
+            Tambah Rincian Barang <br />
+            <br />
+            <span className="text-muted">{label}</span>
+          </h3>
+          <button
+            aria-label="Close"
+            className="close"
+            data-dismiss="modal"
+            type="button"
+            onClick={() => setModal(false)}
+          >
+            <span aria-hidden={true}>×</span>
+          </button>
+        </div>
+        <Formik
+          initialValues={initState}
+          validationSchema={validationSchema}
+          onSubmit={(e) => handleFormSubmit(e)}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            isSubmitting,
+          }) => (
+            <Form onSubmit={handleSubmit}>
+              <div className="modal-body">
+                <Row>
+                  <Col>
+                    <FormGroup>
+                      <Label>Bidang</Label>
+                      <Input
+                        type="select"
+                        id="id_bidang"
+                        name="id_bidang"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.id_bidang || ""}
+                        className={
+                          errors.id_bidang && touched.id_bidang
+                            ? "is-invalid"
+                            : null
+                        }
+                      >
+                        <option value="">-- Pilih Bidang --</option>
+                        <option value="1">Permukiman</option>
+                        <option value="2">Perumahan</option>
+                        <option value="3">PSU</option>
+                      </Input>
+                      {errors.id_bidang && touched.id_bidang && (
+                        <div className="invalid-feedback">
+                          {errors.id_bidang}
+                        </div>
+                      )}
+                    </FormGroup>
+                    <FormGroup>
+                      <Label>Jumlah Baik</Label>
+                      <Input
+                        type="number"
+                        id="jumlah_baik"
+                        name="jumlah_baik"
+                        placeholder="Jumlah Baik"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.jumlah_baik || ""}
+                        className={
+                          errors.jumlah_baik && touched.jumlah_baik
+                            ? "is-invalid"
+                            : null
+                        }
+                      />
+                      {errors.jumlah_baik && touched.jumlah_baik && (
+                        <div className="invalid-feedback">
+                          {errors.jumlah_baik}
+                        </div>
+                      )}
+                    </FormGroup>
+                  </Col>
+                  <Col>
+                    <FormGroup>
+                      <Label>Jumlah Rusak</Label>
+                      <Input
+                        type="number"
+                        id="jumlah_rusak"
+                        name="jumlah_rusak"
+                        placeholder="Jumlah Rusak"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.jumlah_rusak || ""}
+                        className={
+                          errors.jumlah_rusak && touched.jumlah_rusak
+                            ? "is-invalid"
+                            : null
+                        }
+                      />
+                      {errors.jumlah_rusak && touched.jumlah_rusak && (
+                        <div className="invalid-feedback">
+                          {errors.jumlah_rusak}
+                        </div>
+                      )}
+                    </FormGroup>
+                    <FormGroup>
+                      <Label>Jumlah Rusak Ringan</Label>
+                      <Input
+                        type="number"
+                        id="jumlah_rusak_ringan"
+                        name="jumlah_rusak_ringan"
+                        placeholder="Jumlah Rusak Ringan"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.jumlah_rusak_ringan || ""}
+                        className={
+                          errors.jumlah_rusak_ringan &&
+                          touched.jumlah_rusak_ringan
+                            ? "is-invalid"
+                            : null
+                        }
+                      />
+                      {errors.jumlah_rusak_ringan &&
+                        touched.jumlah_rusak_ringan && (
+                          <div className="invalid-feedback">
+                            {errors.jumlah_rusak_ringan}
+                          </div>
+                        )}
+                    </FormGroup>
+                  </Col>
+                </Row>
+              </div>
+              <div className="modal-footer">
+                <Button type="submit" color="primary">
+                  Simpan
+                </Button>
+                <Button
+                  className="ml-auto"
+                  color="link"
+                  data-dismiss="modal"
+                  type="button"
+                  onClick={() => setModal(false)}
+                >
+                  Tutup
+                </Button>
+              </div>
+            </Form>
+          )}
+        </Formik>
+      </Modal>
+    </>
+  );
 };
 
 export default ModalTambah;

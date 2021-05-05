@@ -166,6 +166,7 @@ const DataBarangPindah = ({ path }) => {
                         color="primary"
                         style={{ width: "40%" }}
                         onClick={() => setModal(!modal)}
+                        disabled={!barang ? true : false}
                       >
                         Pindah Barang
                       </Button>

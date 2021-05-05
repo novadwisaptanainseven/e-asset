@@ -72,7 +72,9 @@ const RincianBarang = () => {
                       Tambah Rincian
                     </Button>
                     <div>
-                      <Button color="warning">Cetak Rincian Barang {barang.label}</Button>
+                      <Button color="warning">
+                        Cetak Rincian Barang {barang.label}
+                      </Button>
                     </div>
                   </div>
 
@@ -148,7 +150,7 @@ const RincianBarang = () => {
       </Row>
 
       {/* Modal Tambah */}
-      <ModalTambah modal={modal} setModal={setModal} />
+      <ModalTambah modal={modal} setModal={setModal} {...barang} />
     </>
   );
 };

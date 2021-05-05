@@ -12,6 +12,7 @@ import {
   Input,
   Button,
   CardFooter,
+  FormText,
 } from "reactstrap";
 import {
   goBackToPrevPage,
@@ -28,6 +29,25 @@ const TambahBarang = () => {
   const [preview, setPreview] = useState();
   const [rincianBarang, setRincianBarang] = useState([]);
   const [inputVal, setInputVal] = useState({});
+  const [hargaFormatRp, setHargaFormatRp] = useState("");
+
+  // Mengubah format harga dari number menjadi Currency Rupiah
+  const convertToCurrency = (harga) => {
+    let formatRp = parseInt(harga).toLocaleString("id", {
+      style: "currency",
+      currency: "IDR",
+    });
+    if (harga) {
+      setHargaFormatRp(formatRp);
+    } else {
+      setHargaFormatRp("");
+    }
+  };
+
+  // Handle conversion format harga onKeyUp
+  const handleFormatRp = (value) => {
+    convertToCurrency(value);
+  };
 
   // Menangani preview input gambar setelah dipilih
   const handleSelectedFile = useCallback(() => {
@@ -57,6 +77,7 @@ const TambahBarang = () => {
 
   const handleFormSubmit = (values) => {
     console.log(values);
+    console.log(rincianBarang);
   };
 
   return (
@@ -298,6 +319,7 @@ const TambahBarang = () => {
                               name="harga"
                               placeholder="Harga"
                               onChange={handleChange}
+                              onKeyUp={(e) => handleFormatRp(e.target.value)}
                               onBlur={handleBlur}
                               value={values.harga || ""}
                               className={
@@ -306,6 +328,7 @@ const TambahBarang = () => {
                                   : null
                               }
                             />
+                            <FormText>{hargaFormatRp}</FormText>
                             {errors.harga && touched.harga && (
                               <div className="invalid-feedback">
                                 {errors.harga}
