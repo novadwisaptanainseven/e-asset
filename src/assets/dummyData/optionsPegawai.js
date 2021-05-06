@@ -1,14 +1,14 @@
 const optionsPegawai = [
   {
-    value: "Nova Dwi Sapta",
+    value: "1",
     label: "Nova Dwi Sapta",
   },
   {
-    value: "Purwanto",
+    value: "2",
     label: "Purwanto",
   },
   {
-    value: "Muhammad Asep",
+    value: "3",
     label: "Muhammad Asep",
   },
 ];
