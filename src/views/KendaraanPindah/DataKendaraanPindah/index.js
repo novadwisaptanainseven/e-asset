@@ -23,6 +23,7 @@ import ModalDetail from "../ModalDetail";
 import ModalTambah from "../ModalTambah";
 import ModalEdit from "../ModalEdit";
 import ExpandableComponent from "../RiwayatKendaraanPindah/ExpandableComponent";
+import optionsKendaraan from "assets/dummyData/optionsKendaraan";
 
 const DataKendaraanPindah = ({ path }) => {
   const history = useHistory();
@@ -52,22 +53,6 @@ const DataKendaraanPindah = ({ path }) => {
     }
     return false;
   });
-
-  // Dummy Data
-  const options = [
-    {
-      value: "Avanza",
-      label: "Avanza",
-    },
-    {
-      value: "Kijang Inova",
-      label: "Kijang Inova",
-    },
-    {
-      value: "Mitsubisi",
-      label: "Mitsubisi",
-    },
-  ];
 
   // Columns DataTable
   const columnsDataTable = [
@@ -203,7 +188,7 @@ const DataKendaraanPindah = ({ path }) => {
                         defaultInputValue={kendaraan}
                         isSearchable
                         isClearable
-                        options={options}
+                        options={optionsKendaraan}
                       />
 
                       <Button
