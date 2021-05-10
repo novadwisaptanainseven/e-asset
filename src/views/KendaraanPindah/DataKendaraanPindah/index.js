@@ -17,8 +17,7 @@ import {
   Label,
   ButtonGroup,
 } from "reactstrap";
-import { handleDelete } from "views/Kendaraan/functions";
-import { goToRiwayat, goToDetailKendaraan } from "../functions";
+import { goToRiwayat, goToDetailKendaraan, showDeleteAlert } from "../functions";
 import ModalDetail from "../ModalDetail";
 import ModalTambah from "../ModalTambah";
 import ModalEdit from "../ModalEdit";
@@ -119,7 +118,7 @@ const DataKendaraanPindah = ({ path }) => {
             <Button
               color="danger"
               className="btn btn-sm"
-              onClick={() => handleDelete(row.id_kendaraan_pindah)}
+              onClick={() => showDeleteAlert(row.id_kendaraan_pindah)}
             >
               <i className="fas fa-trash"></i>
             </Button>

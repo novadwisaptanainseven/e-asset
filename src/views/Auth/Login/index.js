@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { Formik } from "formik";
 
@@ -32,13 +32,46 @@ import {
   InputGroupText,
   InputGroup,
   Col,
+  UncontrolledAlert,
 } from "reactstrap";
 import initState from "./Formik/initState";
 import validationSchema from "./Formik/validationSchema";
+import { useHistory } from "react-router";
+import { GlobalContext } from "context/Provider";
+import { checkToken } from "helpers/checkToken";
+import { CLEAN_UP } from "context/actionTypes";
+import { login } from "context/actions/Auth/login";
+import { LoadAnimationWhite } from "assets";
 
 const Login = () => {
+  const history = useHistory();
+  const { loginState, loginDispatch } = useContext(GlobalContext);
+  const { loading, data, error } = loginState;
+  const [tokenAlert, setTokenAlert] = useState(true);
+
+  useEffect(() => {
+    // Untuk menampilkan alert ketika user belum logout
+    if (tokenAlert) {
+      checkToken(history);
+    }
+
+    if (data) {
+      // Jika login berhasil maka redirect ke halaman dashboard admin
+      window.location.href = "/easset/admin";
+    }
+
+    return () => {
+      loginDispatch({
+        type: CLEAN_UP,
+      });
+    };
+  }, [data, tokenAlert, history, loginDispatch]);
+
   const handleFormSubmit = (values) => {
-    console.log(values);
+    // Lakukan proses login
+    setTokenAlert(false);
+    login(values, loginDispatch);
+    // console.log(values);
   };
 
   return (
@@ -52,7 +85,15 @@ const Login = () => {
               </h1>
             </div>
           </CardHeader>
-          <CardBody className="px-lg-5 py-lg-5">
+          <CardBody className="px-lg-5 pb-lg-5">
+            {error && (
+              <UncontrolledAlert color="danger" fade={true}>
+                <span className="alert-inner--icon">
+                  <i className="fas fa-info" />
+                </span>{" "}
+                <span className="alert-inner--text">{error}</span>
+              </UncontrolledAlert>
+            )}
             <Formik
               initialValues={initState}
               validationSchema={validationSchema}
@@ -147,8 +188,21 @@ const Login = () => {
                     />
                   </div>
                   <div className="text-center">
-                    <Button type="submit" className="my-2" color="primary">
-                      Login
+                    <Button
+                      type="submit"
+                      className="my-2"
+                      color="primary"
+                      disabled={loading ? true : false}
+                    >
+                      {loading ? (
+                        <img
+                          width={30}
+                          src={LoadAnimationWhite}
+                          alt="load-animation"
+                        />
+                      ) : (
+                        "Login"
+                      )}
                     </Button>
                   </div>
                 </Form>

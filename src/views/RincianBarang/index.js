@@ -12,7 +12,7 @@ import {
   Label,
   Table,
 } from "reactstrap";
-import { handleDelete } from "./functions";
+import { showDeleteAlert } from "./functions";
 import ModalTambah from "./ModalTambah";
 import Select from "react-select";
 import optionsBarang from "assets/dummyData/optionsBarang";
@@ -101,7 +101,7 @@ const RincianBarang = () => {
                           <Button
                             color="danger"
                             size="sm"
-                            onClick={() => handleDelete(1)}
+                            onClick={() => showDeleteAlert(1)}
                           >
                             <i className="fas fa-trash"></i>
                           </Button>
@@ -117,7 +117,7 @@ const RincianBarang = () => {
                           <Button
                             color="danger"
                             size="sm"
-                            onClick={() => handleDelete(2)}
+                            onClick={() => showDeleteAlert(2)}
                           >
                             <i className="fas fa-trash"></i>
                           </Button>
@@ -133,7 +133,7 @@ const RincianBarang = () => {
                           <Button
                             color="danger"
                             size="sm"
-                            onClick={() => handleDelete(3)}
+                            onClick={() => showDeleteAlert(3)}
                           >
                             <i className="fas fa-trash"></i>
                           </Button>

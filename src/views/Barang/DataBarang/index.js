@@ -11,7 +11,12 @@ import {
   Button,
   ButtonGroup,
 } from "reactstrap";
-import { goToDetail, goToEdit, goToTambah, handleDelete } from "../functions";
+import {
+  goToDetail,
+  goToEdit,
+  goToTambah,
+  showDeleteAlert,
+} from "../functions";
 import ExpandableComponent from "./ExpandableComponent";
 import { useHistory } from "react-router";
 import SubHeaderComponentMemo from "components/DataTable/SubHeaderComponentMemo";
@@ -92,7 +97,7 @@ const DataBarang = ({ path }) => {
             <Button
               color="danger"
               className="btn btn-sm"
-              onClick={() => handleDelete(row.id_barang)}
+              onClick={() => showDeleteAlert(row.id_barang)}
             >
               <i className="fas fa-trash"></i>
             </Button>
@@ -133,7 +138,7 @@ const DataBarang = ({ path }) => {
                     setFilterText={setFilterText}
                     resetPaginationToggle={resetPaginationToggle}
                     setResetPaginationToggle={setResetPaginationToggle}
-										isPrintingButtonActive={true}
+                    isPrintingButtonActive={true}
                   />
                 }
                 expandableRows

@@ -26,20 +26,23 @@ import "assets/scss/my-style.scss";
 
 import AdminLayout from "layouts/Admin.js";
 import AuthLayout from "layouts/Auth.js";
+import { GlobalProvider } from "context/Provider";
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Switch>
-      <Route
-        path="/easset/admin"
-        render={(props) => <AdminLayout {...props} />}
-      />
-      <Route
-        path="/easset/auth"
-        render={(props) => <AuthLayout {...props} />}
-      />
-      <Redirect from="/" to="/easset/admin/index" />
-    </Switch>
-  </BrowserRouter>,
+  <GlobalProvider>
+    <BrowserRouter>
+      <Switch>
+        <Route
+          path="/easset/admin"
+          render={(props) => <AdminLayout {...props} />}
+        />
+        <Route
+          path="/easset/auth"
+          render={(props) => <AuthLayout {...props} />}
+        />
+        <Redirect from="/" to="/easset/admin/index" />
+      </Switch>
+    </BrowserRouter>
+  </GlobalProvider>,
   document.getElementById("root")
 );

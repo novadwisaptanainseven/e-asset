@@ -11,7 +11,7 @@ import {
   ButtonGroup,
 } from "reactstrap";
 // import columnsDataTable from "../columnsDataTable";
-import { goToDetail, goToEdit, goToTambah, handleDelete } from "../functions";
+import { goToDetail, goToEdit, goToTambah, showDeleteAlert } from "../functions";
 import ExpandableComponent from "./ExpandableComponent";
 import { useHistory } from "react-router";
 import kendaraan from "assets/dummyData/kendaraan";
@@ -96,7 +96,7 @@ const DataKendaraan = ({ path }) => {
             <Button
               color="danger"
               className="btn btn-sm"
-              onClick={() => handleDelete(row.id_kendaraan)}
+              onClick={() => showDeleteAlert(row.id_kendaraan)}
             >
               <i className="fas fa-trash"></i>
             </Button>
