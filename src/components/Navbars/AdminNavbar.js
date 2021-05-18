@@ -15,6 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+import { logout } from "context/actions/Auth/logout";
 import React from "react";
 import { Link } from "react-router-dom";
 // reactstrap components
@@ -29,7 +30,30 @@ import {
   Media,
 } from "reactstrap";
 
+import swal2 from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+const Swal = withReactContent(swal2);
+
 const AdminNavbar = (props) => {
+  const handleLogout = (e) => {
+    e.preventDefault();
+
+    Swal.fire({
+      icon: "warning",
+      title: "Logout",
+      text: "Anda yakin ingin logout ?",
+      confirmButtonText: "YA",
+      showCancelButton: "TIDAK",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Anda Berhasil Logout", "", "success").then((res) =>
+          logout()
+        );
+      }
+    });
+  };
+
   return (
     <>
       <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
@@ -71,7 +95,7 @@ const AdminNavbar = (props) => {
                 </DropdownItem>
 
                 <DropdownItem divider />
-                <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
+                <DropdownItem href="#pablo" onClick={(e) => handleLogout(e)}>
                   <i className="ni ni-user-run" />
                   <span>Logout</span>
                 </DropdownItem>

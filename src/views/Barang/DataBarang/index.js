@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import barang from "assets/dummyData/barang";
+import React, { useContext, useEffect, useState } from "react";
+// import barang from "assets/dummyData/barang";
 import customStyles from "datatableStyle/customStyles";
 import DataTable from "react-data-table-component";
 import {
@@ -20,33 +20,42 @@ import {
 import ExpandableComponent from "./ExpandableComponent";
 import { useHistory } from "react-router";
 import SubHeaderComponentMemo from "components/DataTable/SubHeaderComponentMemo";
+import { GlobalContext } from "context/Provider";
+import { getAllBarang } from "context/actions/Barang";
+// import { LoadAnimationBlue } from "assets";
+import Loading from "components/Loading";
 
 const DataBarang = ({ path }) => {
   const history = useHistory();
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+  const { barangState, barangDispatch } = useContext(GlobalContext);
+  const { data: dataBarang, loading } = barangState;
 
-  const filteredData = barang.filter((item) => {
-    if (item.nama && item.no_barang && item.merk) {
-      if (
-        item.nama.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.no_barang.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.merk.toLowerCase().includes(filterText.toLowerCase())
-      ) {
-        return true;
-      }
+  useEffect(() => {
+    if (!dataBarang) {
+      // Get All Barang
+      getAllBarang(barangDispatch);
     }
-    return false;
-  });
+  }, [dataBarang, barangDispatch]);
+
+  const filteredData = !dataBarang
+    ? []
+    : dataBarang.data.filter((item) => {
+        if (item.nama_barang && item.no_barang && item.merk) {
+          if (
+            item.nama_barang.toLowerCase().includes(filterText.toLowerCase()) ||
+            item.no_barang.toLowerCase().includes(filterText.toLowerCase()) ||
+            item.merk.toLowerCase().includes(filterText.toLowerCase())
+          ) {
+            return true;
+          }
+        }
+        return false;
+      });
 
   // Columns DataTable
   const columnsDataTable = [
-    {
-      name: "No",
-      selector: "no",
-      sortable: true,
-      width: "50px",
-    },
     {
       name: "No. Barang",
       selector: "no_barang",
@@ -56,7 +65,7 @@ const DataBarang = ({ path }) => {
     },
     {
       name: "Nama Barang",
-      selector: "nama",
+      selector: "nama_barang",
       sortable: true,
       // maxWidth: "200px",
       wrap: true,
@@ -116,36 +125,42 @@ const DataBarang = ({ path }) => {
               <h3>Barang</h3>
             </CardHeader>
             <CardBody>
-              <Button
-                color="primary"
-                className="btn btn-md"
-                onClick={() => goToTambah(history, path)}
-              >
-                Tambah Data
-              </Button>
-              <DataTable
-                columns={columnsDataTable}
-                data={filteredData}
-                noHeader
-                responsive={true}
-                customStyles={customStyles}
-                pagination
-                paginationResetDefaultPage={resetPaginationToggle}
-                subHeader
-                subHeaderComponent={
-                  <SubHeaderComponentMemo
-                    filterText={filterText}
-                    setFilterText={setFilterText}
-                    resetPaginationToggle={resetPaginationToggle}
-                    setResetPaginationToggle={setResetPaginationToggle}
-                    isPrintingButtonActive={true}
+              {loading ? (
+                <Loading />
+              ) : (
+                <>
+                  <Button
+                    color="primary"
+                    className="btn btn-md"
+                    onClick={() => goToTambah(history, path)}
+                  >
+                    Tambah Data
+                  </Button>
+                  <DataTable
+                    columns={columnsDataTable}
+                    data={filteredData}
+                    noHeader
+                    responsive={true}
+                    customStyles={customStyles}
+                    pagination
+                    paginationResetDefaultPage={resetPaginationToggle}
+                    subHeader
+                    subHeaderComponent={
+                      <SubHeaderComponentMemo
+                        filterText={filterText}
+                        setFilterText={setFilterText}
+                        resetPaginationToggle={resetPaginationToggle}
+                        setResetPaginationToggle={setResetPaginationToggle}
+                        isPrintingButtonActive={true}
+                      />
+                    }
+                    expandableRows
+                    expandOnRowClicked
+                    highlightOnHover
+                    expandableRowsComponent={<ExpandableComponent />}
                   />
-                }
-                expandableRows
-                expandOnRowClicked
-                highlightOnHover
-                expandableRowsComponent={<ExpandableComponent />}
-              />
+                </>
+              )}
             </CardBody>
           </Card>
         </Col>
