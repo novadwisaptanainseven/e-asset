@@ -64,3 +64,26 @@ export const showDeleteAlert = (id) => {
     }
   });
 };
+
+// Fungsi untuk menampilkan alert success tambah data
+export const showAlertSuccess = (history) => {
+  Swal.fire({
+    icon: "success",
+    title: "Tambah Data Berhasil",
+    showConfirmButton: false,
+    timer: 1500,
+  }).then((res) => {
+    // history.push(`/easset/admin/barang/tambah`);
+  });
+};
+
+// Fungsi untuk menampilkan alert error tambah data
+export const showAlertError = (message, setLoading) => {
+  Swal.fire({
+    icon: "error",
+    title: "Tambah Data Gagal",
+    text: message,
+  }).then((result) => {
+    setLoading(false);
+  });
+};

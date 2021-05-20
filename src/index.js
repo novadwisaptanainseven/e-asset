@@ -40,7 +40,7 @@ ReactDOM.render(
           path="/easset/auth"
           render={(props) => <AuthLayout {...props} />}
         />
-        <Redirect from="/" to="/easset/admin/index" />
+        <Redirect from="/" to="/easset/auth/login" />
       </Switch>
     </BrowserRouter>
   </GlobalProvider>,

@@ -33,11 +33,8 @@ const DataBarang = ({ path }) => {
   const { data: dataBarang, loading } = barangState;
 
   useEffect(() => {
-    if (!dataBarang) {
-      // Get All Barang
-      getAllBarang(barangDispatch);
-    }
-  }, [dataBarang, barangDispatch]);
+    getAllBarang(barangDispatch);
+  }, [barangDispatch]);
 
   const filteredData = !dataBarang
     ? []

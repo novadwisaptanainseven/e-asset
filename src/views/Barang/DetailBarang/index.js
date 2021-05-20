@@ -1,6 +1,8 @@
-import { FotoBarangSample } from "assets";
+// import { FotoBarangSample } from "assets";
 import Loading from "components/Loading";
 import { getBarangById } from "context/actions/Barang";
+import { getFile } from "context/actions/DownloadFile/getFile";
+import { getAllBidang } from "context/actions/EPekerjaAPI/Bidang";
 import React, { useEffect, useState } from "react";
 import { useHistory, useRouteMatch } from "react-router";
 import {
@@ -20,12 +22,32 @@ const DetailBarang = () => {
   const match = useRouteMatch();
   const { params } = match;
   const [data, setData] = useState("");
+  const [bidang, setBidang] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const getFileName = (file) => {
+    let file2 = file.split("\\");
+    let file3 = file2[file2.length - 1];
+
+    return file3;
+  };
 
   useEffect(() => {
     // Get barang by id
     getBarangById(params.id, setData, setLoading);
-  }, [params, setData, setLoading]);
+    // Get all bidang from E-Pekerja
+    getAllBidang(setBidang);
+  }, [params]);
+
+  const getNamaBidang = (id) => {
+    const search = bidang.filter((item) => {
+      return item.id_bidang && item.id_bidang === id;
+    });
+
+    const getValue = search[0];
+
+    return getValue.nama_bidang;
+  };
 
   return (
     <>
@@ -111,7 +133,17 @@ const DetailBarang = () => {
                           <tr>
                             <th>File</th>
                             <th>:</th>
-                            <td>{data.file}</td>
+                            <td>
+                              {data && data.file && (
+                                <a
+                                  href={getFile(data.file)}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                >
+                                  {getFileName(data.file)}
+                                </a>
+                              )}
+                            </td>
                           </tr>
                         </tbody>
                       </table>
@@ -123,7 +155,7 @@ const DetailBarang = () => {
                         </CardHeader>
                         <CardBody>
                           <img
-                            src={FotoBarangSample}
+                            src={data && data.foto && getFile(data.foto)}
                             alt="foto-barang"
                             width="100%"
                           />
@@ -151,11 +183,13 @@ const DetailBarang = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {data && data.barang_detail.length > 0 ? (
+                          {data &&
+                          bidang.length > 0 &&
+                          data.barang_detail.length > 0 ? (
                             data.barang_detail.map((item, index) => (
                               <tr key={index}>
                                 <td>{index + 1}</td>
-                                <td>{item.id_bidang}</td>
+                                <td>{getNamaBidang(item.id_bidang)}</td>
                                 <td>{item.jumlah_baik}</td>
                                 <td>{item.jumlah_rusak}</td>
                                 <td>{item.jumlah_rusak_ringan}</td>
@@ -164,7 +198,9 @@ const DetailBarang = () => {
                             ))
                           ) : (
                             <tr>
-                              <td colSpan="6" className="text-center">Data Masih Kosong</td>
+                              <td colSpan="6" className="text-center">
+                                Data Masih Kosong
+                              </td>
                             </tr>
                           )}
                         </tbody>

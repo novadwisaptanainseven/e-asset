@@ -1,3 +1,6 @@
+import { LoadAnimationWhite } from "assets";
+import { insertBarang } from "context/actions/Barang";
+import { getAllBidang } from "context/actions/EPekerjaAPI/Bidang";
 import { Formik } from "formik";
 import React, { useCallback, useEffect, useState } from "react";
 import { useHistory } from "react-router";
@@ -30,6 +33,13 @@ const TambahBarang = () => {
   const [rincianBarang, setRincianBarang] = useState([]);
   const [inputVal, setInputVal] = useState({});
   const [hargaFormatRp, setHargaFormatRp] = useState("");
+  const [bidang, setBidang] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // Get All Bidang
+    getAllBidang(setBidang);
+  }, []);
 
   // Mengubah format harga dari number menjadi Currency Rupiah
   const convertToCurrency = (harga) => {
@@ -76,8 +86,37 @@ const TambahBarang = () => {
   }, [handleSelectedFile]);
 
   const handleFormSubmit = (values) => {
-    console.log(values);
-    console.log(rincianBarang);
+    const formData = new FormData();
+    formData.append("no_barang", values.no_barang);
+    formData.append("nama_barang", values.nama_barang);
+    formData.append("tahun", values.tahun);
+    formData.append("merk", values.merk);
+    formData.append("no_seri_pabrik", values.no_seri_pabrik);
+    formData.append("ukuran", values.ukuran);
+    formData.append("bahan", values.bahan);
+    formData.append("harga", values.harga);
+    formData.append("keterangan", values.keterangan);
+    formData.append("file", values.file);
+    formData.append("foto", values.foto);
+
+    rincianBarang.forEach((item, index) => {
+      let idBidang = item.id_bidang.split("-");
+      let idBidang2 = idBidang[0];
+
+      formData.append(`id_bidang[${index}]`, idBidang2);
+      formData.append(`jumlah_baik[${index}]`, item.jumlah_baik);
+      formData.append(`jumlah_rusak[${index}]`, item.jumlah_rusak);
+      formData.append(
+        `jumlah_rusak_ringan[${index}]`,
+        item.jumlah_rusak_ringan
+      );
+    });
+
+    for (let item of formData.entries()) {
+      console.log(item);
+    }
+
+    insertBarang(formData, history, setLoading);
   };
 
   return (
@@ -460,12 +499,15 @@ const TambahBarang = () => {
                               }`}
                             >
                               <option value="">-- Pilih Bidang --</option>
-                              <option value="1 - Perumahan">Perumahan</option>
-                              <option value="2 - Permukiman">Permukiman</option>
-                              <option value="3 - PSU">PSU</option>
-                              <option value="4 - Sekretariat">
-                                Sekretariat
-                              </option>
+                              {bidang.map((item, index) => (
+                                <option
+                                  key={index}
+                                  value={`${item.id_bidang}-${item.nama_bidang}`}
+                                >
+                                  {item.nama_bidang}
+                                </option>
+                              ))}
+                              {/* <option value="1 - Perumahan">Perumahan</option> */}
                             </Input>
                             {errors.id_bidang && touched.id_bidang && (
                               <div className="invalid-feedback">
@@ -616,8 +658,20 @@ const TambahBarang = () => {
                     </div>
                   </CardBody>
                   <CardFooter className="text-right">
-                    <Button type="submit" color="primary">
-                      Simpan
+                    <Button
+                      type="submit"
+                      color="primary"
+                      disabled={loading ? true : false}
+                    >
+                      {loading ? (
+                        <img
+                          width={30}
+                          src={LoadAnimationWhite}
+                          alt="load-animation"
+                        />
+                      ) : (
+                        "Simpan"
+                      )}
                     </Button>
                   </CardFooter>
                 </Form>

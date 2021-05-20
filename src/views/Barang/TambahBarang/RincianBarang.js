@@ -2,9 +2,9 @@ import React from "react";
 
 const RincianBarang = ({ data }) => {
   const getBidang = (val) => {
-    let arr = val.split(" ");
+    let arr = val.split("-");
 
-    return arr[2];
+    return arr[1];
   };
 
   // const getIdBidang = (val) => {
