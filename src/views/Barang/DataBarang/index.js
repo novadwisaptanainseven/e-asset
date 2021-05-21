@@ -30,7 +30,7 @@ const DataBarang = ({ path }) => {
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const { barangState, barangDispatch } = useContext(GlobalContext);
-  const { data: dataBarang, loading } = barangState;
+  const { data: dataBarang } = barangState;
 
   useEffect(() => {
     getAllBarang(barangDispatch);
@@ -103,7 +103,7 @@ const DataBarang = ({ path }) => {
             <Button
               color="danger"
               className="btn btn-sm"
-              onClick={() => showDeleteAlert(row.id_barang)}
+              onClick={() => showDeleteAlert(row.id_barang, barangDispatch)}
             >
               <i className="fas fa-trash"></i>
             </Button>
@@ -122,7 +122,7 @@ const DataBarang = ({ path }) => {
               <h3>Barang</h3>
             </CardHeader>
             <CardBody>
-              {loading ? (
+              {dataBarang.length === 0 ? (
                 <Loading />
               ) : (
                 <>

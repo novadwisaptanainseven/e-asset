@@ -2,14 +2,14 @@ import axiosInstance from "helpers/axios";
 import { showAlertError } from "views/Barang/functions";
 import { showAlertSuccess } from "views/Barang/functions";
 
-export const insertBarang = (values, setLoading) => {
+export const editBarang = (id, values, setLoading) => {
   setLoading(true);
 
-  let successMessage = "Tambah Data Berhasil";
-  let failedMessage = "Tambah Data Gagal";
+  let successMessage = "Edit Barang Berhasil";
+  let failedMessage = "Edit Barang Gagal";
 
   axiosInstance
-    .post(`barang/create`, values, {
+    .put(`barang/update/${id}`, values, {
       header: {
         "Content-Type": `multipart/form-data; boundary=${values._boundary}`,
       },

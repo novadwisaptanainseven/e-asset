@@ -28,7 +28,7 @@ const ModalPreviewImage = ({ modal, setModal, data }) => {
         <div className="modal-body">
           <img
             src={data ? getFile(data) : ""}
-            alt="ffoto-barang"
+            alt="foto-barang"
             style={{ width: "100%" }}
           />
         </div>

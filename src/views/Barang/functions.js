@@ -1,3 +1,4 @@
+import { deleteBarang } from "context/actions/Barang";
 import swal2 from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
@@ -22,6 +23,14 @@ export const goToDetail = (path, history, id) => {
 
 export const handleDelete = (id, history) => {
   alert("Handle delete, id: " + id);
+};
+
+// Fungsi untuk mendapatkan nama file
+export const getFileName = (file) => {
+  let file2 = file.split("\\");
+  let file3 = file2[file2.length - 1];
+
+  return file3;
 };
 
 // Fungsi - fungsi untuk halaman Tambah Barang
@@ -49,7 +58,7 @@ export const setInitStateEdit = (data) => ({
 });
 
 // Alert untuk hapus data
-export const showDeleteAlert = (id) => {
+export const showDeleteAlert = (id, dispatch) => {
   Swal.fire({
     title: `Anda Yakin ingin Hapus Data dengan id: ${id} ?`,
     text: "Data tidak dapat dipulihkan setelah Anda hapus",
@@ -60,16 +69,16 @@ export const showDeleteAlert = (id) => {
     confirmButtonText: "Iya",
   }).then((result) => {
     if (result.isConfirmed) {
-      Swal.fire("Terhapus!", "Data berhasil dihapus.", "success");
+      deleteBarang(id, dispatch, Swal);
     }
   });
 };
 
 // Fungsi untuk menampilkan alert success tambah data
-export const showAlertSuccess = (history) => {
+export const showAlertSuccess = (successMessage = "") => {
   Swal.fire({
     icon: "success",
-    title: "Tambah Data Berhasil",
+    title: successMessage,
     showConfirmButton: false,
     timer: 1500,
   }).then((res) => {
@@ -78,10 +87,10 @@ export const showAlertSuccess = (history) => {
 };
 
 // Fungsi untuk menampilkan alert error tambah data
-export const showAlertError = (message, setLoading) => {
+export const showAlertError = (failedMessage = "", message, setLoading) => {
   Swal.fire({
     icon: "error",
-    title: "Tambah Data Gagal",
+    title: failedMessage,
     text: message,
   }).then((result) => {
     setLoading(false);
