@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useRouteMatch } from "react-router";
 import {
   Card,
@@ -15,17 +15,65 @@ import {
 import { showDeleteAlert } from "./functions";
 import ModalTambah from "./ModalTambah";
 import Select from "react-select";
-import optionsBarang from "assets/dummyData/optionsBarang";
+// import optionsBarang from "assets/dummyData/optionsBarang";
+import { getRincianBarang } from "context/actions/RincianBarang";
+import { GlobalContext } from "context/Provider";
+import { getAllBarang } from "context/actions/Barang";
+import Loading from "components/Loading";
+import { getAllBidang } from "context/actions/EPekerjaAPI/Bidang";
 
 const RincianBarang = () => {
   const match = useRouteMatch();
   const { params } = match;
   const [modal, setModal] = useState(false);
   const [barang, setBarang] = useState("");
+  const [rincianBarang, setRincianBarang] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const { barangState, barangDispatch } = useContext(GlobalContext);
+  const { data } = barangState;
+  const [bidang, setBidang] = useState([]);
+
+  const getNamaBidang = (id = 1) => {
+    const search = bidang.filter((item) => {
+      return item.id_bidang && item.id_bidang === id;
+    });
+
+    const getValue = search[0];
+
+    return getValue.nama_bidang;
+  };
 
   useEffect(() => {
-    console.log(params);
-  }, [params]);
+    // Get All Bidang
+    getAllBidang(setBidang);
+  }, []);
+
+  useEffect(() => {
+    // Get Rincian Barang
+    if (barang) {
+      getRincianBarang(barang.value, setRincianBarang, setLoading);
+    }
+  }, [barang]);
+
+  useEffect(() => {
+    // Get All Barang
+    getAllBarang(barangDispatch);
+  }, [params, barangDispatch]);
+
+  const optionsBarang = useMemo(() => {
+    let options = [];
+
+    if (data) {
+      data.data.forEach((item) => {
+        options.push({
+          value: item.id_barang,
+          label: `${item.nama_barang} (${item.merk})`,
+        });
+      });
+    }
+
+    return options;
+  }, [data]);
 
   return (
     <>
@@ -56,6 +104,7 @@ const RincianBarang = () => {
                       isSearchable
                       isClearable
                       options={optionsBarang}
+                      // options={optionsBarang}
                     />
                   </FormGroup>
                 </Col>
@@ -79,68 +128,42 @@ const RincianBarang = () => {
                   </div>
 
                   <h3>Daftar Rincian Barang {barang.label}</h3>
-                  <Table className="align-items-center" responsive>
-                    <thead className="thead-light">
-                      <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Bidang</th>
-                        <th scope="col">Jumlah Baik</th>
-                        <th scope="col">Jumlah Rusak</th>
-                        <th scope="col">Jumlah Rusak Ringan</th>
-                        <th scope="col">Aksi</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>Permukiman</td>
-                        <td>10</td>
-                        <td>10</td>
-                        <td>10</td>
-                        <td>
-                          <Button
-                            color="danger"
-                            size="sm"
-                            onClick={() => showDeleteAlert(1)}
-                          >
-                            <i className="fas fa-trash"></i>
-                          </Button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>2</td>
-                        <td>Permukiman</td>
-                        <td>10</td>
-                        <td>10</td>
-                        <td>10</td>
-                        <td>
-                          <Button
-                            color="danger"
-                            size="sm"
-                            onClick={() => showDeleteAlert(2)}
-                          >
-                            <i className="fas fa-trash"></i>
-                          </Button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>3</td>
-                        <td>Permukiman</td>
-                        <td>10</td>
-                        <td>10</td>
-                        <td>10</td>
-                        <td>
-                          <Button
-                            color="danger"
-                            size="sm"
-                            onClick={() => showDeleteAlert(3)}
-                          >
-                            <i className="fas fa-trash"></i>
-                          </Button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </Table>
+                  {loading ? (
+                    <Loading />
+                  ) : (
+                    <Table className="align-items-center" responsive>
+                      <thead className="thead-light">
+                        <tr>
+                          <th scope="col">No</th>
+                          <th scope="col">Bidang</th>
+                          <th scope="col">Jumlah Baik</th>
+                          <th scope="col">Jumlah Rusak</th>
+                          <th scope="col">Jumlah Rusak Ringan</th>
+                          <th scope="col">Aksi</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {rincianBarang.map((item, index) => (
+                          <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{getNamaBidang(item.id_bidang)}</td>
+                            <td>{item.jumlah_baik}</td>
+                            <td>{item.jumlah_rusak}</td>
+                            <td>{item.jumlah_rusak_ringan}</td>
+                            <td>
+                              <Button
+                                color="danger"
+                                size="sm"
+                                onClick={() => showDeleteAlert(item.id_bidang)}
+                              >
+                                <i className="fas fa-trash"></i>
+                              </Button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  )}
                 </Col>
               </Row>
             </CardBody>

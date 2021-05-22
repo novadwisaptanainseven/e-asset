@@ -4,7 +4,7 @@ const getAllBidang = (setData) => {
   axios
     .get(sessionStorage.baseUrlEpekerja + `bidang`)
     .then((res) => {
-      // console.log(res.data.data);
+      console.log(res.data.data);
       setData(res.data.data);
     })
     .catch((err) => {
