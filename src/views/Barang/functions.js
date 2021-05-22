@@ -21,6 +21,10 @@ export const goToDetail = (path, history, id) => {
   history.push(`${path}/${id}/detail`);
 };
 
+export const goToRincianBarang = (path, history) => {
+  history.push(`${path}`);
+};
+
 export const handleDelete = (id, history) => {
   alert("Handle delete, id: " + id);
 };

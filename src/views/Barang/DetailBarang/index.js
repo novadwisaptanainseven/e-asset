@@ -3,7 +3,7 @@ import Loading from "components/Loading";
 import { getBarangById } from "context/actions/Barang";
 import { getFile } from "context/actions/DownloadFile/getFile";
 import { getAllBidang } from "context/actions/EPekerjaAPI/Bidang";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useRouteMatch } from "react-router";
 import {
   Card,
@@ -15,7 +15,8 @@ import {
   CardFooter,
   Table,
 } from "reactstrap";
-import { goBackToPrevPage } from "../functions";
+import { goBackToPrevPage, goToRincianBarang } from "../functions";
+import { GlobalContext } from "context/Provider";
 
 const DetailBarang = () => {
   const history = useHistory();
@@ -24,6 +25,7 @@ const DetailBarang = () => {
   const [data, setData] = useState("");
   const [bidang, setBidang] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { rincianBarangDispatch } = useContext(GlobalContext);
 
   const getFileName = (file) => {
     let file2 = file.split("\\");
@@ -205,7 +207,20 @@ const DetailBarang = () => {
                           )}
                         </tbody>
                       </Table>
-                      <Button color="info" className="mt-2">
+                      <Button
+                        color="info"
+                        className="mt-2"
+                        onClick={() => {
+                          rincianBarangDispatch({
+                            type: "CHANGE",
+                            payload: params.id,
+                          });
+                          goToRincianBarang(
+                            "/easset/admin/rincian-barang",
+                            history
+                          );
+                        }}
+                      >
                         Edit
                       </Button>
                     </Col>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   Button,
@@ -13,10 +13,36 @@ import {
 import { Formik } from "formik";
 import initState from "./Formik/initState";
 import validationSchema from "./Formik/validationSchema";
+import { getAllBidang } from "context/actions/EPekerjaAPI/Bidang";
+import { insertRincianBarang } from "context/actions/RincianBarang";
+import { LoadAnimationWhite } from "assets";
 
-const ModalTambah = ({ modal, setModal, value, label }) => {
+const ModalTambah = ({
+  modal,
+  setModal,
+  value,
+  label,
+  setRincianBarang,
+  setLoading: setLoadingRincianBarang,
+}) => {
+  const [bidang, setBidang] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // Get all bidang
+    getAllBidang(setBidang);
+  }, []);
+
   const handleFormSubmit = (values) => {
     console.log(values);
+
+    insertRincianBarang(
+      value,
+      values,
+      setLoading,
+      setRincianBarang,
+      setLoadingRincianBarang
+    );
   };
 
   return (
@@ -55,7 +81,6 @@ const ModalTambah = ({ modal, setModal, value, label }) => {
             handleChange,
             handleBlur,
             handleSubmit,
-            isSubmitting,
           }) => (
             <Form onSubmit={handleSubmit}>
               <div className="modal-body">
@@ -77,9 +102,11 @@ const ModalTambah = ({ modal, setModal, value, label }) => {
                         }
                       >
                         <option value="">-- Pilih Bidang --</option>
-                        <option value="1">Permukiman</option>
-                        <option value="2">Perumahan</option>
-                        <option value="3">PSU</option>
+                        {bidang.map((item, index) => (
+                          <option key={index} value={item.id_bidang}>
+                            {item.nama_bidang}
+                          </option>
+                        ))}
                       </Input>
                       {errors.id_bidang && touched.id_bidang && (
                         <div className="invalid-feedback">
@@ -162,7 +189,15 @@ const ModalTambah = ({ modal, setModal, value, label }) => {
               </div>
               <div className="modal-footer">
                 <Button type="submit" color="primary">
-                  Simpan
+                  {loading ? (
+                    <img
+                      width={30}
+                      src={LoadAnimationWhite}
+                      alt="load-animation"
+                    />
+                  ) : (
+                    "Simpan"
+                  )}
                 </Button>
                 <Button
                   className="ml-auto"

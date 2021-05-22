@@ -29,9 +29,15 @@ const RincianBarang = () => {
   const [barang, setBarang] = useState("");
   const [rincianBarang, setRincianBarang] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { barangState, barangDispatch } = useContext(GlobalContext);
+  const { barangState, barangDispatch, rincianBarangState } =
+    useContext(GlobalContext);
   const { data } = barangState;
+  const { idBarang } = rincianBarangState;
   const [bidang, setBidang] = useState([]);
+
+  useEffect(() => {
+    console.log(match);
+  }, [match]);
 
   const getNamaBidang = (id = 1) => {
     const search = bidang.filter((item) => {
@@ -49,11 +55,17 @@ const RincianBarang = () => {
   }, []);
 
   useEffect(() => {
-    // Get Rincian Barang
-    if (barang) {
-      getRincianBarang(barang.value, setRincianBarang, setLoading);
+    if (!idBarang) {
+      if (barang) {
+        getRincianBarang(barang.value, setRincianBarang, setLoading);
+      }
+    } else {
+      console.log(idBarang);
+
+      getRincianBarang(2, setRincianBarang, setLoading);
     }
-  }, [barang]);
+    // Get Rincian Barang
+  }, [barang, idBarang]);
 
   useEffect(() => {
     // Get All Barang
@@ -100,6 +112,7 @@ const RincianBarang = () => {
                       name="barang"
                       placeholder="-- Pilih Barang --"
                       onChange={(opt) => setBarang(opt ? opt : "")}
+                      // defaultInputValue={barang.value}
                       defaultInputValue={barang.value}
                       isSearchable
                       isClearable
@@ -143,24 +156,32 @@ const RincianBarang = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {rincianBarang.map((item, index) => (
-                          <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td>{getNamaBidang(item.id_bidang)}</td>
-                            <td>{item.jumlah_baik}</td>
-                            <td>{item.jumlah_rusak}</td>
-                            <td>{item.jumlah_rusak_ringan}</td>
-                            <td>
-                              <Button
-                                color="danger"
-                                size="sm"
-                                onClick={() => showDeleteAlert(item.id_bidang)}
-                              >
-                                <i className="fas fa-trash"></i>
-                              </Button>
-                            </td>
-                          </tr>
-                        ))}
+                        {bidang.length > 0 &&
+                          rincianBarang.map((item, index) => (
+                            <tr key={index}>
+                              <td>{index + 1}</td>
+                              <td>{getNamaBidang(item.id_bidang)}</td>
+                              <td>{item.jumlah_baik}</td>
+                              <td>{item.jumlah_rusak}</td>
+                              <td>{item.jumlah_rusak_ringan}</td>
+                              <td>
+                                <Button
+                                  color="danger"
+                                  size="sm"
+                                  onClick={() =>
+                                    showDeleteAlert(
+                                      barang,
+                                      item.id_barang_detail,
+                                      setRincianBarang,
+                                      setLoading
+                                    )
+                                  }
+                                >
+                                  <i className="fas fa-trash"></i>
+                                </Button>
+                              </td>
+                            </tr>
+                          ))}
                       </tbody>
                     </Table>
                   )}
@@ -173,7 +194,13 @@ const RincianBarang = () => {
       </Row>
 
       {/* Modal Tambah */}
-      <ModalTambah modal={modal} setModal={setModal} {...barang} />
+      <ModalTambah
+        modal={modal}
+        setModal={setModal}
+        {...barang}
+        setRincianBarang={setRincianBarang}
+        setLoading={setLoading}
+      />
     </>
   );
 };

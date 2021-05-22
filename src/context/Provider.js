@@ -1,8 +1,10 @@
 import React, { createContext, useReducer } from "react";
 import initState from "./initStates/initState";
 import initStateMain from "./initStates/initStateMain";
+import initStateRincianBarang from "./initStates/initStateRincianBarang";
 import loginReducer from "./reducers/loginReducer";
 import reducer from "./reducers/reducer";
+import reducerRincianBarang from "./reducers/reducerRincianBarang";
 
 export const GlobalContext = createContext({});
 
@@ -12,11 +14,25 @@ export const GlobalProvider = ({ children }) => {
   // Barang
   const [barangState, barangDispatch] = useReducer(reducer, initStateMain);
   // Riwayat Barang Pindah
-  const [barangPindahState, barangPindahDispatch] = useReducer(reducer, initStateMain);
+  const [barangPindahState, barangPindahDispatch] = useReducer(
+    reducer,
+    initStateMain
+  );
   // Kendaraan
-  const [kendaraanState, kendaraanDispatch] = useReducer(reducer, initStateMain);
+  const [kendaraanState, kendaraanDispatch] = useReducer(
+    reducer,
+    initStateMain
+  );
   // Kendaraan Pindah
-  const [kendaraanPindahState, kendaraanPindahDispatch] = useReducer(reducer, initStateMain);
+  const [kendaraanPindahState, kendaraanPindahDispatch] = useReducer(
+    reducer,
+    initStateMain
+  );
+  // Rincian Barang
+  const [rincianBarangState, rincianBarangDispatch] = useReducer(
+    reducerRincianBarang,
+    initStateRincianBarang
+  );
 
   return (
     <GlobalContext.Provider
@@ -30,7 +46,9 @@ export const GlobalProvider = ({ children }) => {
         kendaraanState,
         kendaraanDispatch,
         kendaraanPindahState,
-        kendaraanPindahDispatch
+        kendaraanPindahDispatch,
+        rincianBarangState,
+        rincianBarangDispatch,
       }}
     >
       {children}
