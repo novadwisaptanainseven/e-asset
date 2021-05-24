@@ -188,7 +188,11 @@ const ModalTambah = ({
                 </Row>
               </div>
               <div className="modal-footer">
-                <Button type="submit" color="primary">
+                <Button
+                  type="submit"
+                  color="primary"
+                  disabled={loading ? true : false}
+                >
                   {loading ? (
                     <img
                       width={30}

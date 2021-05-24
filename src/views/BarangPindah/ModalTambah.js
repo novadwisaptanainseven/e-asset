@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   Button,
@@ -13,10 +13,65 @@ import {
 import { Formik } from "formik";
 import initState from "./Formik/initState";
 import validationSchema from "./Formik/validationSchema";
+import { getAllBidang } from "context/actions/EPekerjaAPI/Bidang";
+import { getRincianBarang } from "context/actions/RincianBarang";
+import { insertBarangPindah } from "context/actions/BarangPindah";
+import { LoadAnimationWhite } from "assets";
 
-const ModalTambah = ({ modal, setModal, barang }) => {
+const ModalTambah = ({
+  modal,
+  setModal,
+  barang,
+  setBarangPindah,
+  setLoading: setLoadingBarangPindah,
+}) => {
+  const [bidang, setBidang] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const [rincianBarang, setRincianBarang] = useState([]);
+
+  console.log(loading);
+
+  useEffect(() => {
+    // Get All Bidang
+    getAllBidang(setBidang);
+  }, []);
+
+  const getNamaBidang = (id = 1) => {
+    const search = bidang.filter((item) => {
+      return item.id_bidang && item.id_bidang === id;
+    });
+
+    const getValue = search[0];
+
+    return getValue.nama_bidang;
+  };
+
+  useEffect(() => {
+    // Get Rincian Barang
+    if (barang.value) {
+      getRincianBarang(barang.value, setRincianBarang, setLoading);
+    }
+  }, [barang]);
+
   const handleFormSubmit = (values) => {
-    console.log(values);
+    const valInsert = {
+      dari_barang_detail: parseInt(values.dari_bidang),
+      ke_barang_detail: parseInt(values.ke_bidang),
+      jumlah_baik: values.jumlah_baik,
+      jumlah_rusak: values.jumlah_rusak,
+      jumlah_rusak_ringan: values.jumlah_rusak_ringan,
+      keterangan: values.keterangan,
+    };
+    insertBarangPindah(
+      barang.value,
+      valInsert,
+      setLoadingSubmit,
+      setBarangPindah,
+      setLoadingBarangPindah
+    );
+
+    // console.log(valInsert);
   };
 
   return (
@@ -94,9 +149,11 @@ const ModalTambah = ({ modal, setModal, barang }) => {
                         }
                       >
                         <option value="">-- Pilih Bidang --</option>
-                        <option value="1">Perumahan</option>
-                        <option value="2">Permukiman</option>
-                        <option value="3">PSU</option>
+                        {rincianBarang.map((item, index) => (
+                          <option key={index} value={item.id_barang_detail}>
+                            {getNamaBidang(item.id_bidang)}
+                          </option>
+                        ))}
                       </Input>
                       {errors.dari_bidang && touched.dari_bidang && (
                         <div className="invalid-feedback">
@@ -120,9 +177,11 @@ const ModalTambah = ({ modal, setModal, barang }) => {
                         }
                       >
                         <option value="">-- Pilih Bidang --</option>
-                        <option value="1">Perumahan</option>
-                        <option value="2">Permukiman</option>
-                        <option value="3">PSU</option>
+                        {rincianBarang.map((item, index) => (
+                          <option key={index} value={item.id_barang_detail}>
+                            {getNamaBidang(item.id_bidang)}
+                          </option>
+                        ))}
                       </Input>
                       {errors.ke_bidang && touched.ke_bidang && (
                         <div className="invalid-feedback">
@@ -225,8 +284,20 @@ const ModalTambah = ({ modal, setModal, barang }) => {
                 </Row>
               </div>
               <div className="modal-footer">
-                <Button color="primary" type="submit">
-                  Simpan
+                <Button
+                  type="submit"
+                  color="primary"
+                  disabled={loadingSubmit ? true : false}
+                >
+                  {loadingSubmit ? (
+                    <img
+                      width={30}
+                      src={LoadAnimationWhite}
+                      alt="load-animation"
+                    />
+                  ) : (
+                    "Simpan"
+                  )}
                 </Button>
                 <Button
                   className="ml-auto"

@@ -1,8 +1,14 @@
-import barangPindah from "assets/dummyData/barangPindah";
-import optionsBarang from "assets/dummyData/optionsBarang";
+// import barangPindah from "assets/dummyData/barangPindah";
+import Loading from "components/Loading";
+// import optionsBarang from "assets/dummyData/optionsBarang";
+import { getAllBarang } from "context/actions/Barang";
+import { getBarangPindah } from "context/actions/BarangPindah";
+import { getAllBidang } from "context/actions/EPekerjaAPI/Bidang";
+import { GlobalContext } from "context/Provider";
 import customStyles from "datatableStyle/customStyles";
 import { FilterComponent } from "datatableStyle/filterPencarian";
-import React, { useState } from "react";
+// import { format } from "date-fns";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import DataTable from "react-data-table-component";
 import { useHistory } from "react-router";
 import Select from "react-select";
@@ -17,7 +23,7 @@ import {
   FormGroup,
   Label,
 } from "reactstrap";
-import { goToRiwayat, goToDetailBarang } from "../functions";
+import { goToRiwayat, goToDetailBarang, getCleanTanggal } from "../functions";
 import ModalDetail from "../ModalDetail";
 import ModalTambah from "../ModalTambah";
 import ExpandableComponent from "../RiwayatBarangPindah/ExpandableComponent";
@@ -30,15 +36,81 @@ const DataBarangPindah = ({ path }) => {
     modal: false,
   });
   const [barang, setBarang] = useState("");
+  const [bidang, setBidang] = useState([]);
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [filterText, setFilterText] = useState("");
+  const { barangState, barangDispatch } = useContext(GlobalContext);
+  const { data: dataBarang } = barangState;
+  const [barangPindah, setBarangPindah] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const filteredData = barangPindah.filter((item) => {
-    if (item.tanggal && item.dari_bidang && item.ke_bidang && item.keterangan) {
+  useEffect(() => {
+    // Get All Barang
+    getAllBarang(barangDispatch);
+  }, [barangDispatch]);
+
+  const optionsBarang = useMemo(() => {
+    let options = [];
+
+    if (dataBarang) {
+      dataBarang.data.forEach((item) => {
+        options.push({
+          value: item.id_barang,
+          label: `${item.nama_barang} (${item.merk})`,
+        });
+      });
+    }
+
+    return options;
+  }, [dataBarang]);
+
+  useEffect(() => {
+    // Get Barang Pindah
+    if (barang) {
+      getBarangPindah(barang.value, setBarangPindah, setLoading);
+    }
+  }, [barang]);
+
+  useEffect(() => {
+    // Get All Bidang
+    getAllBidang(setBidang);
+  }, []);
+
+  // Memperbaiki sebagian isi data dari api untuk ditampilkan di tabel Barang Pindah tujuannya untuk mengubah nilai dari_barang_detail dan ke_barang_detail menjadi String nama_bidang berdasarkan id_bidang
+  const dataForDisplay = useMemo(() => {
+    // Fungsi untuk bertujuan untuk mengubah data berupa id menjadi string nama bidang
+    const getNamaBidang = (id = 1) => {
+      const search = bidang.filter((item) => {
+        return item.id_bidang && item.id_bidang === id;
+      });
+
+      return search[0].nama_bidang;
+    };
+
+    const fixData = [];
+
+    barangPindah.forEach((item) => {
+      fixData.push({
+        ...item,
+        createdAt: getCleanTanggal(item.createdAt),
+        dari_barang_detail: getNamaBidang(item.from_barang_detail.id_bidang),
+        ke_barang_detail: getNamaBidang(item.to_barang_detail.id_bidang),
+      });
+    });
+
+    return fixData;
+  }, [barangPindah, bidang]);
+
+  const filteredData = dataForDisplay.filter((item) => {
+    if (item.createdAt && item.dari_barang_detail && item.ke_barang_detail) {
       if (
-        item.tanggal.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.dari_bidang.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.ke_bidang.toLowerCase().includes(filterText.toLowerCase()) ||
+        item.createdAt.toLowerCase().includes(filterText.toLowerCase()) ||
+        item.dari_barang_detail
+          .toLowerCase()
+          .includes(filterText.toLowerCase()) ||
+        item.ke_barang_detail
+          .toLowerCase()
+          .includes(filterText.toLowerCase()) ||
         item.keterangan.toLowerCase().includes(filterText.toLowerCase())
       ) {
         return true;
@@ -50,28 +122,22 @@ const DataBarangPindah = ({ path }) => {
   // Columns DataTable
   const columnsDataTable = [
     {
-      name: "No",
-      selector: "no",
-      sortable: true,
-      width: "50px",
-    },
-    {
       name: "Tanggal",
-      selector: "tanggal",
+      selector: "createdAt",
       sortable: true,
       wrap: true,
       maxWidth: "200px",
     },
     {
       name: "Dari Bidang",
-      selector: "dari_bidang",
+      selector: "dari_barang_detail",
       sortable: true,
       maxWidth: "200px",
       wrap: true,
     },
     {
       name: "Ke Bidang",
-      selector: "ke_bidang",
+      selector: "ke_barang_detail",
       sortable: true,
       wrap: true,
       maxWidth: "200px",
@@ -117,7 +183,7 @@ const DataBarangPindah = ({ path }) => {
         <Button
           color="success"
           disabled={!barang ? true : false}
-          onClick={() => goToDetailBarang(history, 1)}
+          onClick={() => goToDetailBarang(history, barang.value)}
         >
           Lihat Barang
         </Button>
@@ -178,21 +244,25 @@ const DataBarangPindah = ({ path }) => {
                 <Col>
                   <h1>Riwayat Barang Pindah</h1>
                   <h2 className="text-muted">{barang.label}</h2>
-                  <DataTable
-                    columns={columnsDataTable}
-                    data={filteredData}
-                    noHeader
-                    responsive={true}
-                    customStyles={customStyles}
-                    pagination
-                    paginationResetDefaultPage={resetPaginationToggle}
-                    subHeader
-                    subHeaderComponent={SubHeaderComponentMemo}
-                    expandableRows
-                    highlightOnHover
-                    expandOnRowClicked
-                    expandableRowsComponent={<ExpandableComponent />}
-                  />
+                  {loading ? (
+                    <Loading />
+                  ) : (
+                    <DataTable
+                      columns={columnsDataTable}
+                      data={filteredData}
+                      noHeader
+                      responsive={true}
+                      customStyles={customStyles}
+                      pagination
+                      paginationResetDefaultPage={resetPaginationToggle}
+                      subHeader
+                      subHeaderComponent={SubHeaderComponentMemo}
+                      expandableRows
+                      highlightOnHover
+                      expandOnRowClicked
+                      expandableRowsComponent={<ExpandableComponent />}
+                    />
+                  )}
                 </Col>
               </Row>
             </CardBody>
@@ -202,10 +272,21 @@ const DataBarangPindah = ({ path }) => {
       </Row>
 
       {/* Modal Tambah */}
-      <ModalTambah modal={modal} setModal={setModal} barang={barang} />
+      <ModalTambah
+        modal={modal}
+        setModal={setModal}
+        barang={barang}
+        setBarangPindah={setBarangPindah}
+        setLoading={setLoading}
+      />
 
       {/* Modal Detail */}
-      <ModalDetail modalDetail={modalDetail} setModalDetail={setModalDetail} />
+      <ModalDetail
+        bidang={bidang}
+        barang={barang}
+        modalDetail={modalDetail}
+        setModalDetail={setModalDetail}
+      />
     </>
   );
 };

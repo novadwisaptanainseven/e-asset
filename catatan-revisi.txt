@@ -1,0 +1,12 @@
+1. Module Barang
+  - Form tambah data barang dan form bidang - bidang yang menggunakan barang dijadikan 1 kolom
+  - Tangani cetak barang
+  - (Detail Barang) : warna tabel "Bidang - Bidang yang Menggunakan Barang" diubah menjadi putih, warna table header disesuaikan
+
+2. Module Rincian Barang
+  - Tangani cetak rincian barang
+
+3. Module Barang Pindah
+  - (Form Pindah Barang) : barang dari suatu bidang, tidak boleh dipindah ke bidang yang sama
+  - Tangani cetak riwayat barang pindah
+  - Tangani detail data riwayat barang pindah

@@ -1,5 +1,6 @@
 const initStateRincianBarang = {
   idBarang: "",
+  labelBarang: "",
 };
 
 

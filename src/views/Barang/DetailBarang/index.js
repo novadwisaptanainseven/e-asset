@@ -213,7 +213,10 @@ const DetailBarang = () => {
                         onClick={() => {
                           rincianBarangDispatch({
                             type: "CHANGE",
-                            payload: params.id,
+                            payload: {
+                              id_barang: params.id,
+                              nama_barang: `${data.nama_barang} (${data.merk})`,
+                            },
                           });
                           goToRincianBarang(
                             "/easset/admin/rincian-barang",

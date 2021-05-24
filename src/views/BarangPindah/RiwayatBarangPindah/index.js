@@ -1,7 +1,10 @@
 import barangPindah from "assets/dummyData/barangPindah";
 import SubHeaderComponentMemo from "components/DataTable/SubHeaderComponentMemo";
+import { getAllBarangPindah } from "context/actions/BarangPindah";
+import { getAllBidang } from "context/actions/EPekerjaAPI/Bidang";
+import { GlobalContext } from "context/Provider";
 import customStyles from "datatableStyle/customStyles";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import DataTable from "react-data-table-component";
 import { useHistory } from "react-router";
 import {
@@ -13,7 +16,8 @@ import {
   Button,
   CardFooter,
 } from "reactstrap";
-import { goBackToPrevPage } from "../functions";
+import DataBarangMasuk from "views/BarangMasuk/DataBarangMasuk";
+import { getCleanTanggal, getNamaBidang, goBackToPrevPage } from "../functions";
 import ModalDetail from "../ModalDetail";
 import ExpandableComponent from "./ExpandableComponent";
 
@@ -25,22 +29,58 @@ const RiwayatBarangPindah = ({ path }) => {
   });
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [filterText, setFilterText] = useState("");
+  const [bidang, setBidang] = useState([]);
+  const { barangPindahState, barangPindahDispatch } = useContext(GlobalContext);
+  const { data: dataBarangPindah, loading } = barangPindahState;
 
-  const filteredData = barangPindah.filter((item) => {
-    if (
-      item.tanggal &&
-      item.barang &&
-      item.merk &&
-      item.dari_bidang &&
-      item.ke_bidang &&
-      item.keterangan
-    ) {
+  useEffect(() => {
+    // Get All Riwayat Barang Pindah
+    getAllBarangPindah(barangPindahDispatch);
+  }, [barangPindahDispatch]);
+
+  useEffect(() => {
+    // Get All Bidang
+    getAllBidang(setBidang);
+  }, []);
+
+  // Memperbaiki sebagian isi data dari api untuk ditampilkan di tabel Barang Pindah tujuannya untuk mengubah nilai dari_barang_detail dan ke_barang_detail menjadi String nama_bidang berdasarkan id_bidang
+  const dataForDisplay = useMemo(() => {
+    const fixData = [];
+
+    if (dataBarangPindah && bidang.length > 0) {
+      dataBarangPindah.data.forEach((item) => {
+        fixData.push({
+          ...item,
+          createdAt: getCleanTanggal(item.createdAt),
+          dari_barang_detail: getNamaBidang(
+            item.from_barang_detail.id_bidang,
+            bidang
+          ),
+          ke_barang_detail: getNamaBidang(
+            item.to_barang_detail.id_bidang,
+            bidang
+          ),
+        });
+      });
+    }
+
+    return fixData;
+  }, [dataBarangPindah, bidang]);
+
+  const filteredData = dataForDisplay.filter((item) => {
+    if (item) {
       if (
-        item.tanggal.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.barang.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.merk.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.dari_bidang.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.ke_bidang.toLowerCase().includes(filterText.toLowerCase()) ||
+        item.createdAt.toLowerCase().includes(filterText.toLowerCase()) ||
+        item.barang.nama_barang
+          .toLowerCase()
+          .includes(filterText.toLowerCase()) ||
+        item.barang.merk.toLowerCase().includes(filterText.toLowerCase()) ||
+        item.dari_barang_detail
+          .toLowerCase()
+          .includes(filterText.toLowerCase()) ||
+        item.ke_barang_detail
+          .toLowerCase()
+          .includes(filterText.toLowerCase()) ||
         item.keterangan.toLowerCase().includes(filterText.toLowerCase())
       ) {
         return true;
@@ -52,38 +92,32 @@ const RiwayatBarangPindah = ({ path }) => {
   // Columns DataTable
   const columnsDataTable = [
     {
-      name: "No",
-      selector: "no",
-      sortable: true,
-      width: "50px",
-    },
-    {
       name: "Tanggal",
-      selector: "tanggal",
+      selector: "createdAt",
       sortable: true,
       wrap: true,
     },
     {
       name: "Barang",
-      selector: "barang",
+      selector: "barang.nama_barang",
       sortable: true,
       wrap: true,
     },
     {
       name: "Merk",
-      selector: "merk",
+      selector: "barang.merk",
       sortable: true,
       wrap: true,
     },
     {
       name: "Dari Bidang",
-      selector: "dari_bidang",
+      selector: "dari_barang_detail",
       sortable: true,
       wrap: true,
     },
     {
       name: "Ke Bidang",
-      selector: "ke_bidang",
+      selector: "ke_barang_detail",
       sortable: true,
       wrap: true,
     },
@@ -157,7 +191,11 @@ const RiwayatBarangPindah = ({ path }) => {
       </Row>
 
       {/* Modal Detail */}
-      <ModalDetail modalDetail={modalDetail} setModalDetail={setModalDetail} />
+      <ModalDetail
+        bidang={bidang}
+        modalDetail={modalDetail}
+        setModalDetail={setModalDetail}
+      />
     </>
   );
 };

@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { useRouteMatch } from "react-router";
 import {
   Card,
   Col,
@@ -21,23 +20,22 @@ import { GlobalContext } from "context/Provider";
 import { getAllBarang } from "context/actions/Barang";
 import Loading from "components/Loading";
 import { getAllBidang } from "context/actions/EPekerjaAPI/Bidang";
+import { CLEAN_UP } from "context/actionTypes";
 
 const RincianBarang = () => {
-  const match = useRouteMatch();
-  const { params } = match;
   const [modal, setModal] = useState(false);
   const [barang, setBarang] = useState("");
   const [rincianBarang, setRincianBarang] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { barangState, barangDispatch, rincianBarangState } =
-    useContext(GlobalContext);
+  const {
+    barangState,
+    barangDispatch,
+    rincianBarangState,
+    rincianBarangDispatch,
+  } = useContext(GlobalContext);
   const { data } = barangState;
-  const { idBarang } = rincianBarangState;
+  const { idBarang, labelBarang } = rincianBarangState;
   const [bidang, setBidang] = useState([]);
-
-  useEffect(() => {
-    console.log(match);
-  }, [match]);
 
   const getNamaBidang = (id = 1) => {
     const search = bidang.filter((item) => {
@@ -60,17 +58,19 @@ const RincianBarang = () => {
         getRincianBarang(barang.value, setRincianBarang, setLoading);
       }
     } else {
-      console.log(idBarang);
-
-      getRincianBarang(2, setRincianBarang, setLoading);
+      getRincianBarang(idBarang, setRincianBarang, setLoading);
     }
-    // Get Rincian Barang
-  }, [barang, idBarang]);
+    return () => {
+      rincianBarangDispatch({
+        type: CLEAN_UP,
+      });
+    };
+  }, [barang, idBarang, rincianBarangDispatch]);
 
   useEffect(() => {
     // Get All Barang
     getAllBarang(barangDispatch);
-  }, [params, barangDispatch]);
+  }, [barangDispatch]);
 
   const optionsBarang = useMemo(() => {
     let options = [];
@@ -112,12 +112,18 @@ const RincianBarang = () => {
                       name="barang"
                       placeholder="-- Pilih Barang --"
                       onChange={(opt) => setBarang(opt ? opt : "")}
-                      // defaultInputValue={barang.value}
-                      defaultInputValue={barang.value}
+                      defaultInputValue={labelBarang}
+                      defaultValue={
+                        idBarang
+                          ? {
+                              value: idBarang,
+                              label: labelBarang,
+                            }
+                          : null
+                      }
                       isSearchable
                       isClearable
                       options={optionsBarang}
-                      // options={optionsBarang}
                     />
                   </FormGroup>
                 </Col>
@@ -135,12 +141,16 @@ const RincianBarang = () => {
                     </Button>
                     <div>
                       <Button color="warning">
-                        Cetak Rincian Barang {barang.label}
+                        Cetak Rincian Barang{" "}
+                        {!idBarang ? barang.label : labelBarang}
                       </Button>
                     </div>
                   </div>
 
-                  <h3>Daftar Rincian Barang {barang.label}</h3>
+                  <h3>
+                    Daftar Rincian Barang{" "}
+                    {!idBarang ? barang.label : labelBarang}
+                  </h3>
                   {loading ? (
                     <Loading />
                   ) : (

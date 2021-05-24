@@ -13,6 +13,10 @@ const barangPindah = [
     jumlah_rusak_ringan: 10,
     keterangan:
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsum sapiente quia, adipisci animi, nostrum sed optio nihil dolor quo numquam et voluptatibus eaque est cumque asperiores esse eum doloribus fugit.",
+    test: {
+      prop1: "hello",
+      prop2: "hello2",
+    },
   },
   {
     id_barang_pindah: 2,
@@ -28,6 +32,10 @@ const barangPindah = [
     jumlah_rusak_ringan: 10,
     keterangan:
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsum sapiente quia, adipisci animi, nostrum sed optio nihil dolor quo numquam et voluptatibus eaque est cumque asperiores esse eum doloribus fugit.",
+    test: {
+      prop1: "hello",
+      prop2: "hello2",
+    },
   },
   {
     id_barang_pindah: 3,
@@ -43,6 +51,10 @@ const barangPindah = [
     jumlah_rusak_ringan: 10,
     keterangan:
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsum sapiente quia, adipisci animi, nostrum sed optio nihil dolor quo numquam et voluptatibus eaque est cumque asperiores esse eum doloribus fugit.",
+    test: {
+      prop1: "hello",
+      prop2: "hello2",
+    },
   },
 ];
 
