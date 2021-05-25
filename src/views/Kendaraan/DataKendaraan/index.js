@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import customStyles from "datatableStyle/customStyles";
 import DataTable from "react-data-table-component";
 import {
@@ -11,37 +11,69 @@ import {
   ButtonGroup,
 } from "reactstrap";
 // import columnsDataTable from "../columnsDataTable";
-import { goToDetail, goToEdit, goToTambah, showDeleteAlert } from "../functions";
+import {
+  goToDetail,
+  goToEdit,
+  goToTambah,
+  showDeleteAlert,
+  getCleanTanggal,
+  getNamaPegawai,
+} from "../functions";
 import ExpandableComponent from "./ExpandableComponent";
 import { useHistory } from "react-router";
-import kendaraan from "assets/dummyData/kendaraan";
+// import kendaraan from "assets/dummyData/kendaraan";
 import SubHeaderComponentMemo from "components/DataTable/SubHeaderComponentMemo";
+import { GlobalContext } from "context/Provider";
+import { getAllKendaraan } from "context/actions/Kendaraan";
+import { getAllPegawai } from "context/actions/EPekerjaAPI/Pegawai";
+import Loading from "components/Loading";
 
 const DataKendaraan = ({ path }) => {
   const history = useHistory();
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+  const { kendaraanState, kendaraanDispatch } = useContext(GlobalContext);
+  const { data: dataKendaraan } = kendaraanState;
+  const [pegawai, setPegawai] = useState([]);
 
-  const filteredData = kendaraan.filter((item) => {
-    if (item.nama_pegawai && item.merk) {
-      if (
-        item.nama_pegawai.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.merk.toLowerCase().includes(filterText.toLowerCase())
-      ) {
-        return true;
-      }
+  useEffect(() => {
+    getAllKendaraan(kendaraanDispatch);
+  }, [kendaraanDispatch]);
+
+  useEffect(() => {
+    // Get All Pegawai
+    getAllPegawai(setPegawai);
+  }, []);
+
+  // Memperbaiki sebagian isi data dari api untuk ditampilkan di tabel Kendaraan, tujuannya untuk mengubah nilai field 'id_barang_detail' menjadi String 'nama_bidang' berdasarkan id_bidang
+  const dataForDisplay = useMemo(() => {
+    const fixData = [];
+
+    if (dataKendaraan && pegawai.length > 0) {
+      dataKendaraan.data.forEach((item) => {
+        fixData.push({
+          ...item,
+          createdAt: getCleanTanggal(item.createdAt),
+          nama_pegawai: getNamaPegawai(item.id_pegawai, pegawai),
+        });
+      });
     }
-    return false;
+
+    console.log(fixData);
+
+    return fixData;
+  }, [dataKendaraan, pegawai]);
+
+  const filteredData = dataForDisplay.filter((item) => {
+    if (item.merk.toLowerCase().includes(filterText.toLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
   });
 
   // Columns DataTable
   const columnsDataTable = [
-    {
-      name: "No",
-      selector: "no",
-      sortable: true,
-      width: "50px",
-    },
     {
       name: "Nama Pegawai",
       selector: "nama_pegawai",
@@ -115,36 +147,42 @@ const DataKendaraan = ({ path }) => {
               <h2>Kendaraan</h2>
             </CardHeader>
             <CardBody>
-              <Button
-                color="primary"
-                className="btn btn-md"
-                onClick={() => goToTambah(history, path)}
-              >
-                Tambah Data
-              </Button>
-              <DataTable
-                columns={columnsDataTable}
-                data={filteredData}
-                noHeader
-                responsive={true}
-                customStyles={customStyles}
-                pagination
-                paginationResetDefaultPage={resetPaginationToggle}
-                subHeader
-                subHeaderComponent={
-                  <SubHeaderComponentMemo
-                    filterText={filterText}
-                    setFilterText={setFilterText}
-                    resetPaginationToggle={resetPaginationToggle}
-                    setResetPaginationToggle={setResetPaginationToggle}
-                    isPrintingButtonActive={true}
+              {!dataKendaraan ? (
+                <Loading />
+              ) : (
+                <>
+                  <Button
+                    color="primary"
+                    className="btn btn-md"
+                    onClick={() => goToTambah(history, path)}
+                  >
+                    Tambah Data
+                  </Button>
+                  <DataTable
+                    columns={columnsDataTable}
+                    data={filteredData}
+                    noHeader
+                    responsive={true}
+                    customStyles={customStyles}
+                    pagination
+                    paginationResetDefaultPage={resetPaginationToggle}
+                    subHeader
+                    subHeaderComponent={
+                      <SubHeaderComponentMemo
+                        filterText={filterText}
+                        setFilterText={setFilterText}
+                        resetPaginationToggle={resetPaginationToggle}
+                        setResetPaginationToggle={setResetPaginationToggle}
+                        isPrintingButtonActive={true}
+                      />
+                    }
+                    expandableRows
+                    expandOnRowClicked
+                    highlightOnHover
+                    expandableRowsComponent={<ExpandableComponent />}
                   />
-                }
-                expandableRows
-                expandOnRowClicked
-                highlightOnHover
-                expandableRowsComponent={<ExpandableComponent />}
-              />
+                </>
+              )}
             </CardBody>
           </Card>
         </Col>

@@ -5,7 +5,7 @@ import { getCleanTanggal, getNamaBidang } from "./functions";
 import Loading from "components/Loading";
 
 const ModalDetail = ({ bidang, barang = "", modalDetail, setModalDetail }) => {
-  const { id: idBarangPindah, modal } = modalDetail;
+  const { idBarang, id: idBarangPindah, modal } = modalDetail;
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState("");
 
@@ -14,7 +14,10 @@ const ModalDetail = ({ bidang, barang = "", modalDetail, setModalDetail }) => {
       // Get Barang Pindah By ID
       getBarangPindahById(barang.value, idBarangPindah, setData, setLoading);
     }
-  }, [idBarangPindah, barang]);
+    if (idBarang && idBarangPindah) {
+      getBarangPindahById(idBarang, idBarangPindah, setData, setLoading);
+    }
+  }, [idBarang, idBarangPindah, barang]);
 
   return (
     <>

@@ -1,7 +1,10 @@
-import barangPindah from "assets/dummyData/barangPindah";
 import SubHeaderComponentMemo from "components/DataTable/SubHeaderComponentMemo";
+import Loading from "components/Loading";
+import { getAllBarangMasuk } from "context/actions/BarangMasuk";
+import { getAllBidang } from "context/actions/EPekerjaAPI/Bidang";
+import { GlobalContext } from "context/Provider";
 import customStyles from "datatableStyle/customStyles";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import DataTable from "react-data-table-component";
 import { useHistory } from "react-router";
 import {
@@ -13,7 +16,7 @@ import {
   Button,
   CardFooter,
 } from "reactstrap";
-import { goBackToPrevPage } from "../functions";
+import { getCleanTanggal, getNamaBidang, goBackToPrevPage } from "../functions";
 import ModalDetail from "../ModalDetail";
 import ExpandableComponent from "./ExpandableComponent";
 
@@ -25,48 +28,59 @@ const RiwayatBarangMasuk = ({ path }) => {
   });
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [filterText, setFilterText] = useState("");
+  const [bidang, setBidang] = useState([]);
+  const { barangMasukState, barangMasukDispatch } = useContext(GlobalContext);
+  const { data: dataBarangMasuk, loading } = barangMasukState;
 
-  const filteredData = barangPindah.filter((item) => {
-    if (
-      item.tanggal &&
-      item.barang &&
-      item.merk &&
-      item.dari_bidang &&
-      item.ke_bidang &&
-      item.keterangan
-    ) {
-      if (
-        item.tanggal.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.barang.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.merk.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.dari_bidang.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.ke_bidang.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.keterangan.toLowerCase().includes(filterText.toLowerCase())
-      ) {
-        return true;
-      }
+  useEffect(() => {
+    // Get all riwayat barang masuk
+    getAllBarangMasuk(barangMasukDispatch);
+  }, [barangMasukDispatch]);
+
+  useEffect(() => {
+    getAllBidang(setBidang);
+  }, []);
+
+  // Memperbaiki sebagian isi data dari api untuk ditampilkan di tabel Barang Masuk, tujuannya untuk mengubah nilai field 'id_barang_detail' menjadi String 'nama_bidang' berdasarkan id_bidang
+  const dataForDisplay = useMemo(() => {
+    const fixData = [];
+
+    if (dataBarangMasuk && bidang.length > 0) {
+      dataBarangMasuk.data.forEach((item) => {
+        fixData.push({
+          ...item,
+          createdAt: getCleanTanggal(item.createdAt),
+          id_barang_detail: getNamaBidang(item.barang_detail.id_bidang, bidang),
+        });
+      });
     }
-    return false;
+
+    return fixData;
+  }, [dataBarangMasuk, bidang]);
+
+  const filteredData = dataForDisplay.filter((item) => {
+    if (
+      item.createdAt.toLowerCase().includes(filterText.toLowerCase()) ||
+      item.id_barang_detail.toLowerCase().includes(filterText.toLowerCase())
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   });
 
   // Columns DataTable
   const columnsDataTable = [
     {
-      name: "No",
-      selector: "no",
-      sortable: true,
-      width: "50px",
-    },
-    {
       name: "Tanggal",
-      selector: "tanggal",
+      selector: "createdAt",
       sortable: true,
       wrap: true,
       maxWidth: "200px",
     },
     {
       name: "Ke Bidang",
-      selector: "ke_bidang",
+      selector: "id_barang_detail",
       sortable: true,
       wrap: true,
     },
@@ -99,7 +113,8 @@ const RiwayatBarangMasuk = ({ path }) => {
             onClick={() =>
               setModalDetail({
                 ...modalDetail,
-                id: row.id_barang_pindah,
+                idBarang: row.id_barang,
+                id: row.id_barang_masuk,
                 modal: true,
               })
             }
@@ -127,29 +142,33 @@ const RiwayatBarangMasuk = ({ path }) => {
               </h2>
             </CardHeader>
             <CardBody>
-              <DataTable
-                columns={columnsDataTable}
-                data={filteredData}
-                noHeader
-                responsive={true}
-                customStyles={customStyles}
-                pagination
-                paginationResetDefaultPage={resetPaginationToggle}
-                subHeader
-                subHeaderComponent={
-                  <SubHeaderComponentMemo
-                    filterText={filterText}
-                    setFilterText={setFilterText}
-                    resetPaginationToggle={resetPaginationToggle}
-                    setResetPaginationToggle={setResetPaginationToggle}
-                    isPrintingButtonActive={true}
-                  />
-                }
-                expandableRows
-                highlightOnHover
-                expandOnRowClicked
-                expandableRowsComponent={<ExpandableComponent />}
-              />
+              {loading ? (
+                <Loading />
+              ) : (
+                <DataTable
+                  columns={columnsDataTable}
+                  data={filteredData}
+                  noHeader
+                  responsive={true}
+                  customStyles={customStyles}
+                  pagination
+                  paginationResetDefaultPage={resetPaginationToggle}
+                  subHeader
+                  subHeaderComponent={
+                    <SubHeaderComponentMemo
+                      filterText={filterText}
+                      setFilterText={setFilterText}
+                      resetPaginationToggle={resetPaginationToggle}
+                      setResetPaginationToggle={setResetPaginationToggle}
+                      isPrintingButtonActive={true}
+                    />
+                  }
+                  expandableRows
+                  highlightOnHover
+                  expandOnRowClicked
+                  expandableRowsComponent={<ExpandableComponent />}
+                />
+              )}
             </CardBody>
             <CardFooter className="text-right"></CardFooter>
           </Card>
@@ -157,7 +176,11 @@ const RiwayatBarangMasuk = ({ path }) => {
       </Row>
 
       {/* Modal Detail */}
-      <ModalDetail modalDetail={modalDetail} setModalDetail={setModalDetail} />
+      <ModalDetail
+        bidang={bidang}
+        modalDetail={modalDetail}
+        setModalDetail={setModalDetail}
+      />
     </>
   );
 };

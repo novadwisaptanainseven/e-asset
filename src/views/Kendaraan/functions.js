@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import swal2 from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 const Swal = withReactContent(swal2);
@@ -78,4 +79,29 @@ export const showDeleteAlert = (id) => {
       Swal.fire("Terhapus!", "Data berhasil dihapus.", "success");
     }
   });
+};
+
+// Fungsi ini bertujuan untuk membersihkan string tanggal dari API E-Asset agar lebih mudah dibaca
+export const getCleanTanggal = (tgl) => {
+  let tgl2 = tgl.substring(0, 10);
+  let tgl3 = format(new Date(tgl2), "dd/MM/yyyy");
+
+  return tgl3;
+};
+
+// Fungsi untuk bertujuan untuk mengubah data berupa id menjadi string nama pegawai
+export const getNamaPegawai = (id = 1, pegawai = []) => {
+  const search = pegawai.filter((item) => {
+    return item.id_pegawai && item.id_pegawai === id;
+  });
+
+  return search[0].nama;
+};
+
+// Fungsi untuk mendapatkan nama file
+export const getFileName = (file) => {
+  let file2 = file.split("\\");
+  let file3 = file2[file2.length - 1];
+
+  return file3;
 };

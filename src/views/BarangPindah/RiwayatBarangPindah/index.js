@@ -1,5 +1,6 @@
-import barangPindah from "assets/dummyData/barangPindah";
+// import barangPindah from "assets/dummyData/barangPindah";
 import SubHeaderComponentMemo from "components/DataTable/SubHeaderComponentMemo";
+import Loading from "components/Loading";
 import { getAllBarangPindah } from "context/actions/BarangPindah";
 import { getAllBidang } from "context/actions/EPekerjaAPI/Bidang";
 import { GlobalContext } from "context/Provider";
@@ -16,7 +17,7 @@ import {
   Button,
   CardFooter,
 } from "reactstrap";
-import DataBarangMasuk from "views/BarangMasuk/DataBarangMasuk";
+// import DataBarangMasuk from "views/BarangMasuk/DataBarangMasuk";
 import { getCleanTanggal, getNamaBidang, goBackToPrevPage } from "../functions";
 import ModalDetail from "../ModalDetail";
 import ExpandableComponent from "./ExpandableComponent";
@@ -133,6 +134,7 @@ const RiwayatBarangPindah = ({ path }) => {
             onClick={() =>
               setModalDetail({
                 ...modalDetail,
+                idBarang: row.id_barang,
                 id: row.id_barang_pindah,
                 modal: true,
               })
@@ -161,29 +163,33 @@ const RiwayatBarangPindah = ({ path }) => {
               </h2>
             </CardHeader>
             <CardBody>
-              <DataTable
-                columns={columnsDataTable}
-                data={filteredData}
-                noHeader
-                responsive={true}
-                customStyles={customStyles}
-                pagination
-                paginationResetDefaultPage={resetPaginationToggle}
-                subHeader
-                subHeaderComponent={
-                  <SubHeaderComponentMemo
-                    filterText={filterText}
-                    setFilterText={setFilterText}
-                    resetPaginationToggle={resetPaginationToggle}
-                    setResetPaginationToggle={setResetPaginationToggle}
-                    isPrintingButtonActive={true}
-                  />
-                }
-                expandableRows
-                highlightOnHover
-                expandOnRowClicked
-                expandableRowsComponent={<ExpandableComponent />}
-              />
+              {loading ? (
+                <Loading />
+              ) : (
+                <DataTable
+                  columns={columnsDataTable}
+                  data={filteredData}
+                  noHeader
+                  responsive={true}
+                  customStyles={customStyles}
+                  pagination
+                  paginationResetDefaultPage={resetPaginationToggle}
+                  subHeader
+                  subHeaderComponent={
+                    <SubHeaderComponentMemo
+                      filterText={filterText}
+                      setFilterText={setFilterText}
+                      resetPaginationToggle={resetPaginationToggle}
+                      setResetPaginationToggle={setResetPaginationToggle}
+                      isPrintingButtonActive={true}
+                    />
+                  }
+                  expandableRows
+                  highlightOnHover
+                  expandOnRowClicked
+                  expandableRowsComponent={<ExpandableComponent />}
+                />
+              )}
             </CardBody>
             <CardFooter className="text-right"></CardFooter>
           </Card>

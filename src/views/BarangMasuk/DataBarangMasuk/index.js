@@ -1,8 +1,13 @@
-import barangMasuk from "assets/dummyData/barangMasuk";
-import optionsBarang from "assets/dummyData/optionsBarang";
+// import barangMasuk from "assets/dummyData/barangMasuk";
+// import optionsBarang from "assets/dummyData/optionsBarang";
+import Loading from "components/Loading";
+import { getAllBarang } from "context/actions/Barang";
+import { getBarangMasuk } from "context/actions/BarangMasuk";
+import { getAllBidang } from "context/actions/EPekerjaAPI/Bidang";
+import { GlobalContext } from "context/Provider";
 import customStyles from "datatableStyle/customStyles";
 import { FilterComponent } from "datatableStyle/filterPencarian";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import DataTable from "react-data-table-component";
 import { useHistory } from "react-router";
 import Select from "react-select";
@@ -17,7 +22,12 @@ import {
   FormGroup,
   Label,
 } from "reactstrap";
-import { goToRiwayat, goToDetailBarang } from "../functions";
+import {
+  goToRiwayat,
+  goToDetailBarang,
+  getCleanTanggal,
+  getNamaBidang,
+} from "../functions";
 import ModalDetail from "../ModalDetail";
 import ModalTambah from "../ModalTambah";
 import ExpandableComponent from "../RiwayatBarangMasuk/ExpandableComponent";
@@ -30,39 +40,86 @@ const DataBarangMasuk = ({ path }) => {
     modal: false,
   });
   const [barang, setBarang] = useState("");
+  const [bidang, setBidang] = useState([]);
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [filterText, setFilterText] = useState("");
+  const { barangState, barangDispatch } = useContext(GlobalContext);
+  const { data: dataBarang } = barangState;
+  const [barangMasuk, setBarangMasuk] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const filteredData = barangMasuk.filter((item) => {
-    if (item.tanggal && item.ke_bidang) {
-      if (
-        item.tanggal.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.ke_bidang.toLowerCase().includes(filterText.toLowerCase())
-      ) {
-        return true;
-      }
+  useEffect(() => {
+    // Get All Barang
+    getAllBarang(barangDispatch);
+  }, [barangDispatch]);
+
+  const optionsBarang = useMemo(() => {
+    let options = [];
+
+    if (dataBarang) {
+      dataBarang.data.forEach((item) => {
+        options.push({
+          value: item.id_barang,
+          label: `${item.nama_barang} (${item.merk})`,
+        });
+      });
     }
-    return false;
+
+    return options;
+  }, [dataBarang]);
+
+  useEffect(() => {
+    // Get Barang Masuk
+    if (barang) {
+      getBarangMasuk(barang.value, setBarangMasuk, setLoading);
+    }
+  }, [barang]);
+
+  useEffect(() => {
+    // Get All Bidang
+    getAllBidang(setBidang);
+  }, []);
+
+  // Memperbaiki sebagian isi data dari api untuk ditampilkan di tabel Barang Masuk, tujuannya untuk mengubah nilai field 'id_barang_detail' menjadi String 'nama_bidang' berdasarkan id_bidang
+  const dataForDisplay = useMemo(() => {
+    const fixData = [];
+
+    barangMasuk.forEach((item) => {
+      fixData.push({
+        ...item,
+        createdAt: getCleanTanggal(item.createdAt),
+        id_barang_detail: getNamaBidang(item.barang_detail.id_bidang, bidang),
+      });
+    });
+
+    console.log(fixData);
+
+    return fixData;
+  }, [barangMasuk, bidang]);
+
+  const filteredData = dataForDisplay.filter((item) => {
+    if (
+      item.createdAt.toLowerCase().includes(filterText.toLowerCase()) ||
+      item.id_barang_detail.toLowerCase().includes(filterText.toLowerCase())
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   });
 
   // Columns DataTable
   const columnsDataTable = [
     {
-      name: "No",
-      selector: "no",
-      sortable: true,
-      width: "50px",
-    },
-    {
       name: "Tanggal",
-      selector: "tanggal",
+      selector: "createdAt",
       sortable: true,
       wrap: true,
       maxWidth: "200px",
     },
     {
       name: "Ke Bidang",
-      selector: "ke_bidang",
+      selector: "id_barang_detail",
       sortable: true,
       wrap: true,
     },
@@ -124,7 +181,7 @@ const DataBarangMasuk = ({ path }) => {
         <Button
           color="success"
           disabled={!barang ? true : false}
-          onClick={() => goToDetailBarang(history, 1)}
+          onClick={() => goToDetailBarang(history, barang.value)}
         >
           Lihat Barang
         </Button>
@@ -185,21 +242,25 @@ const DataBarangMasuk = ({ path }) => {
                 <Col>
                   <h1>Riwayat Barang Masuk</h1>
                   <h2 className="text-muted">{barang.label}</h2>
-                  <DataTable
-                    columns={columnsDataTable}
-                    data={filteredData}
-                    noHeader
-                    responsive={true}
-                    customStyles={customStyles}
-                    pagination
-                    paginationResetDefaultPage={resetPaginationToggle}
-                    subHeader
-                    subHeaderComponent={SubHeaderComponentMemo}
-                    expandableRows
-                    highlightOnHover
-                    expandOnRowClicked
-                    expandableRowsComponent={<ExpandableComponent />}
-                  />
+                  {loading ? (
+                    <Loading />
+                  ) : (
+                    <DataTable
+                      columns={columnsDataTable}
+                      data={filteredData}
+                      noHeader
+                      responsive={true}
+                      customStyles={customStyles}
+                      pagination
+                      paginationResetDefaultPage={resetPaginationToggle}
+                      subHeader
+                      subHeaderComponent={SubHeaderComponentMemo}
+                      expandableRows
+                      highlightOnHover
+                      expandOnRowClicked
+                      expandableRowsComponent={<ExpandableComponent />}
+                    />
+                  )}
                 </Col>
               </Row>
             </CardBody>
@@ -209,10 +270,22 @@ const DataBarangMasuk = ({ path }) => {
       </Row>
 
       {/* Modal Tambah */}
-      <ModalTambah modal={modal} setModal={setModal} barang={barang} />
+      <ModalTambah
+        bidang={bidang}
+        modal={modal}
+        setModal={setModal}
+        barang={barang}
+        setBarangMasuk={setBarangMasuk}
+        setLoading={setLoading}
+      />
 
       {/* Modal Detail */}
-      <ModalDetail modalDetail={modalDetail} setModalDetail={setModalDetail} />
+      <ModalDetail
+        bidang={bidang}
+        barang={barang}
+        modalDetail={modalDetail}
+        setModalDetail={setModalDetail}
+      />
     </>
   );
 };

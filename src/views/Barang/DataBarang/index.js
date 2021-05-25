@@ -119,10 +119,10 @@ const DataBarang = ({ path }) => {
         <Col>
           <Card className="shadow">
             <CardHeader>
-              <h3>Barang</h3>
+              <h2>Barang</h2>
             </CardHeader>
             <CardBody>
-              {dataBarang.length === 0 ? (
+              {dataBarang && dataBarang.data.length === 0 ? (
                 <Loading />
               ) : (
                 <>

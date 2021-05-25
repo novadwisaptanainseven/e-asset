@@ -7,6 +7,6 @@
   - Tangani cetak rincian barang
 
 3. Module Barang Pindah
-  - (Form Pindah Barang) : barang dari suatu bidang, tidak boleh dipindah ke bidang yang sama
+  - (Form Pindah Barang) : barang dari suatu bidang, tidak boleh dipindah ke bidang yang sama (DONE)
   - Tangani cetak riwayat barang pindah
-  - Tangani detail data riwayat barang pindah
+  - Tangani detail data riwayat barang pindah (DONE)

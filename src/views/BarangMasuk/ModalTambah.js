@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   Button,
@@ -13,11 +13,49 @@ import {
 import { Formik } from "formik";
 import validationSchema from "./Formik/validationSchema";
 import initState from "./Formik/initState";
+import { getRincianBarang } from "context/actions/RincianBarang";
+import { getNamaBidang } from "./functions";
+import { insertBarangMasuk } from "context/actions/BarangMasuk";
+import { LoadAnimationWhite } from "assets";
 
-const ModalTambah = ({ modal, setModal, barang }) => {
+const ModalTambah = ({
+  modal,
+  setModal,
+  barang,
+  setBarangMasuk,
+  setLoading: setLoadingBarangMasuk,
+  bidang,
+}) => {
+  const [loading, setLoading] = useState([]);
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const [rincianBarang, setRincianBarang] = useState([]);
+
+  console.log(loading);
+
+  useEffect(() => {
+    // Get Rincian Barang
+    if (barang.value) {
+      getRincianBarang(barang.value, setRincianBarang, setLoading);
+    }
+  }, [barang]);
+
   const handleFormSubmit = (values) => {
-    const inputVal = { ...values, id_barang: barang.value };
-    console.log(inputVal);
+    const inputVal = {
+      id_barang_detail: parseInt(values.ke_bidang),
+      jumlah_baik: values.jumlah_baik,
+      jumlah_rusak: values.jumlah_rusak,
+      jumlah_rusak_ringan: values.jumlah_rusak_ringan,
+      keterangan: values.keterangan,
+    };
+
+    insertBarangMasuk(
+      barang.value,
+      inputVal,
+      setLoadingSubmit,
+      setBarangMasuk,
+      setLoadingBarangMasuk
+    );
+    // console.log(inputVal);
   };
 
   return (
@@ -93,9 +131,11 @@ const ModalTambah = ({ modal, setModal, barang }) => {
                         }
                       >
                         <option value="">-- Pilih Bidang --</option>
-                        <option value="1">Perumahan</option>
-                        <option value="2">Permukiman</option>
-                        <option value="3">PSU</option>
+                        {rincianBarang.map((item, index) => (
+                          <option key={index} value={item.id_barang_detail}>
+                            {getNamaBidang(item.id_bidang, bidang)}
+                          </option>
+                        ))}
                       </Input>
                       {errors.ke_bidang && touched.ke_bidang && (
                         <div className="invalid-feedback">
@@ -119,6 +159,10 @@ const ModalTambah = ({ modal, setModal, barang }) => {
                             : null
                         }
                       />
+                      <div className="text-muted text-sm mt-1">
+                        Isi jika ada jumlah barang baik masuk | Jumlah efault :
+                        0
+                      </div>
                       {errors.jumlah_baik && touched.jumlah_baik && (
                         <div className="invalid-feedback">
                           {errors.jumlah_baik}
@@ -141,6 +185,10 @@ const ModalTambah = ({ modal, setModal, barang }) => {
                             : null
                         }
                       />
+                      <div className="text-muted text-sm mt-1">
+                        Isi jika ada jumlah barang rusak masuk | Jumlah Default
+                        : 0
+                      </div>
                       {errors.jumlah_rusak && touched.jumlah_rusak && (
                         <div className="invalid-feedback">
                           {errors.jumlah_rusak}
@@ -164,6 +212,10 @@ const ModalTambah = ({ modal, setModal, barang }) => {
                             : null
                         }
                       />
+                      <div className="text-muted text-sm mt-1">
+                        Isi jika ada jumlah barang rusak ringan masuk | Jumlah
+                        Default : 0
+                      </div>
                       {errors.jumlah_rusak_ringan &&
                         touched.jumlah_rusak_ringan && (
                           <div className="invalid-feedback">
@@ -198,8 +250,20 @@ const ModalTambah = ({ modal, setModal, barang }) => {
                 </Row>
               </div>
               <div className="modal-footer">
-                <Button color="primary" type="submit">
-                  Simpan
+                <Button
+                  type="submit"
+                  color="primary"
+                  disabled={loadingSubmit ? true : false}
+                >
+                  {loadingSubmit ? (
+                    <img
+                      width={30}
+                      src={LoadAnimationWhite}
+                      alt="load-animation"
+                    />
+                  ) : (
+                    "Simpan"
+                  )}
                 </Button>
                 <Button
                   className="ml-auto"

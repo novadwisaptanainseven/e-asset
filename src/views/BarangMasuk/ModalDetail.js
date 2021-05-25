@@ -1,14 +1,25 @@
-import React, { useEffect } from "react";
+import Loading from "components/Loading";
+import { getBarangMasukById } from "context/actions/BarangMasuk";
+import React, { useEffect, useState } from "react";
 import { Modal } from "reactstrap";
+import { getCleanTanggal, getNamaBidang } from "./functions";
 
-const ModalDetail = ({ modalDetail, setModalDetail}) => {
-  const { id, modal } = modalDetail;
+const ModalDetail = ({ modalDetail, setModalDetail, bidang, barang = "" }) => {
+  const { idBarang, id: idBarangMasuk, modal } = modalDetail;
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState("");
 
   useEffect(() => {
-    if (id) {
-      console.log(id);
+    console.log(idBarangMasuk);
+    // Get barang masuk by ID
+    if (idBarangMasuk && barang.value) {
+      // Jika value idBarangMasuk dan idBarang yang dipilih ada
+      getBarangMasukById(barang.value, idBarangMasuk, setData, setLoading);
     }
-  }, [id]);
+    if (idBarang && idBarangMasuk) {
+      getBarangMasukById(idBarang, idBarangMasuk, setData, setLoading);
+    }
+  }, [idBarang, idBarangMasuk, barang]);
 
   return (
     <>
@@ -45,55 +56,57 @@ const ModalDetail = ({ modalDetail, setModalDetail}) => {
           </button>
         </div>
         <div className="modal-body">
-          <table cellPadding={5} style={{ width: "100%" }}>
-            <tbody>
-              <tr>
-                <th width="25%">Tanggal</th>
-                <th width="3%">:</th>
-                <td>27/11/2021</td>
-              </tr>
-              <tr>
-                <th>Barang</th>
-                <th>:</th>
-                <td>Komputer</td>
-              </tr>
-              <tr>
-                <th>Merk</th>
-                <th>:</th>
-                <td>Lenovo</td>
-              </tr>
-              <tr>
-                <th>Ke Bidang</th>
-                <th>:</th>
-                <td>Perumahan</td>
-              </tr>
-              <tr>
-                <th>Jumlah Baik</th>
-                <th>:</th>
-                <td>10</td>
-              </tr>
-              <tr>
-                <th>Jumlah Rusak</th>
-                <th>:</th>
-                <td>10</td>
-              </tr>
-              <tr>
-                <th>Jumlah Rusak Ringan</th>
-                <th>:</th>
-                <td>10</td>
-              </tr>
-              <tr>
-                <th valign="top">Keterangan</th>
-                <th valign="top">:</th>
-                <td align="justify">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Sapiente culpa ipsa architecto minus, aliquid cum qui optio
-                  obcaecati inventore dolorum temporibus corrupti neque ad rem.
-                  Nulla, dignissimos! Voluptatum, placeat reiciendis.{" "}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          {loading ? (
+            <Loading />
+          ) : (
+            <table cellPadding={5} style={{ width: "100%" }}>
+              <tbody>
+                <tr>
+                  <th width="25%">Tanggal</th>
+                  <th width="3%">:</th>
+                  <td>{data && getCleanTanggal(data.createdAt)}</td>
+                </tr>
+                <tr>
+                  <th>Barang</th>
+                  <th>:</th>
+                  <td>{data && data.barang.nama_barang}</td>
+                </tr>
+                <tr>
+                  <th>Merk</th>
+                  <th>:</th>
+                  <td>{data && data.barang.merk}</td>
+                </tr>
+                <tr>
+                  <th>Ke Bidang</th>
+                  <th>:</th>
+                  <td>
+                    {data &&
+                      getNamaBidang(data.barang_detail.id_bidang, bidang)}
+                  </td>
+                </tr>
+                <tr>
+                  <th>Jumlah Baik</th>
+                  <th>:</th>
+                  <td>{data.jumlah_baik}</td>
+                </tr>
+                <tr>
+                  <th>Jumlah Rusak</th>
+                  <th>:</th>
+                  <td>{data.jumlah_rusak}</td>
+                </tr>
+                <tr>
+                  <th>Jumlah Rusak Ringan</th>
+                  <th>:</th>
+                  <td>{data.jumlah_rusak_ringan}</td>
+                </tr>
+                <tr>
+                  <th valign="top">Keterangan</th>
+                  <th valign="top">:</th>
+                  <td align="justify">{data.keterangan}</td>
+                </tr>
+              </tbody>
+            </table>
+          )}
         </div>
       </Modal>
     </>
