@@ -128,7 +128,9 @@ const DataKendaraan = ({ path }) => {
             <Button
               color="danger"
               className="btn btn-sm"
-              onClick={() => showDeleteAlert(row.id_kendaraan)}
+              onClick={() =>
+                showDeleteAlert(row.id_kendaraan, kendaraanDispatch)
+              }
             >
               <i className="fas fa-trash"></i>
             </Button>

@@ -1,16 +1,35 @@
-import { FotoKendaraanSample, FotoPegawaiSample } from "assets";
-import React, { useEffect } from "react";
+// import { FotoPegawaiSample } from "assets";
+import Loading from "components/Loading";
+import { getFile } from "context/actions/DownloadFile/getFile";
+import { getAllPegawai } from "context/actions/EPekerjaAPI/Pegawai";
+import { getKendaraanById } from "context/actions/Kendaraan";
+import React, { useEffect, useState } from "react";
 import { useHistory, useRouteMatch } from "react-router";
 import { Card, Col, Row, CardHeader, CardBody, CardFooter } from "reactstrap";
-import { goBackToPrevPage } from "../functions";
+import ModalPreviewImage from "../DataKendaraan/ModalPreviewImage";
+import ModalPreviewImagePegawai from "../DataKendaraan/ModalPreviewImagePegawai";
+import {
+  getFileName,
+  getImagePegawai,
+  getNamaPegawai,
+  goBackToPrevPage,
+} from "../functions";
 
 const DetailKendaraan = () => {
   const history = useHistory();
   const match = useRouteMatch();
   const { params } = match;
+  const [data, setData] = useState("");
+  const [pegawai, setPegawai] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [modalPreview, setModalPreview] = useState(false);
+  const [modalPreviewPegawai, setModalPreviewPegawai] = useState(false);
 
   useEffect(() => {
-    console.log(params);
+    // Get Kendaraan By ID
+    getKendaraanById(params.id, setData, setLoading);
+    // Get All Pegawai
+    getAllPegawai(setPegawai);
   }, [params]);
 
   return (
@@ -38,96 +57,119 @@ const DetailKendaraan = () => {
                       Deskripsi Kendaraan
                     </h6>
                     <hr className="my-3" />
-                    <table cellPadding={4} style={{ width: "100%" }}>
-                      <tbody>
-                        <tr>
-                          <th width={150}>Nama Pegawai</th>
-                          <th width={40}>:</th>
-                          <td>123</td>
-                        </tr>
-                        <tr>
-                          <th>Merk Kendaraan</th>
-                          <th>:</th>
-                          <td>Lorem</td>
-                        </tr>
-                        <tr>
-                          <th>Tipe</th>
-                          <th>:</th>
-                          <td>Lorem</td>
-                        </tr>
-                        <tr>
-                          <th>CC</th>
-                          <th>:</th>
-                          <td>Lorem</td>
-                        </tr>
-                        <tr>
-                          <th>Warna</th>
-                          <th>:</th>
-                          <td>Merah</td>
-                        </tr>
-                        <tr>
-                          <th>Rangka</th>
-                          <th>:</th>
-                          <td>Lorem</td>
-                        </tr>
-                        <tr>
-                          <th>Mesin</th>
-                          <th>:</th>
-                          <td>Lorem</td>
-                        </tr>
-                        <tr>
-                          <th>Pembuatan</th>
-                          <th>:</th>
-                          <td>Lorem</td>
-                        </tr>
-                        <tr>
-                          <th>Pembelian</th>
-                          <th>:</th>
-                          <td>Lorem</td>
-                        </tr>
-                        <tr>
-                          <th>No. Polisi</th>
-                          <th>:</th>
-                          <td>Lorem</td>
-                        </tr>
-                        <tr>
-                          <th>BPKB</th>
-                          <th>:</th>
-                          <td>Lorem</td>
-                        </tr>
-                        <tr>
-                          <th>STNK</th>
-                          <th>:</th>
-                          <td>Lorem</td>
-                        </tr>
-                        <tr>
-                          <th>Biaya STNK</th>
-                          <th>:</th>
-                          <td>Lorem</td>
-                        </tr>
-                        <tr>
-                          <th>Harga</th>
-                          <th>:</th>
-                          <td>Rp. 500.000</td>
-                        </tr>
-                        <tr>
-                          <th>File</th>
-                          <th>:</th>
-                          <td>Lorem.pdf</td>
-                        </tr>
-                        <tr>
-                          <th valign="top">Keterangan</th>
-                          <th valign="top">:</th>
-                          <td align="justify">
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Repellat deserunt doloribus deleniti quibusdam
-                            ullam unde natus dolorem ad doloremque? Pariatur,
-                            reiciendis voluptatum quos harum illum nam voluptate
-                            numquam corporis blanditiis.
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    {loading ? (
+                      <Loading />
+                    ) : (
+                      <table cellPadding={4} style={{ width: "100%" }}>
+                        <tbody>
+                          <tr>
+                            <th width={150}>Nama Pegawai</th>
+                            <th width={40}>:</th>
+                            <td>
+                              {pegawai.length > 0 &&
+                                getNamaPegawai(data.id_pegawai, pegawai)}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>Merk Kendaraan</th>
+                            <th>:</th>
+                            <td>{data.merk}</td>
+                          </tr>
+                          <tr>
+                            <th>Tipe</th>
+                            <th>:</th>
+                            <td>{data.tipe}</td>
+                          </tr>
+                          <tr>
+                            <th>CC</th>
+                            <th>:</th>
+                            <td>{data.cc}</td>
+                          </tr>
+                          <tr>
+                            <th>Warna</th>
+                            <th>:</th>
+                            <td>{data.warna}</td>
+                          </tr>
+                          <tr>
+                            <th>Rangka</th>
+                            <th>:</th>
+                            <td>{data.rangka}</td>
+                          </tr>
+                          <tr>
+                            <th>Mesin</th>
+                            <th>:</th>
+                            <td>{data.mesin}</td>
+                          </tr>
+                          <tr>
+                            <th>Pembuatan</th>
+                            <th>:</th>
+                            <td>{data.pembuatan}</td>
+                          </tr>
+                          <tr>
+                            <th>Pembelian</th>
+                            <th>:</th>
+                            <td>{data.pembelian}</td>
+                          </tr>
+                          <tr>
+                            <th>No. Polisi</th>
+                            <th>:</th>
+                            <td>{data.no_polisi}</td>
+                          </tr>
+                          <tr>
+                            <th>BPKB</th>
+                            <th>:</th>
+                            <td>{data.bpkb}</td>
+                          </tr>
+                          <tr>
+                            <th>STNK</th>
+                            <th>:</th>
+                            <td>{data.stnk}</td>
+                          </tr>
+                          <tr>
+                            <th>Biaya STNK</th>
+                            <th>:</th>
+                            <td>
+                              {data &&
+                                data.biaya_stnk.toLocaleString("id", {
+                                  style: "currency",
+                                  currency: "IDR",
+                                })}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>Harga</th>
+                            <th>:</th>
+                            <td>
+                              {data &&
+                                data.harga.toLocaleString("id", {
+                                  style: "currency",
+                                  currency: "IDR",
+                                })}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>File</th>
+                            <th>:</th>
+                            <td>
+                              {data && data.file && (
+                                <a
+                                  href={getFile(data.file)}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                >
+                                  {getFileName(data.file)}
+                                </a>
+                              )}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th valign="top">Keterangan</th>
+                            <th valign="top">:</th>
+                            <td align="justify">{data.keterangan}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    )}
                   </Col>
                   <Col>
                     <Card className="mb-3">
@@ -136,9 +178,15 @@ const DetailKendaraan = () => {
                       </CardHeader>
                       <CardBody>
                         <img
-                          src={FotoPegawaiSample}
+                          src={
+                            pegawai.length > 0
+                              ? getImagePegawai(data.id_pegawai, pegawai)
+                              : "."
+                          }
                           alt="foto-pegawai"
                           width="100%"
+                          style={{ cursor: "pointer" }}
+                          onClick={() => setModalPreviewPegawai(true)}
                         />
                       </CardBody>
                     </Card>
@@ -148,9 +196,11 @@ const DetailKendaraan = () => {
                       </CardHeader>
                       <CardBody>
                         <img
-                          src={FotoKendaraanSample}
+                          src={data && data.file ? getFile(data.foto) : "."}
                           alt="foto-kendaraan"
                           width="100%"
+                          style={{ cursor: "pointer" }}
+                          onClick={() => setModalPreview(true)}
                         />
                       </CardBody>
                     </Card>
@@ -162,6 +212,19 @@ const DetailKendaraan = () => {
           </Card>
         </Col>
       </Row>
+
+      <ModalPreviewImage
+        modal={modalPreview}
+        setModal={setModalPreview}
+        data={data.foto}
+      />
+
+      <ModalPreviewImagePegawai
+        modal={modalPreviewPegawai}
+        setModal={setModalPreviewPegawai}
+        data={data}
+        pegawai={pegawai}
+      />
     </>
   );
 };

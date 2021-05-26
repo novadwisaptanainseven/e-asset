@@ -1,3 +1,5 @@
+import { getImage } from "context/actions/EPekerjaAPI/DownloadFile";
+import { deleteKendaraan } from "context/actions/Kendaraan";
 import { format } from "date-fns";
 import swal2 from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -27,7 +29,6 @@ export const handleDelete = (id, history) => {
 // Fungsi - fungsi untuk halaman Kendaraan
 export const setInitState = (data) => ({
   id_pegawai: data ? data.id_pegawai : "",
-  nama_pegawai: data ? data.nama_pegawai : "",
   merk: data ? data.merk : "",
   tipe: data ? data.tipe : "",
   cc: data ? data.cc : "",
@@ -52,7 +53,7 @@ export const convertToCurrency = (harga, setHargaFormatRp) => {
     style: "currency",
     currency: "IDR",
   });
-  if (harga) {
+  if (harga && formatRp !== "RpNaN") {
     setHargaFormatRp(formatRp);
   } else {
     setHargaFormatRp("");
@@ -65,7 +66,7 @@ export const handleFormatRp = (value, setHargaFormatRp) => {
 };
 
 // Alert untuk hapus data
-export const showDeleteAlert = (id) => {
+export const showDeleteAlert = (id, dispatch) => {
   Swal.fire({
     title: `Anda Yakin ingin Hapus Data dengan id: ${id} ?`,
     text: "Data tidak dapat dipulihkan setelah Anda hapus",
@@ -76,7 +77,7 @@ export const showDeleteAlert = (id) => {
     confirmButtonText: "Iya",
   }).then((result) => {
     if (result.isConfirmed) {
-      Swal.fire("Terhapus!", "Data berhasil dihapus.", "success");
+      deleteKendaraan(id, dispatch, Swal);
     }
   });
 };
@@ -95,6 +96,7 @@ export const getNamaPegawai = (id = 1, pegawai = []) => {
     return item.id_pegawai && item.id_pegawai === id;
   });
 
+  // console.log(search[0].nama);
   return search[0].nama;
 };
 
@@ -104,4 +106,36 @@ export const getFileName = (file) => {
   let file3 = file2[file2.length - 1];
 
   return file3;
+};
+
+// Fungsi untuk download gambar
+export const getImagePegawai = (id = 1, pegawai = []) => {
+  const search = pegawai.filter((item) => {
+    return item.id_pegawai && item.id_pegawai === id;
+  });
+
+  return getImage(search[0].foto);
+};
+
+// Fungsi untuk menampilkan alert success tambah data
+export const showAlertSuccess = (successMessage = "", history) => {
+  Swal.fire({
+    icon: "success",
+    title: successMessage,
+    showConfirmButton: false,
+    timer: 1500,
+  }).then((res) => {
+    history.push(`/easset/admin/kendaraan`);
+  });
+};
+
+// Fungsi untuk menampilkan alert error tambah data
+export const showAlertError = (failedMessage = "", message, setLoading) => {
+  Swal.fire({
+    icon: "error",
+    title: failedMessage,
+    text: message,
+  }).then((result) => {
+    setLoading(false);
+  });
 };

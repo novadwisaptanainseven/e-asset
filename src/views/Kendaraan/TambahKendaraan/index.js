@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useHistory } from "react-router";
 import Select from "react-select";
 import {
@@ -17,8 +17,11 @@ import {
 import { goBackToPrevPage, setInitState, handleFormatRp } from "../functions";
 
 import { Formik } from "formik";
-import optionsPegawai from "assets/dummyData/optionsPegawai";
+// import optionsPegawai from "assets/dummyData/optionsPegawai";
 import validationSchema from "../Formik/validationSchema";
+import { getAllPegawai } from "context/actions/EPekerjaAPI/Pegawai";
+import { insertKendaraan } from "context/actions/Kendaraan";
+import { LoadAnimationWhite } from "assets";
 
 const TambahKendaraan = () => {
   const history = useHistory();
@@ -27,8 +30,28 @@ const TambahKendaraan = () => {
   const [touchedSelect, setTouchedSelect] = useState(false);
   const [hargaFormatRp, setHargaFormatRp] = useState("");
   const [biayaStnkFormatRp, setBiayaStnkFormatRp] = useState("");
+  const [pegawai, setPegawai] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const initState = setInitState("");
+
+  useEffect(() => {
+    // Get All Pegawai
+    getAllPegawai(setPegawai);
+  }, []);
+
+  const optionsPegawai = useMemo(() => {
+    let options = [];
+
+    pegawai.forEach((item) => {
+      options.push({
+        value: item.id_pegawai,
+        label: item.nama,
+      });
+    });
+
+    return options;
+  }, [pegawai]);
 
   // Menangani preview input gambar setelah dipilih
   const handleSelectedFile = useCallback(() => {
@@ -57,7 +80,35 @@ const TambahKendaraan = () => {
   }, [handleSelectedFile]);
 
   const handleFormSubmit = (values) => {
-    console.log(values);
+    const formData = new FormData();
+
+    for (const item in values) {
+      formData.append(item, values[item]);
+    }
+
+    // formData.append("id_pegawai", values.id_pegawai);
+    // formData.append("merk", values.merk);
+    // formData.append("tipe", values.tipe);
+    // formData.append("cc", values.cc);
+    // formData.append("warna", values.warna);
+    // formData.append("rangka", values.rangka);
+    // formData.append("mesin", values.mesin);
+    // formData.append("pembuatan", values.pembuatan);
+    // formData.append("pembelian", values.pembelian);
+    // formData.append("no_polisi", values.no_polisi);
+    // formData.append("bpkb", values.bpkb);
+    // formData.append("stnk", values.stnk);
+    // formData.append("biaya_stnk", values.biaya_stnk);
+    // formData.append("harga", values.harga);
+    // formData.append("keterangan", values.keterangan);
+    // formData.append("foto", values.foto);
+    // formData.append("file", values.file);
+
+    insertKendaraan(formData, setLoading, history);
+
+    for (let item of formData.entries()) {
+      console.log(item);
+    }
   };
 
   return (
@@ -437,7 +488,7 @@ const TambahKendaraan = () => {
                               Biaya STNK
                             </label>
                             <Input
-                              type="number"
+                              type="text"
                               id="biaya_stnk"
                               name="biaya_stnk"
                               placeholder="Biaya STNK"
@@ -471,7 +522,7 @@ const TambahKendaraan = () => {
                               Harga
                             </label>
                             <Input
-                              type="number"
+                              type="text"
                               id="harga"
                               name="harga"
                               placeholder="Harga"
@@ -601,7 +652,15 @@ const TambahKendaraan = () => {
                           : setTouchedSelect(false);
                       }}
                     >
-                      Simpan
+                      {loading ? (
+                        <img
+                          width={30}
+                          src={LoadAnimationWhite}
+                          alt="load-animation"
+                        />
+                      ) : (
+                        "Simpan"
+                      )}
                     </Button>
                   </CardFooter>
                 </Form>
