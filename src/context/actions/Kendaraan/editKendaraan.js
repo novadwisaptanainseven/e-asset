@@ -2,14 +2,14 @@ import axiosInstance from "helpers/axios";
 import { showAlertError } from "views/Kendaraan/functions";
 import { showAlertSuccess } from "views/Kendaraan/functions";
 
-const insertKendaraan = (values, setLoading, history) => {
+const editKendaraan = (id, values, setLoading, history) => {
   setLoading(true);
 
-  let successMessage = "Tambah Data Berhasil";
-  let failedMessage = "Tambah Data Gagal";
+  let successMessage = "Edit Kendaraan Berhasil";
+  let failedMessage = "Edit Kendaraan Gagal";
 
   axiosInstance
-    .post(`kendaraan/create`, values, {
+    .put(`kendaraan/update/${id}`, values, {
       header: {
         "Content-Type": `multipart/form-data; boundary=${values._boundary}`,
       },
@@ -25,4 +25,4 @@ const insertKendaraan = (values, setLoading, history) => {
     });
 };
 
-export default insertKendaraan;
+export default editKendaraan;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   Modal,
   Button,
@@ -10,15 +10,28 @@ import {
   Label,
 } from "reactstrap";
 import Select from "react-select";
-import optionsPegawai from "assets/dummyData/optionsPegawai";
+// import optionsPegawai from "assets/dummyData/optionsPegawai";
 
 import { Formik } from "formik";
 import { cekSelectError, handleFormSubmit, setInitState } from "./functions";
 import validationSchema from "./Formik/validationSchema";
 
-const ModalTambah = ({ modal, setModal, kendaraan }) => {
+const ModalTambah = ({ modal, setModal, kendaraan, pegawai }) => {
   const [touchedSelectDari, setTouchedSelectDari] = useState(false);
   const [touchedSelectKe, setTouchedSelectKe] = useState(false);
+
+  const optionsPegawai = useMemo(() => {
+    let options = [];
+
+    pegawai.forEach((item) => {
+      options.push({
+        value: item.id_pegawai,
+        label: item.nama,
+      });
+    });
+
+    return options;
+  }, [pegawai]);
 
   return (
     <>
@@ -67,7 +80,7 @@ const ModalTambah = ({ modal, setModal, kendaraan }) => {
                         id="kendaraan"
                         name="kendaraan"
                         placeholder="Kendaraan"
-                        value={kendaraan}
+                        value={kendaraan.label}
                         readOnly
                       />
                       <Input
@@ -77,7 +90,7 @@ const ModalTambah = ({ modal, setModal, kendaraan }) => {
                         placeholder="Kendaraan"
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        value={values.id_kendaraan}
+                        value={kendaraan.value}
                       />
                     </FormGroup>
                     <FormGroup>

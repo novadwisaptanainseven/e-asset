@@ -33,7 +33,7 @@ const ModalPreviewImagePegawai = ({ modal, setModal, data, pegawai }) => {
                 ? getImagePegawai(data.id_pegawai, pegawai)
                 : ""
             }
-            alt="foto-barang"
+            alt="foto-pegawai"
             style={{ width: "100%" }}
           />
         </div>

@@ -65,7 +65,12 @@ const DataKendaraan = ({ path }) => {
   }, [dataKendaraan, pegawai]);
 
   const filteredData = dataForDisplay.filter((item) => {
-    if (item.merk.toLowerCase().includes(filterText.toLowerCase())) {
+    if (
+      item.merk.toLowerCase().includes(filterText.toLowerCase()) ||
+      item.tipe.toLowerCase().includes(filterText.toLowerCase()) ||
+      item.cc.toLowerCase().includes(filterText.toLowerCase()) ||
+      item.warna.toLowerCase().includes(filterText.toLowerCase())
+    ) {
       return true;
     } else {
       return false;
@@ -149,7 +154,7 @@ const DataKendaraan = ({ path }) => {
               <h2>Kendaraan</h2>
             </CardHeader>
             <CardBody>
-              {!dataKendaraan ? (
+              {!dataForDisplay.length > 0 ? (
                 <Loading />
               ) : (
                 <>

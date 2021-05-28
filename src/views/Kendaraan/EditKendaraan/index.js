@@ -1,7 +1,14 @@
-import optionsPegawai from "assets/dummyData/optionsPegawai";
+// import optionsPegawai from "assets/dummyData/optionsPegawai";
+import { LoadAnimationWhite } from "assets";
+import Loading from "components/Loading";
+import { getFile } from "context/actions/DownloadFile/getFile";
+
+import { getAllPegawai } from "context/actions/EPekerjaAPI/Pegawai";
+import { editKendaraan } from "context/actions/Kendaraan";
+import { getKendaraanById } from "context/actions/Kendaraan";
 import { Formik } from "formik";
-import React, { useCallback, useEffect, useState } from "react";
-import { useHistory } from "react-router";
+import React, { useCallback, useEffect, useState, useMemo } from "react";
+import { useHistory, useRouteMatch } from "react-router";
 import Select from "react-select";
 import {
   Card,
@@ -22,21 +29,53 @@ import {
   goBackToPrevPage,
   setInitState,
   handleFormatRp,
+  getNamaPegawai,
+  getFileName,
 } from "../functions";
 
 const EditKendaraan = () => {
+  const match = useRouteMatch();
+  const params = match.params;
   const history = useHistory();
   const [selectedFile, setSelectedFile] = useState();
   const [preview, setPreview] = useState();
+  const [selectedFile2, setSelectedFile2] = useState();
+  const [preview2, setPreview2] = useState();
   const [hargaFormatRp, setHargaFormatRp] = useState("");
   const [biayaStnkFormatRp, setBiayaStnkFormatRp] = useState("");
   const [touchedSelect, setTouchedSelect] = useState(false);
   const [data, setData] = useState("");
+  const [pegawai, setPegawai] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
+
+  // Get All Pegawai
+  useEffect(() => {
+    getAllPegawai(setPegawai);
+  }, []);
+
+  // Get All Kendaraan
+  useEffect(() => {
+    getKendaraanById(params.id, setData, setLoading);
+  }, [params]);
+
+  const optionsPegawai = useMemo(() => {
+    let options = [];
+
+    pegawai.forEach((item) => {
+      options.push({
+        value: item.id_pegawai,
+        label: item.nama,
+      });
+    });
+
+    return options;
+  }, [pegawai]);
 
   // Menangani preview input gambar setelah dipilih
   const handleSelectedFile = useCallback(() => {
     if (!selectedFile) {
-      setPreview(null);
+      setPreview(data && data.foto ? getFile(data.foto) : null);
       return;
     }
 
@@ -44,7 +83,7 @@ const EditKendaraan = () => {
     setPreview(objectUrl);
 
     return () => URL.revokeObjectURL(objectUrl);
-  }, [selectedFile]);
+  }, [data, selectedFile]);
 
   const onSelectFile = (e) => {
     if (!e.target.files || e.target.files.length === 0) {
@@ -53,6 +92,27 @@ const EditKendaraan = () => {
     }
 
     setSelectedFile(e.target.files[0]);
+  };
+
+  // Menangani preview input file dokumen setelah dipilih
+  const handleSelectedFile2 = useCallback(() => {
+    if (!selectedFile2) {
+      setPreview2(data && data.file ? getFileName(data.file) : null);
+      return;
+    }
+
+    setPreview2("");
+
+    return () => setPreview2("");
+  }, [data, selectedFile2]);
+
+  const onSelectFile2 = (e) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      setSelectedFile2(undefined);
+      return;
+    }
+
+    setSelectedFile2(e.target.files[0]);
   };
 
   useEffect(() => {
@@ -65,35 +125,22 @@ const EditKendaraan = () => {
   }, [data]);
 
   useEffect(() => {
-    setTimeout(() => {
-      setData({
-        id_pegawai: "1",
-        nama_pegawai: "Nova Dwi Sapta",
-        merk: "Alphart",
-        tipe: "30/s",
-        cc: "200",
-        warna: "Silver",
-        rangka: "123123",
-        mesin: "123abc",
-        pembuatan: "lorem",
-        pembelian: "lorem",
-        no_polisi: "bkbk",
-        bpkb: "lorem",
-        stnk: "lorem",
-        biaya_stnk: 100000,
-        harga: 4000000,
-        keterangan: "Lorem ipsum dolor sit amet",
-        file: undefined,
-        foto: undefined,
-      });
-    }, 500);
-  }, []);
-
-  useEffect(() => {
     handleSelectedFile();
   }, [handleSelectedFile]);
 
+  useEffect(() => {
+    handleSelectedFile2();
+  }, [handleSelectedFile2]);
+
   const handleFormSubmit = (values) => {
+    const formData = new FormData();
+
+    for (const item in values) {
+      formData.append(item, values[item]);
+    }
+
+    editKendaraan(params.id, formData, setLoadingSubmit, history);
+
     console.log(values);
   };
 
@@ -112,7 +159,7 @@ const EditKendaraan = () => {
                 Edit Kendaraan
               </h2>
             </CardHeader>
-            {data ? (
+            {!loading && pegawai.length > 0 ? (
               <Formik
                 initialValues={setInitState(data)}
                 enableReinitialize={true}
@@ -165,7 +212,10 @@ const EditKendaraan = () => {
                                 isClearable
                                 options={optionsPegawai}
                                 defaultValue={{
-                                  label: data.nama_pegawai,
+                                  label: getNamaPegawai(
+                                    data.id_pegawai,
+                                    pegawai
+                                  ),
                                   value: data.id_pegawai,
                                 }}
                               />
@@ -575,6 +625,7 @@ const EditKendaraan = () => {
                                 id="file"
                                 placeholder="File"
                                 onChange={(e) => {
+                                  onSelectFile2(e);
                                   setFieldValue("file", e.target.files[0]);
                                 }}
                                 onBlur={handleBlur}
@@ -585,6 +636,17 @@ const EditKendaraan = () => {
                                 }
                               `}
                               />
+                              {preview2 && (
+                                <div className="mt-1">
+                                  <a
+                                    href={getFile(data.file)}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                  >
+                                    {preview2}
+                                  </a>
+                                </div>
+                              )}
                               {errors.file && touched.file && (
                                 <div className="invalid-feedback">
                                   {errors.file}
@@ -642,14 +704,22 @@ const EditKendaraan = () => {
                             : setTouchedSelect(false);
                         }}
                       >
-                        Simpan
+                        {loadingSubmit ? (
+                          <img
+                            width={30}
+                            src={LoadAnimationWhite}
+                            alt="load-animation"
+                          />
+                        ) : (
+                          "Simpan"
+                        )}
                       </Button>
                     </CardFooter>
                   </Form>
                 )}
               </Formik>
             ) : (
-              <div className="my-3 text-center">Loading...</div>
+              <Loading />
             )}
           </Card>
         </Col>

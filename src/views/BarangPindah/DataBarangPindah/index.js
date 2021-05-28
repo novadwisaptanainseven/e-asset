@@ -78,7 +78,7 @@ const DataBarangPindah = ({ path }) => {
 
   // Memperbaiki sebagian isi data dari api untuk ditampilkan di tabel Barang Pindah tujuannya untuk mengubah nilai dari_barang_detail dan ke_barang_detail menjadi String nama_bidang berdasarkan id_bidang
   const dataForDisplay = useMemo(() => {
-    // Fungsi untuk bertujuan untuk mengubah data berupa id menjadi string nama bidang
+    // Fungsi ini bertujuan untuk mengubah data berupa id menjadi string nama bidang
     const getNamaBidang = (id = 1) => {
       const search = bidang.filter((item) => {
         return item.id_bidang && item.id_bidang === id;

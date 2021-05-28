@@ -57,7 +57,7 @@ const DetailKendaraan = () => {
                       Deskripsi Kendaraan
                     </h6>
                     <hr className="my-3" />
-                    {loading ? (
+                    {loading || pegawai.length === 0 ? (
                       <Loading />
                     ) : (
                       <table cellPadding={4} style={{ width: "100%" }}>
