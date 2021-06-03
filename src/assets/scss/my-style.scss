@@ -6,3 +6,45 @@
 .text-error {
   font-size: 0.8em;
 }
+
+// Style for printing table
+.my-table {
+  color: black;
+  border: 1px solid black;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.my-table th {
+  background-color: orange !important;
+}
+
+.my-table th,
+.my-table td {
+  border: 1px solid black;
+  padding: 5px;
+}
+
+div.my-table-header .line1 {
+  background-color: black;
+  width: 100%;
+  height: 3px;
+  margin-bottom: 3px;
+}
+div.my-table-header .line2 {
+  background-color: black;
+  width: 100%;
+  height: 5px;
+}
+
+.my-table-header .my-table-header-text {
+  color: black !important;
+}
+
+@media print {
+  @page {
+    size: landscape;
+  }
+}
+
+// End of style for printing table

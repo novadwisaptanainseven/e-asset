@@ -1,22 +1,23 @@
+import { SUCCESS } from "context/actionTypes";
 import axiosInstance from "helpers/axios";
 import { showAlertError } from "views/Barang/functions";
 import { showAlertSuccess } from "views/Barang/functions";
 
-export const insertBarang = (values, setLoading, history) => {
+export const editAkun = (idUser, values, setLoading, dispatch) => {
   setLoading(true);
 
-  let successMessage = "Tambah Barang Berhasil";
-  let failedMessage = "Tambah Barang Gagal";
+  let successMessage = "Edit Akun Berhasil";
+  let failedMessage = "Edit Akun Gagal";
 
   axiosInstance
-    .post(`barang/create`, values, {
-      header: {
-        "Content-Type": `multipart/form-data; boundary=${values._boundary}`,
-      },
-    })
+    .put(`user/update/${idUser}`, values)
     .then((res) => {
       console.log(res.data);
-      showAlertSuccess(successMessage, history);
+      showAlertSuccess(successMessage);
+      dispatch({
+        type: SUCCESS,
+        payload: res.data.data,
+      });
       setLoading(false);
     })
     .catch((err) => {

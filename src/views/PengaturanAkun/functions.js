@@ -7,9 +7,8 @@ export const goToEditPassword = (path, history) => {
 };
 
 export const setInitState = (data) => ({
-  nama: data ? data.nama : "",
   username: data ? data.username : "",
-  password: data ? data.password : "",
+  password: "",
 });
 
 export const handleFormSubmit = (values) => {

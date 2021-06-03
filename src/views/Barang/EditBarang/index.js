@@ -136,7 +136,7 @@ const EditBarang = () => {
       console.log(pair);
     }
 
-    editBarang(params.id, formData, setLoadingSubmit);
+    editBarang(params.id, formData, setLoadingSubmit, history);
   };
 
   return (

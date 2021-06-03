@@ -1,7 +1,10 @@
-import kendaraanPindah from "assets/dummyData/kendaraanPindah";
 import SubHeaderComponentMemo from "components/DataTable/SubHeaderComponentMemo";
+import Loading from "components/Loading";
+import { getAllPegawai } from "context/actions/EPekerjaAPI/Pegawai";
+import { getAllKendaraanPindah } from "context/actions/KendaraanPindah";
+import { GlobalContext } from "context/Provider";
 import customStyles from "datatableStyle/customStyles";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import DataTable from "react-data-table-component";
 import { useHistory } from "react-router";
 import {
@@ -12,11 +15,10 @@ import {
   CardBody,
   Button,
   CardFooter,
-  ButtonGroup,
 } from "reactstrap";
-import { goBackToPrevPage, handleDelete } from "../functions";
+import { getCleanTanggal } from "views/Kendaraan/functions";
+import { getNamaPegawai, goBackToPrevPage} from "../functions";
 import ModalDetail from "../ModalDetail";
-import ModalEdit from "../ModalEdit";
 import ExpandableComponent from "./ExpandableComponent";
 
 const RiwayatKendaraanPindah = ({ path }) => {
@@ -25,35 +27,59 @@ const RiwayatKendaraanPindah = ({ path }) => {
     id: null,
     modal: false,
   });
-  const [modalEdit, setModalEdit] = useState({
-    id: null,
-    modal: false,
-  });
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [filterText, setFilterText] = useState("");
+  const [pegawai, setPegawai] = useState([]);
+  const { kendaraanPindahState, kendaraanPindahDispatch } =
+    useContext(GlobalContext);
+  const { data: dataKendaraanPindah, loading } = kendaraanPindahState;
 
-  const filteredData = kendaraanPindah.filter((item) => {
-    if (item.tanggal && item.merk && item.dari && item.ke) {
-      if (
-        item.tanggal.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.merk.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.dari.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.ke.toLowerCase().includes(filterText.toLowerCase())
-      ) {
-        return true;
-      }
+  // Get All Riwayat Kendaraan Pindah
+  useEffect(() => {
+    getAllKendaraanPindah(kendaraanPindahDispatch);
+  }, [kendaraanPindahDispatch]);
+
+  // Get All Pegawai
+  useEffect(() => {
+    getAllPegawai(setPegawai);
+  }, []);
+
+  // Memperbaiki sebagian isi data dari api untuk ditampilkan di tabel kendaraan pindah tujuannya untuk mengubah nilai field "dari" dan "ke" menjadi String nama pegawai berdasarkan id bidang
+  const dataForDisplay = useMemo(() => {
+    const fixData = [];
+
+    if (dataKendaraanPindah && pegawai.length > 0) {
+      dataKendaraanPindah.data.forEach((item) => {
+        fixData.push({
+          ...item,
+          tanggal: getCleanTanggal(item.tanggal),
+          dari: getNamaPegawai(item.dari, pegawai),
+          ke: getNamaPegawai(item.ke, pegawai),
+        });
+      });
     }
-    return false;
+
+    console.log(fixData);
+    return fixData;
+  }, [dataKendaraanPindah, pegawai]);
+
+  const filteredData = dataForDisplay.filter((item) => {
+    if (
+      item.tanggal.toLowerCase().includes(filterText.toLowerCase()) ||
+      item.dari.toLowerCase().includes(filterText.toLowerCase()) ||
+      item.ke.toLowerCase().includes(filterText.toLowerCase()) ||
+      item.kendaraan.merk.toLowerCase().includes(filterText.toLowerCase()) ||
+      item.kendaraan.tipe.toLowerCase().includes(filterText.toLowerCase()) ||
+      item.keterangan.toLowerCase().includes(filterText.toLowerCase())
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   });
 
   // Columns DataTable
   const columnsDataTable = [
-    {
-      name: "No",
-      selector: "no",
-      sortable: true,
-      width: "50px",
-    },
     {
       name: "Tanggal",
       selector: "tanggal",
@@ -63,13 +89,13 @@ const RiwayatKendaraanPindah = ({ path }) => {
     },
     {
       name: "Merk",
-      selector: "merk",
+      selector: "kendaraan.merk",
       sortable: true,
       wrap: true,
     },
     {
       name: "Tipe",
-      selector: "tipe",
+      selector: "kendaraan.tipe",
       sortable: true,
       wrap: true,
     },
@@ -90,41 +116,19 @@ const RiwayatKendaraanPindah = ({ path }) => {
       name: "Action",
       cell: (row) => (
         <div data-tag="allowRowEvents">
-          <ButtonGroup>
-            <Button
-              color="info"
-              className="btn btn-sm"
-              onClick={() =>
-                setModalDetail({
-                  ...modalDetail,
-                  id: row.id_kendaraan_pindah,
-                  modal: true,
-                })
-              }
-            >
-              <i className="fas fa-info"></i>
-            </Button>
-            <Button
-              color="success"
-              className="btn btn-sm"
-              onClick={() =>
-                setModalEdit({
-                  ...modalEdit,
-                  id: row.id_kendaraan_pindah,
-                  modal: true,
-                })
-              }
-            >
-              <i className="fas fa-edit"></i>
-            </Button>
-            <Button
-              color="danger"
-              className="btn btn-sm"
-              onClick={() => handleDelete(row.id_kendaraan_pindah)}
-            >
-              <i className="fas fa-trash"></i>
-            </Button>
-          </ButtonGroup>
+          <Button
+            color="info"
+            className="btn btn-sm"
+            onClick={() =>
+              setModalDetail({
+                ...modalDetail,
+                id: row.id_kendaraan_pindah,
+                modal: true,
+              })
+            }
+          >
+            <i className="fas fa-info"></i>
+          </Button>
         </div>
       ),
     },
@@ -146,29 +150,33 @@ const RiwayatKendaraanPindah = ({ path }) => {
               </h2>
             </CardHeader>
             <CardBody>
-              <DataTable
-                columns={columnsDataTable}
-                data={filteredData}
-                noHeader
-                responsive={true}
-                customStyles={customStyles}
-                pagination
-                paginationResetDefaultPage={resetPaginationToggle}
-                subHeader
-                subHeaderComponent={
-                  <SubHeaderComponentMemo
-                    filterText={filterText}
-                    setFilterText={setFilterText}
-                    resetPaginationToggle={resetPaginationToggle}
-                    setResetPaginationToggle={setResetPaginationToggle}
-                    isPrintingButtonActive={true}
-                  />
-                }
-                expandableRows
-                highlightOnHover
-                expandOnRowClicked
-                expandableRowsComponent={<ExpandableComponent />}
-              />
+              {loading || !dataForDisplay.length > 0 ? (
+                <Loading />
+              ) : (
+                <DataTable
+                  columns={columnsDataTable}
+                  data={filteredData}
+                  noHeader
+                  responsive={true}
+                  customStyles={customStyles}
+                  pagination
+                  paginationResetDefaultPage={resetPaginationToggle}
+                  subHeader
+                  subHeaderComponent={
+                    <SubHeaderComponentMemo
+                      filterText={filterText}
+                      setFilterText={setFilterText}
+                      resetPaginationToggle={resetPaginationToggle}
+                      setResetPaginationToggle={setResetPaginationToggle}
+                      isPrintingButtonActive={true}
+                    />
+                  }
+                  expandableRows
+                  highlightOnHover
+                  expandOnRowClicked
+                  expandableRowsComponent={<ExpandableComponent />}
+                />
+              )}
             </CardBody>
             <CardFooter className="text-right"></CardFooter>
           </Card>
@@ -176,8 +184,11 @@ const RiwayatKendaraanPindah = ({ path }) => {
       </Row>
 
       {/* Modal Detail */}
-      <ModalDetail modalDetail={modalDetail} setModalDetail={setModalDetail} />
-      <ModalEdit modalEdit={modalEdit} setModalEdit={setModalEdit} />
+      <ModalDetail
+        modalDetail={modalDetail}
+        setModalDetail={setModalDetail}
+        pegawai={pegawai}
+      />
     </>
   );
 };

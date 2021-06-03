@@ -86,7 +86,7 @@ export const showAlertSuccess = (successMessage = "", history) => {
     showConfirmButton: false,
     timer: 1500,
   }).then((res) => {
-    history.push(`/easset/admin/barang`);
+    history.push(`/easset/admin/users`);
   });
 };
 

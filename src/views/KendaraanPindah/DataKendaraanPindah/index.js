@@ -177,7 +177,14 @@ const DataKendaraanPindah = ({ path }) => {
             <Button
               color="danger"
               className="btn btn-sm"
-              onClick={() => showDeleteAlert(row.id_kendaraan_pindah)}
+              onClick={() =>
+                showDeleteAlert(
+                  kendaraan.value,
+                  row.id_kendaraan_pindah,
+                  setKendaraanPindah,
+                  setLoading
+                )
+              }
             >
               <i className="fas fa-trash"></i>
             </Button>
@@ -204,7 +211,7 @@ const DataKendaraanPindah = ({ path }) => {
         <Button
           color="success"
           disabled={!kendaraan ? true : false}
-          onClick={() => goToDetailKendaraan(history, 1)}
+          onClick={() => goToDetailKendaraan(history, kendaraan.value)}
         >
           Lihat Kendaraan
         </Button>
@@ -295,13 +302,28 @@ const DataKendaraanPindah = ({ path }) => {
       </Row>
 
       {/* Modal Tambah */}
-      <ModalTambah modal={modal} setModal={setModal} kendaraan={kendaraan} pegawai={pegawai} />
+      <ModalTambah
+        modal={modal}
+        setModal={setModal}
+        kendaraan={kendaraan}
+        pegawai={pegawai}
+        setKendaraanPindah={setKendaraanPindah}
+      />
 
       {/* Modal Detail */}
-      <ModalDetail modalDetail={modalDetail} setModalDetail={setModalDetail} />
+      <ModalDetail
+        modalDetail={modalDetail}
+        setModalDetail={setModalDetail}
+        pegawai={pegawai}
+      />
 
       {/* Modal Edit */}
-      <ModalEdit modalEdit={modalEdit} setModalEdit={setModalEdit} />
+      <ModalEdit
+        modalEdit={modalEdit}
+        setModalEdit={setModalEdit}
+        pegawai={pegawai}
+        setKendaraanPindah={setKendaraanPindah}
+      />
     </>
   );
 };

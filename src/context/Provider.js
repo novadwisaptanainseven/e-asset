@@ -11,6 +11,13 @@ export const GlobalContext = createContext({});
 export const GlobalProvider = ({ children }) => {
   // Login
   const [loginState, loginDispatch] = useReducer(loginReducer, initState);
+  // Users
+  const [usersState, usersDispatch] = useReducer(reducer, initState);
+  // Current User
+  const [currentUserState, currentUserDispatch] = useReducer(
+    loginReducer,
+    initState
+  );
   // Barang
   const [barangState, barangDispatch] = useReducer(reducer, initStateMain);
   // Riwayat Barang Pindah
@@ -33,6 +40,7 @@ export const GlobalProvider = ({ children }) => {
     reducer,
     initStateMain
   );
+
   // Rincian Barang
   const [rincianBarangState, rincianBarangDispatch] = useReducer(
     reducerRincianBarang,
@@ -44,6 +52,10 @@ export const GlobalProvider = ({ children }) => {
       value={{
         loginState,
         loginDispatch,
+        currentUserState,
+        currentUserDispatch,
+        usersState,
+        usersDispatch,
         barangState,
         barangDispatch,
         barangPindahState,

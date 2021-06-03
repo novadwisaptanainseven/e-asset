@@ -2,7 +2,7 @@ import axiosInstance from "helpers/axios";
 import { showAlertError } from "views/Barang/functions";
 import { showAlertSuccess } from "views/Barang/functions";
 
-export const editBarang = (id, values, setLoading) => {
+export const editBarang = (id, values, setLoading, history) => {
   setLoading(true);
 
   let successMessage = "Edit Barang Berhasil";
@@ -16,7 +16,7 @@ export const editBarang = (id, values, setLoading) => {
     })
     .then((res) => {
       console.log(res.data);
-      showAlertSuccess(successMessage);
+      showAlertSuccess(successMessage, history);
       setLoading(false);
     })
     .catch((err) => {

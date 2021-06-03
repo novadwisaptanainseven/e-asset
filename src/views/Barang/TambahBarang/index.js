@@ -116,7 +116,7 @@ const TambahBarang = () => {
       console.log(item);
     }
 
-    insertBarang(formData, setLoading);
+    insertBarang(formData, setLoading, history);
   };
 
   return (

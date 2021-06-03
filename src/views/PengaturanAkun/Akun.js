@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import {
   Card,
   Col,
@@ -17,37 +17,18 @@ import {
 import { Formik } from "formik";
 import { setInitState } from "./functions";
 import validationSchema from "./Formik/validationSchema";
-import { handleFormSubmit } from "views/KendaraanPindah/functions";
+import { GlobalContext } from "context/Provider";
+import { editAkun } from "context/actions/Auth/editAkun";
+import { LoadAnimationWhite } from "assets";
 
 const PengaturanAkun = ({ path }) => {
-  // const history = useHistory();
-  // const [preview, setPreview] = useState(null);
-  // const [selectedFile, setSelectedFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const { currentUserState, currentUserDispatch } = useContext(GlobalContext);
+  const { data: currentUser } = currentUserState;
 
-  // Menangani preview input gambar setelah dipilih
-  // const handleSelectedFile = useCallback(() => {
-  //   if (!selectedFile) {
-  //     setPreview(null);
-  //     return;
-  //   }
-
-  //   const objectUrl = URL.createObjectURL(selectedFile);
-  //   setPreview(objectUrl);
-
-  //   return () => URL.revokeObjectURL(objectUrl);
-  // }, [selectedFile]);
-
-  // const onSelectFile = (e) => {
-  //   if (!e.target.files || e.target.files.length === 0) {
-  //     setSelectedFile(undefined);
-  //     return;
-  //   }
-  //   setSelectedFile(e.target.files[0]);
-  // };
-
-  // useEffect(() => {
-  //   handleSelectedFile();
-  // }, [handleSelectedFile]);
+  const handleFormSubmit = (values) => {
+    editAkun(currentUser.id_user, values, setLoading, currentUserDispatch);
+  };
 
   return (
     <>
@@ -56,15 +37,9 @@ const PengaturanAkun = ({ path }) => {
           <Card className="shadow">
             <CardHeader className="d-flex justify-content-between">
               <h2>Pengaturan Akun</h2>
-              {/* <Button
-                color="info"
-                onClick={() => goToEditPassword(path, history)}
-              >
-                Ganti Password
-              </Button> */}
             </CardHeader>
             <Formik
-              initialValues={setInitState("")}
+              initialValues={setInitState(currentUser)}
               validationSchema={validationSchema}
               onSubmit={(values) => handleFormSubmit(values)}
               enableReinitialize
@@ -79,28 +54,6 @@ const PengaturanAkun = ({ path }) => {
               }) => (
                 <Form onSubmit={handleSubmit}>
                   <CardBody className="bg-secondary">
-                    <FormGroup row>
-                      <Col md="2">
-                        <Label>Nama</Label>
-                      </Col>
-                      <Col>
-                        <Input
-                          type="text"
-                          id="nama"
-                          name="nama"
-                          placeholder="Nama"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.nama || ""}
-                          className={
-                            errors.nama && touched.nama ? "is-invalid" : null
-                          }
-                        />
-                        {errors.nama && touched.nama && (
-                          <div className="invalid-feedback">{errors.nama}</div>
-                        )}
-                      </Col>
-                    </FormGroup>
                     <FormGroup row>
                       <Col md="2">
                         <Label>Username</Label>
@@ -211,7 +164,15 @@ const PengaturanAkun = ({ path }) => {
                   </CardBody>
                   <CardFooter>
                     <Button type="submit" color="primary">
-                      Simpan
+                      {loading ? (
+                        <img
+                          width={30}
+                          src={LoadAnimationWhite}
+                          alt="load-animation"
+                        />
+                      ) : (
+                        "Simpan"
+                      )}
                     </Button>
                   </CardFooter>
                 </Form>

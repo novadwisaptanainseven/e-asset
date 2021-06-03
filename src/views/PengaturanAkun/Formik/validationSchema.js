@@ -1,7 +1,6 @@
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
-  nama: Yup.string().required("Nama harus diisi"),
   username: Yup.string().required("Username harus diisi"),
   password: Yup.string().oneOf(
     [Yup.ref("konfirmasi_password"), null],

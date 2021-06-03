@@ -15,8 +15,10 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+import { getUserByIdDispatch } from "context/actions/Auth/getUserByIdDispatch";
 import { logout } from "context/actions/Auth/logout";
-import React from "react";
+import { GlobalContext } from "context/Provider";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 // reactstrap components
 import {
@@ -36,6 +38,14 @@ import withReactContent from "sweetalert2-react-content";
 const Swal = withReactContent(swal2);
 
 const AdminNavbar = (props) => {
+  const { currentUserState, currentUserDispatch } = useContext(GlobalContext);
+  const { data } = currentUserState;
+
+  // Get Current User
+  useEffect(() => {
+    getUserByIdDispatch(sessionStorage.id_user, currentUserDispatch);
+  }, [currentUserDispatch]);
+
   const handleLogout = (e) => {
     e.preventDefault();
 
@@ -69,7 +79,7 @@ const AdminNavbar = (props) => {
             <UncontrolledDropdown nav>
               <DropdownToggle className="pr-0" nav>
                 <Media className="align-items-center">
-                  <span className="avatar avatar-sm rounded-circle">
+                  {/* <span className="avatar avatar-sm rounded-circle">
                     <img
                       alt="..."
                       src={
@@ -77,10 +87,10 @@ const AdminNavbar = (props) => {
                           .default
                       }
                     />
-                  </span>
+                  </span> */}
                   <Media className="ml-2 d-none d-lg-block">
                     <span className="mb-0 text-sm font-weight-bold">
-                      Jessica Jones
+                      {data.username}
                     </span>
                   </Media>
                 </Media>

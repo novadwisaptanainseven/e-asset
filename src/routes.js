@@ -16,7 +16,7 @@
 
 */
 import Index from "views/Dashboard/Index.js";
-import Register from "views/Auth/Register";
+// import Register from "views/Auth/Register";
 import Barang from "views/Barang";
 import RincianBarang from "views/RincianBarang";
 import IndexBarangPindah from "views/BarangPindah";
@@ -24,9 +24,10 @@ import IndexBarangMasuk from "views/BarangMasuk";
 import Kendaraan from "views/Kendaraan";
 import IndexKendaraanPindah from "views/KendaraanPindah";
 import IndexPengaturanAkun from "views/PengaturanAkun";
+import IndexUsers from "views/Users";
 
 const layoutAdmin = "/easset/admin";
-const layoutAuth = "/easset/auth";
+// const layoutAuth = "/easset/auth";
 
 var routes = [
   {
@@ -79,18 +80,18 @@ var routes = [
     layout: layoutAdmin,
   },
   {
+    path: "/users",
+    name: "Users",
+    icon: "fas fa-users text-danger",
+    component: IndexUsers,
+    layout: layoutAdmin,
+  },
+  {
     path: "/pengaturan-akun",
     name: "Pengaturan Akun",
     icon: "ni ni-single-02 text-info",
     component: IndexPengaturanAkun,
     layout: layoutAdmin,
-  },
-  {
-    path: "/register",
-    name: "Logout",
-    icon: "fas fa-sign-out-alt text-pink",
-    component: Register,
-    layout: layoutAuth,
   },
 ];
 export default routes;

@@ -29,6 +29,7 @@ import { LoadAnimationBlue } from "assets";
 import { getAllKendaraan } from "context/actions/Kendaraan";
 import { getAllBarangPindah } from "context/actions/BarangPindah";
 import { getAllKendaraanPindah } from "context/actions/KendaraanPindah";
+import capitalize from "helpers/capitalize";
 
 const Index = (props) => {
   const {
@@ -47,6 +48,8 @@ const Index = (props) => {
   const { data: dataKendaraan, loading: loadingKendaraan } = kendaraanState;
   const { data: dataKendaraanPindah, loading: loadingKendaraanPindah } =
     kendaraanPindahState;
+  const { currentUserState } = useContext(GlobalContext);
+  const { data: currentUser } = currentUserState;
 
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
@@ -86,7 +89,7 @@ const Index = (props) => {
         <Col>
           <Card className="shadow-sm">
             <CardBody>
-              <h1>Halo Nova Dwi Sapta!</h1>
+              <h1>Halo {capitalize(currentUser.username)}</h1>
               <h2 className="font-weight-normal">
                 Selamat Datang di Aplikasi E-Asset DISPERKIM
               </h2>

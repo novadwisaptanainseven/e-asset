@@ -8,6 +8,7 @@ const SubHeaderComponentMemo = ({
   resetPaginationToggle,
   setResetPaginationToggle,
   isPrintingButtonActive,
+  handlePrint,
 }) => {
   const handleClear = () => {
     if (filterText) {
@@ -19,7 +20,11 @@ const SubHeaderComponentMemo = ({
   return (
     <>
       {isPrintingButtonActive && (
-        <Button color="info" style={{ height: "35px", paddingTop: "5px" }}>
+        <Button
+          onClick={handlePrint}
+          color="info"
+          style={{ height: "35px", paddingTop: "5px" }}
+        >
           Cetak <i className="fas fa-print"></i>
         </Button>
       )}

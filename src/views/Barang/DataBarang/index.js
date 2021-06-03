@@ -1,4 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
+import { useReactToPrint } from "react-to-print";
 // import barang from "assets/dummyData/barang";
 import customStyles from "datatableStyle/customStyles";
 import DataTable from "react-data-table-component";
@@ -24,13 +25,29 @@ import { GlobalContext } from "context/Provider";
 import { getAllBarang } from "context/actions/Barang";
 // import { LoadAnimationBlue } from "assets";
 import Loading from "components/Loading";
+import { ComponentToPrint } from "./ComponentToPrint";
 
 const DataBarang = ({ path }) => {
+  const componentPrintRef = useRef();
   const history = useHistory();
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const { barangState, barangDispatch } = useContext(GlobalContext);
   const { data: dataBarang } = barangState;
+
+  // Handle print data barang
+  const handlePrintBarang = useReactToPrint({
+    content: () => componentPrintRef.current,
+    pageStyle: `
+      @media print {
+        @page {
+          size: landscape;
+        }
+      }
+    `,
+    copyStyles: true,
+    documentTitle: "Data Barang",
+  });
 
   useEffect(() => {
     getAllBarang(barangDispatch);
@@ -149,6 +166,7 @@ const DataBarang = ({ path }) => {
                         resetPaginationToggle={resetPaginationToggle}
                         setResetPaginationToggle={setResetPaginationToggle}
                         isPrintingButtonActive={true}
+                        handlePrint={handlePrintBarang}
                       />
                     }
                     expandableRows
@@ -162,6 +180,11 @@ const DataBarang = ({ path }) => {
           </Card>
         </Col>
       </Row>
+
+      {/* Component untuk print data barang */}
+      {dataBarang && (
+        <ComponentToPrint ref={componentPrintRef} data={dataBarang} />
+      )}
     </>
   );
 };

@@ -1,3 +1,4 @@
+import { deleteKendaraanPindah } from "context/actions/KendaraanPindah";
 import swal2 from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 const Swal = withReactContent(swal2);
@@ -35,9 +36,14 @@ export const cekSelectError = (val, setTouchedSelect) => {
 };
 
 // Alert untuk hapus data
-export const showDeleteAlert = (id) => {
+export const showDeleteAlert = (
+  idKendaraan,
+  idKendaraanPindah,
+  setKendaraanPindah,
+  setLoading
+) => {
   Swal.fire({
-    title: `Anda Yakin ingin Hapus Data dengan id: ${id} ?`,
+    title: `Anda Yakin ingin Hapus Data dengan id: ${idKendaraanPindah} ?`,
     text: "Data tidak dapat dipulihkan setelah Anda hapus",
     icon: "warning",
     showCancelButton: true,
@@ -46,7 +52,23 @@ export const showDeleteAlert = (id) => {
     confirmButtonText: "Iya",
   }).then((result) => {
     if (result.isConfirmed) {
-      Swal.fire("Terhapus!", "Data berhasil dihapus.", "success");
+      deleteKendaraanPindah(
+        idKendaraan,
+        idKendaraanPindah,
+        setKendaraanPindah,
+        setLoading,
+        Swal
+      );
     }
   });
+};
+
+// Fungsi untuk bertujuan untuk mengubah data berupa id menjadi string nama pegawai
+export const getNamaPegawai = (id = 1, pegawai = []) => {
+  const search = pegawai.filter((item) => {
+    return item.id_pegawai && item.id_pegawai === id;
+  });
+
+  // console.log(search[0].nama);
+  return search[0].nama;
 };

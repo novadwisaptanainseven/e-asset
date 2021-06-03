@@ -1,12 +1,18 @@
-import React, { useEffect } from "react";
+import Loading from "components/Loading";
+import { getKendaraanPindahById } from "context/actions/KendaraanPindah";
+import React, { useEffect, useState } from "react";
 import { Modal } from "reactstrap";
+import { getCleanTanggal } from "views/Kendaraan/functions";
+import { getNamaPegawai } from "./functions";
 
-const ModalDetail = ({ modalDetail, setModalDetail }) => {
+const ModalDetail = ({ modalDetail, setModalDetail, pegawai }) => {
   const { id, modal } = modalDetail;
+  const [data, setData] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (id) {
-      console.log(id);
+      getKendaraanPindahById(id, setData, setLoading);
     }
   }, [id]);
 
@@ -45,45 +51,44 @@ const ModalDetail = ({ modalDetail, setModalDetail }) => {
           </button>
         </div>
         <div className="modal-body">
-          <table cellPadding={5} style={{ width: "100%" }}>
-            <tbody>
-              <tr>
-                <th width="25%">Tanggal</th>
-                <th width="3%">:</th>
-                <td>27/11/2021</td>
-              </tr>
-              <tr>
-                <th>Merk Kendaraan</th>
-                <th>:</th>
-                <td>Avanza</td>
-              </tr>
-              <tr>
-                <th>Tipe Kendaraan</th>
-                <th>:</th>
-                <td>Lorem</td>
-              </tr>
-              <tr>
-                <th>Dari Pegawai</th>
-                <th>:</th>
-                <td>Nova Dwi Sapta</td>
-              </tr>
-              <tr>
-                <th>Ke Pegawai</th>
-                <th>:</th>
-                <td>Purwanto</td>
-              </tr>
-              <tr>
-                <th valign="top">Keterangan</th>
-                <th valign="top">:</th>
-                <td align="justify">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Sapiente culpa ipsa architecto minus, aliquid cum qui optio
-                  obcaecati inventore dolorum temporibus corrupti neque ad rem.
-                  Nulla, dignissimos! Voluptatum, placeat reiciendis.{" "}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          {loading ? (
+            <Loading />
+          ) : (
+            <table cellPadding={5} style={{ width: "100%" }}>
+              <tbody>
+                <tr>
+                  <th width="25%">Tanggal</th>
+                  <th width="3%">:</th>
+                  <td>{data && getCleanTanggal(data.tanggal)}</td>
+                </tr>
+                <tr>
+                  <th>Merk Kendaraan</th>
+                  <th>:</th>
+                  <td>{data && data.kendaraan.merk}</td>
+                </tr>
+                <tr>
+                  <th>Tipe Kendaraan</th>
+                  <th>:</th>
+                  <td>{data && data.kendaraan.tipe}</td>
+                </tr>
+                <tr>
+                  <th>Dari Pegawai</th>
+                  <th>:</th>
+                  <td>{data && getNamaPegawai(data.dari, pegawai)}</td>
+                </tr>
+                <tr>
+                  <th>Ke Pegawai</th>
+                  <th>:</th>
+                  <td>{data && getNamaPegawai(data.ke, pegawai)}</td>
+                </tr>
+                <tr>
+                  <th valign="top">Keterangan</th>
+                  <th valign="top">:</th>
+                  <td align="justify">{data.keterangan}</td>
+                </tr>
+              </tbody>
+            </table>
+          )}
         </div>
       </Modal>
     </>
