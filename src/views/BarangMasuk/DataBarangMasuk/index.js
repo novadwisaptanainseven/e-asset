@@ -152,7 +152,7 @@ const DataBarangMasuk = ({ path }) => {
             onClick={() =>
               setModalDetail({
                 ...modalDetail,
-                id: row.id_barang_pindah,
+                id: row.id_barang_masuk,
                 modal: true,
               })
             }

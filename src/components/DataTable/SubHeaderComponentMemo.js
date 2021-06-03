@@ -20,13 +20,22 @@ const SubHeaderComponentMemo = ({
   return (
     <>
       {isPrintingButtonActive && (
-        <Button
-          onClick={handlePrint}
-          color="info"
-          style={{ height: "35px", paddingTop: "5px" }}
-        >
-          Cetak <i className="fas fa-print"></i>
-        </Button>
+        <>
+          <Button
+            onClick={handlePrint}
+            color="info"
+            style={{ height: "35px", paddingTop: "5px" }}
+          >
+            PDF <i className="fas fa-print"></i>
+          </Button>
+          <Button
+            // onClick={handlePrint}
+            color="success"
+            style={{ height: "35px", paddingTop: "5px" }}
+          >
+            Excel <i className="fas fa-print"></i>
+          </Button>
+        </>
       )}
       <FilterComponent
         onFilter={(e) => setFilterText(e.target.value)}

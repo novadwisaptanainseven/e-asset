@@ -4,9 +4,11 @@ import { getAllPegawai } from "context/actions/EPekerjaAPI/Pegawai";
 import { getAllKendaraanPindah } from "context/actions/KendaraanPindah";
 import { GlobalContext } from "context/Provider";
 import customStyles from "datatableStyle/customStyles";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import DataTable from "react-data-table-component";
 import { useHistory } from "react-router";
+import { useReactToPrint } from "react-to-print";
+// import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import {
   Card,
   Col,
@@ -17,11 +19,14 @@ import {
   CardFooter,
 } from "reactstrap";
 import { getCleanTanggal } from "views/Kendaraan/functions";
-import { getNamaPegawai, goBackToPrevPage} from "../functions";
+import { getNamaPegawai, goBackToPrevPage } from "../functions";
 import ModalDetail from "../ModalDetail";
+import { ComponentToPrint } from "./ComponentToPrint";
 import ExpandableComponent from "./ExpandableComponent";
+// import ComponentExcel from "./ComponentExcel";
 
 const RiwayatKendaraanPindah = ({ path }) => {
+  const componentPrintRef = useRef();
   const history = useHistory();
   const [modalDetail, setModalDetail] = useState({
     id: null,
@@ -33,6 +38,20 @@ const RiwayatKendaraanPindah = ({ path }) => {
   const { kendaraanPindahState, kendaraanPindahDispatch } =
     useContext(GlobalContext);
   const { data: dataKendaraanPindah, loading } = kendaraanPindahState;
+
+  // Handle print data Kendaraan
+  const handlePrintKendaraanPindah = useReactToPrint({
+    content: () => componentPrintRef.current,
+    pageStyle: `
+      @media print {
+        @page {
+          size: landscape;
+        }
+      }
+    `,
+    copyStyles: true,
+    documentTitle: "Data Riwayat Kendaraan Pindah",
+  });
 
   // Get All Riwayat Kendaraan Pindah
   useEffect(() => {
@@ -169,6 +188,7 @@ const RiwayatKendaraanPindah = ({ path }) => {
                       resetPaginationToggle={resetPaginationToggle}
                       setResetPaginationToggle={setResetPaginationToggle}
                       isPrintingButtonActive={true}
+                      handlePrint={handlePrintKendaraanPindah}
                     />
                   }
                   expandableRows
@@ -189,6 +209,20 @@ const RiwayatKendaraanPindah = ({ path }) => {
         setModalDetail={setModalDetail}
         pegawai={pegawai}
       />
+
+      {/* Component untuk print data barang pindah */}
+      {pegawai.length > 0 && filteredData.length > 0 && (
+        <div style={{ display: "none" }}>
+          <ComponentToPrint ref={componentPrintRef} data={filteredData} />
+        </div>
+      )}
+
+      {/* Component Excel */}
+      {/* {pegawai.length > 0 && filteredData.length > 0 && (
+        <div style={{ display: "none" }}>
+          <ComponentExcel idElement="table-barang" data={filteredData} />
+        </div>
+      )} */}
     </>
   );
 };

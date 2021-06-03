@@ -4,9 +4,10 @@ import { getAllBarangMasuk } from "context/actions/BarangMasuk";
 import { getAllBidang } from "context/actions/EPekerjaAPI/Bidang";
 import { GlobalContext } from "context/Provider";
 import customStyles from "datatableStyle/customStyles";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState, useRef } from "react";
 import DataTable from "react-data-table-component";
 import { useHistory } from "react-router";
+import { useReactToPrint } from "react-to-print";
 import {
   Card,
   Col,
@@ -18,9 +19,11 @@ import {
 } from "reactstrap";
 import { getCleanTanggal, getNamaBidang, goBackToPrevPage } from "../functions";
 import ModalDetail from "../ModalDetail";
+import { ComponentToPrint } from "./ComponentToPrint";
 import ExpandableComponent from "./ExpandableComponent";
 
 const RiwayatBarangMasuk = ({ path }) => {
+  const componentPrintRef = useRef();
   const history = useHistory();
   const [modalDetail, setModalDetail] = useState({
     id: null,
@@ -32,11 +35,26 @@ const RiwayatBarangMasuk = ({ path }) => {
   const { barangMasukState, barangMasukDispatch } = useContext(GlobalContext);
   const { data: dataBarangMasuk, loading } = barangMasukState;
 
+  // Handle print data barang masuk
+  const handlePrintBarangMasuk = useReactToPrint({
+    content: () => componentPrintRef.current,
+    pageStyle: `
+      @media print {
+        @page {
+          size: landscape;
+        }
+      }
+    `,
+    copyStyles: true,
+    documentTitle: "Data Riwayat Barang Masuk",
+  });
+
+  // Get all riwayat barang masuk
   useEffect(() => {
-    // Get all riwayat barang masuk
     getAllBarangMasuk(barangMasukDispatch);
   }, [barangMasukDispatch]);
 
+  // Get All Bidang
   useEffect(() => {
     getAllBidang(setBidang);
   }, []);
@@ -74,6 +92,20 @@ const RiwayatBarangMasuk = ({ path }) => {
     {
       name: "Tanggal",
       selector: "createdAt",
+      sortable: true,
+      wrap: true,
+      maxWidth: "200px",
+    },
+    {
+      name: "Barang",
+      selector: "barang.nama_barang",
+      sortable: true,
+      wrap: true,
+      maxWidth: "200px",
+    },
+    {
+      name: "Merk",
+      selector: "barang.merk",
       sortable: true,
       wrap: true,
       maxWidth: "200px",
@@ -161,6 +193,7 @@ const RiwayatBarangMasuk = ({ path }) => {
                       resetPaginationToggle={resetPaginationToggle}
                       setResetPaginationToggle={setResetPaginationToggle}
                       isPrintingButtonActive={true}
+                      handlePrint={handlePrintBarangMasuk}
                     />
                   }
                   expandableRows
@@ -181,6 +214,13 @@ const RiwayatBarangMasuk = ({ path }) => {
         modalDetail={modalDetail}
         setModalDetail={setModalDetail}
       />
+
+      {/* Component untuk print data barang pindah */}
+      {bidang.length > 0 && filteredData.length > 0 && (
+        <div style={{ display: "none" }}>
+          <ComponentToPrint ref={componentPrintRef} data={filteredData} />
+        </div>
+      )}
     </>
   );
 };

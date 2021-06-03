@@ -183,7 +183,9 @@ const DataBarang = ({ path }) => {
 
       {/* Component untuk print data barang */}
       {dataBarang && (
-        <ComponentToPrint ref={componentPrintRef} data={dataBarang} />
+        <div style={{ display: "none" }}>
+          <ComponentToPrint ref={componentPrintRef} data={filteredData} />
+        </div>
       )}
     </>
   );

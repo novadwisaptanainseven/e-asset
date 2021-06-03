@@ -1,4 +1,5 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState, useRef } from "react";
+import { useReactToPrint } from "react-to-print";
 import {
   Card,
   Col,
@@ -21,8 +22,10 @@ import { getAllBarang } from "context/actions/Barang";
 import Loading from "components/Loading";
 import { getAllBidang } from "context/actions/EPekerjaAPI/Bidang";
 import { CLEAN_UP } from "context/actionTypes";
+import { ComponentToPrint } from "./ComponentToPrint";
 
 const RincianBarang = () => {
+  const componentPrintRef = useRef();
   const [modal, setModal] = useState(false);
   const [barang, setBarang] = useState("");
   const [rincianBarang, setRincianBarang] = useState([]);
@@ -46,6 +49,20 @@ const RincianBarang = () => {
 
     return getValue.nama_bidang;
   };
+
+  // Handle print data rincian barang
+  const handlePrintRincianBarang = useReactToPrint({
+    content: () => componentPrintRef.current,
+    pageStyle: `
+      @media print {
+        @page {
+          size: portrait;
+        }
+      }
+    `,
+    copyStyles: true,
+    documentTitle: "Data Rincian Barang",
+  });
 
   useEffect(() => {
     // Get All Bidang
@@ -140,7 +157,11 @@ const RincianBarang = () => {
                       Tambah Rincian
                     </Button>
                     <div>
-                      <Button color="warning">
+                      <Button
+                        onClick={handlePrintRincianBarang}
+                        color="warning"
+                        disabled={!barang ? true : false}
+                      >
                         Cetak Rincian Barang{" "}
                         {!idBarang ? barang.label : labelBarang}
                       </Button>
@@ -211,6 +232,18 @@ const RincianBarang = () => {
         setRincianBarang={setRincianBarang}
         setLoading={setLoading}
       />
+
+      {/* Component untuk print data rincian barang */}
+      {bidang.length > 0 && rincianBarang.length > 0 && (
+        <div style={{ display: "none" }}>
+          <ComponentToPrint
+            ref={componentPrintRef}
+            data={rincianBarang}
+            bidang={bidang}
+            label={barang.label}
+          />
+        </div>
+      )}
     </>
   );
 };

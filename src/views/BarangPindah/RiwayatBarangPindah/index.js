@@ -5,9 +5,10 @@ import { getAllBarangPindah } from "context/actions/BarangPindah";
 import { getAllBidang } from "context/actions/EPekerjaAPI/Bidang";
 import { GlobalContext } from "context/Provider";
 import customStyles from "datatableStyle/customStyles";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState, useRef } from "react";
 import DataTable from "react-data-table-component";
 import { useHistory } from "react-router";
+import { useReactToPrint } from "react-to-print";
 import {
   Card,
   Col,
@@ -20,9 +21,11 @@ import {
 // import DataBarangMasuk from "views/BarangMasuk/DataBarangMasuk";
 import { getCleanTanggal, getNamaBidang, goBackToPrevPage } from "../functions";
 import ModalDetail from "../ModalDetail";
+import { ComponentToPrint } from "./ComponentToPrint";
 import ExpandableComponent from "./ExpandableComponent";
 
 const RiwayatBarangPindah = ({ path }) => {
+  const componentPrintRef = useRef();
   const history = useHistory();
   const [modalDetail, setModalDetail] = useState({
     id: null,
@@ -34,13 +37,27 @@ const RiwayatBarangPindah = ({ path }) => {
   const { barangPindahState, barangPindahDispatch } = useContext(GlobalContext);
   const { data: dataBarangPindah, loading } = barangPindahState;
 
+  // Handle print data barang
+  const handlePrintBarangPindah = useReactToPrint({
+    content: () => componentPrintRef.current,
+    pageStyle: `
+      @media print {
+        @page {
+          size: landscape;
+        }
+      }
+    `,
+    copyStyles: true,
+    documentTitle: "Data Riwayat Barang Pindah",
+  });
+
+  // Get All Riwayat Barang Pindah
   useEffect(() => {
-    // Get All Riwayat Barang Pindah
     getAllBarangPindah(barangPindahDispatch);
   }, [barangPindahDispatch]);
 
+  // Get All Bidang
   useEffect(() => {
-    // Get All Bidang
     getAllBidang(setBidang);
   }, []);
 
@@ -182,6 +199,7 @@ const RiwayatBarangPindah = ({ path }) => {
                       resetPaginationToggle={resetPaginationToggle}
                       setResetPaginationToggle={setResetPaginationToggle}
                       isPrintingButtonActive={true}
+                      handlePrint={handlePrintBarangPindah}
                     />
                   }
                   expandableRows
@@ -202,6 +220,13 @@ const RiwayatBarangPindah = ({ path }) => {
         modalDetail={modalDetail}
         setModalDetail={setModalDetail}
       />
+
+      {/* Component untuk print data barang pindah */}
+      {bidang.length > 0 && filteredData.length > 0 && (
+        <div style={{ display: "none" }}>
+          <ComponentToPrint ref={componentPrintRef} data={filteredData} />
+        </div>
+      )}
     </>
   );
 };

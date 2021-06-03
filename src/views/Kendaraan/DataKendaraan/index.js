@@ -1,4 +1,5 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState, useRef } from "react";
+import { useReactToPrint } from "react-to-print";
 import customStyles from "datatableStyle/customStyles";
 import DataTable from "react-data-table-component";
 import {
@@ -27,14 +28,30 @@ import { GlobalContext } from "context/Provider";
 import { getAllKendaraan } from "context/actions/Kendaraan";
 import { getAllPegawai } from "context/actions/EPekerjaAPI/Pegawai";
 import Loading from "components/Loading";
+import { ComponentToPrint } from "./ComponentToPrint";
 
 const DataKendaraan = ({ path }) => {
+  const componentPrintRef = useRef();
   const history = useHistory();
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const { kendaraanState, kendaraanDispatch } = useContext(GlobalContext);
   const { data: dataKendaraan } = kendaraanState;
   const [pegawai, setPegawai] = useState([]);
+
+  // Handle print data kendaraan
+  const handlePrintKendaraan = useReactToPrint({
+    content: () => componentPrintRef.current,
+    pageStyle: `
+      @media print {
+        @page {
+          size: landscape;
+        }
+      }
+    `,
+    copyStyles: true,
+    documentTitle: "Data Kendaraan",
+  });
 
   useEffect(() => {
     getAllKendaraan(kendaraanDispatch);
@@ -66,6 +83,7 @@ const DataKendaraan = ({ path }) => {
 
   const filteredData = dataForDisplay.filter((item) => {
     if (
+      item.nama_pegawai.toLowerCase().includes(filterText.toLowerCase()) ||
       item.merk.toLowerCase().includes(filterText.toLowerCase()) ||
       item.tipe.toLowerCase().includes(filterText.toLowerCase()) ||
       item.cc.toLowerCase().includes(filterText.toLowerCase()) ||
@@ -181,6 +199,7 @@ const DataKendaraan = ({ path }) => {
                         resetPaginationToggle={resetPaginationToggle}
                         setResetPaginationToggle={setResetPaginationToggle}
                         isPrintingButtonActive={true}
+                        handlePrint={handlePrintKendaraan}
                       />
                     }
                     expandableRows
@@ -194,6 +213,13 @@ const DataKendaraan = ({ path }) => {
           </Card>
         </Col>
       </Row>
+
+      {/* Component untuk print data kendaraan */}
+      {dataForDisplay.length > 0 && (
+        <div style={{ display: "none" }}>
+          <ComponentToPrint ref={componentPrintRef} data={filteredData} />
+        </div>
+      )}
     </>
   );
 };
