@@ -9,7 +9,10 @@ const SubHeaderComponentMemo = ({
   setResetPaginationToggle,
   isPrintingButtonActive,
   handlePrint,
+  exportExcel,
 }) => {
+  const { ExcelFile, ExcelSheet, fileName, dataSet } = exportExcel;
+
   const handleClear = () => {
     if (filterText) {
       setResetPaginationToggle(!resetPaginationToggle);
@@ -28,13 +31,21 @@ const SubHeaderComponentMemo = ({
           >
             PDF <i className="fas fa-print"></i>
           </Button>
-          <Button
-            // onClick={handlePrint}
-            color="success"
-            style={{ height: "35px", paddingTop: "5px" }}
+
+          <ExcelFile
+            filename={fileName}
+            element={
+              <Button
+                className="mr-2"
+                color="success"
+                style={{ height: "35px", paddingTop: "5px" }}
+              >
+                Excel <i className="fas fa-print"></i>
+              </Button>
+            }
           >
-            Excel <i className="fas fa-print"></i>
-          </Button>
+            <ExcelSheet dataSet={dataSet} name={fileName} />
+          </ExcelFile>
         </>
       )}
       <FilterComponent

@@ -63,6 +63,7 @@ const ExpandableComponent = ({ data }) => {
               alt=""
               width={200}
               className="img-thumbnail"
+              style={{ cursor: "pointer" }}
               onClick={() => setModal(!modal)}
             />
           </Col>

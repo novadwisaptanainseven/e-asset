@@ -26,6 +26,11 @@ import { getAllBarang } from "context/actions/Barang";
 // import { LoadAnimationBlue } from "assets";
 import Loading from "components/Loading";
 import { ComponentToPrint } from "./ComponentToPrint";
+import { getDataSet } from "./dataSetExcel";
+import ReactExport from "react-data-export";
+
+const ExcelFile = ReactExport.ExcelFile;
+const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
 
 const DataBarang = ({ path }) => {
   const componentPrintRef = useRef();
@@ -67,6 +72,9 @@ const DataBarang = ({ path }) => {
         }
         return false;
       });
+
+  // Set Data for Export Excel
+  const dataSetExcel = getDataSet(filteredData);
 
   // Columns DataTable
   const columnsDataTable = [
@@ -166,7 +174,15 @@ const DataBarang = ({ path }) => {
                         resetPaginationToggle={resetPaginationToggle}
                         setResetPaginationToggle={setResetPaginationToggle}
                         isPrintingButtonActive={true}
+                        // Export PDF
                         handlePrint={handlePrintBarang}
+                        // Export Excel
+                        exportExcel={{
+                          ExcelFile: ExcelFile,
+                          ExcelSheet: ExcelSheet,
+                          fileName: "Data Barang",
+                          dataSet: dataSetExcel,
+                        }}
                       />
                     }
                     expandableRows

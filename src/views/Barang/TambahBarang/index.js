@@ -48,7 +48,7 @@ const TambahBarang = () => {
       currency: "IDR",
     });
     if (harga) {
-      setHargaFormatRp(formatRp);
+      if (formatRp !== "RpNaN") setHargaFormatRp(formatRp);
     } else {
       setHargaFormatRp("");
     }
@@ -353,7 +353,7 @@ const TambahBarang = () => {
                               Harga
                             </label>
                             <Input
-                              type="number"
+                              type="text"
                               id="harga"
                               name="harga"
                               placeholder="Harga"

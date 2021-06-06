@@ -29,6 +29,11 @@ import { getAllKendaraan } from "context/actions/Kendaraan";
 import { getAllPegawai } from "context/actions/EPekerjaAPI/Pegawai";
 import Loading from "components/Loading";
 import { ComponentToPrint } from "./ComponentToPrint";
+import ReactExport from "react-data-export";
+import { getDataSet } from "./dataSetExcel";
+
+const ExcelFile = ReactExport.ExcelFile;
+const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
 
 const DataKendaraan = ({ path }) => {
   const componentPrintRef = useRef();
@@ -94,6 +99,9 @@ const DataKendaraan = ({ path }) => {
       return false;
     }
   });
+
+  // Set Data for Export Excel
+  const dataSetExcel = getDataSet(filteredData);
 
   // Columns DataTable
   const columnsDataTable = [
@@ -199,7 +207,15 @@ const DataKendaraan = ({ path }) => {
                         resetPaginationToggle={resetPaginationToggle}
                         setResetPaginationToggle={setResetPaginationToggle}
                         isPrintingButtonActive={true}
+                        // Export PDF
                         handlePrint={handlePrintKendaraan}
+                        // Export Excel
+                        exportExcel={{
+                          ExcelFile: ExcelFile,
+                          ExcelSheet: ExcelSheet,
+                          fileName: "Data Kendaraan",
+                          dataSet: dataSetExcel,
+                        }}
                       />
                     }
                     expandableRows

@@ -25,6 +25,12 @@ import { ComponentToPrint } from "./ComponentToPrint";
 import ExpandableComponent from "./ExpandableComponent";
 // import ComponentExcel from "./ComponentExcel";
 
+import ReactExport from "react-data-export";
+import { getDataSet } from "./dataSetExcel";
+
+const ExcelFile = ReactExport.ExcelFile;
+const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
+
 const RiwayatKendaraanPindah = ({ path }) => {
   const componentPrintRef = useRef();
   const history = useHistory();
@@ -96,6 +102,9 @@ const RiwayatKendaraanPindah = ({ path }) => {
       return false;
     }
   });
+
+  // Set Data for Export Excel
+  const dataSetExcel = getDataSet(filteredData);
 
   // Columns DataTable
   const columnsDataTable = [
@@ -188,7 +197,15 @@ const RiwayatKendaraanPindah = ({ path }) => {
                       resetPaginationToggle={resetPaginationToggle}
                       setResetPaginationToggle={setResetPaginationToggle}
                       isPrintingButtonActive={true}
+                      // Export PDF
                       handlePrint={handlePrintKendaraanPindah}
+                      // Export Excel
+                      exportExcel={{
+                        ExcelFile: ExcelFile,
+                        ExcelSheet: ExcelSheet,
+                        fileName: "Data Riwayat Kendaraan Pindah",
+                        dataSet: dataSetExcel,
+                      }}
                     />
                   }
                   expandableRows
