@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 
+
 export const handleDelete = (id) => {
   alert("Hapus, id: " + id);
 };
