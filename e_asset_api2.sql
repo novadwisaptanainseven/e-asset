@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 07, 2021 at 07:21 PM
+-- Generation Time: Jul 08, 2021 at 06:57 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -35,17 +35,20 @@ CREATE TABLE `barang` (
   `jenis_barang` enum('tetap','tidak-tetap') COLLATE utf8mb4_unicode_ci NOT NULL,
   `no_register` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `merk` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `no_seri_pabrik` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `no_pabrik` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ukuran` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `bahan` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tahun_pembelian` int(11) DEFAULT NULL,
   `harga` int(11) DEFAULT NULL,
+  `jumlah_baik` int(11) NOT NULL DEFAULT 0,
+  `jumlah_rusak` int(11) NOT NULL DEFAULT 0,
+  `jumlah_barang` int(11) NOT NULL DEFAULT 0,
   `keterangan` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `foto` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `createdAt` datetime(3) NOT NULL DEFAULT current_timestamp(3),
   `updatedAt` datetime(3) NOT NULL,
   `deleted` tinyint(1) NOT NULL DEFAULT 0,
-  `id_user` int(11) DEFAULT NULL,
+  `user` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `file` text COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -53,10 +56,10 @@ CREATE TABLE `barang` (
 -- Dumping data for table `barang`
 --
 
-INSERT INTO `barang` (`id_barang`, `no_barang`, `kode_barang`, `nama_barang`, `jenis_barang`, `no_register`, `merk`, `no_seri_pabrik`, `ukuran`, `bahan`, `tahun_pembelian`, `harga`, `keterangan`, `foto`, `createdAt`, `updatedAt`, `deleted`, `id_user`, `file`) VALUES
-(1, '111', '', 'Laptop', 'tetap', '', 'MSI', '10-ab-10-cd', '10x10', 'Karbon', 2021, 8600900, 'MSI MODERN 14 B10MW - 466ID I3-10110U SSD 256GB CARBON GRAY', 'public\\uploads\\barang\\1621667317118-laptop1.png', '2021-05-22 07:08:37.288', '2021-05-22 07:08:37.288', 0, 0, 'public\\uploads\\barang\\1621667317113-Ini file pdf.pdf'),
-(2, '112', '', 'Laptop', 'tetap', '', 'Dell XPS', '10-ab-10-cd', '10x10', 'Alumunium', 2021, 47225000, 'DELL XPS 15 (Core i7-10750H)', 'public\\uploads\\barang\\1621667619467-laptop2.jpg', '2021-05-22 07:13:39.481', '2021-05-22 07:13:39.482', 0, 0, 'public\\uploads\\barang\\1621667619463-Ini file pdf.pdf'),
-(3, '113', '', 'Laptop', 'tetap', '', 'Lenovo', '10-ab-10-cd', '10x10', 'Alumunium', 2021, 27026998, 'LENOVO LEGION 5P 15IMH05H - 6KID I7-10870H SSD 512GB RTX2060 144HZ\n', 'public\\uploads\\barang\\1621667774152-laptop3.png', '2021-05-22 07:16:14.163', '2021-05-22 07:16:14.164', 0, 0, 'public\\uploads\\barang\\1621667774149-Ini file pdf.pdf');
+INSERT INTO `barang` (`id_barang`, `no_barang`, `kode_barang`, `nama_barang`, `jenis_barang`, `no_register`, `merk`, `no_pabrik`, `ukuran`, `bahan`, `tahun_pembelian`, `harga`, `jumlah_baik`, `jumlah_rusak`, `jumlah_barang`, `keterangan`, `foto`, `createdAt`, `updatedAt`, `deleted`, `user`, `file`) VALUES
+(1, '111', '', 'Laptop', 'tetap', '', 'MSI', '10-ab-10-cd', '10x10', 'Karbon', 2021, 8600900, 0, 0, 0, 'MSI MODERN 14 B10MW - 466ID I3-10110U SSD 256GB CARBON GRAY', 'public\\uploads\\barang\\1621667317118-laptop1.png', '2021-05-22 07:08:37.288', '2021-05-22 07:08:37.288', 0, '0', 'public\\uploads\\barang\\1621667317113-Ini file pdf.pdf'),
+(2, '112', '', 'Laptop', 'tetap', '', 'Dell XPS', '10-ab-10-cd', '10x10', 'Alumunium', 2021, 47225000, 0, 0, 0, 'DELL XPS 15 (Core i7-10750H)', 'public\\uploads\\barang\\1621667619467-laptop2.jpg', '2021-05-22 07:13:39.481', '2021-05-22 07:13:39.482', 0, '0', 'public\\uploads\\barang\\1621667619463-Ini file pdf.pdf'),
+(3, '113', '', 'Laptop', 'tetap', '', 'Lenovo', '10-ab-10-cd', '10x10', 'Alumunium', 2021, 27026998, 0, 0, 0, 'LENOVO LEGION 5P 15IMH05H - 6KID I7-10870H SSD 512GB RTX2060 144HZ\n', 'public\\uploads\\barang\\1621667774152-laptop3.png', '2021-05-22 07:16:14.163', '2021-05-22 07:16:14.164', 0, '0', 'public\\uploads\\barang\\1621667774149-Ini file pdf.pdf');
 
 -- --------------------------------------------------------
 
@@ -113,7 +116,7 @@ CREATE TABLE `barang_masuk` (
   `createdAt` datetime(3) NOT NULL DEFAULT current_timestamp(3),
   `updatedAt` datetime(3) NOT NULL,
   `deleted` tinyint(1) NOT NULL DEFAULT 0,
-  `id_user` int(11) DEFAULT NULL,
+  `user` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `keterangan` text COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -157,24 +160,42 @@ CREATE TABLE `barang_pemegang` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `kategori`
+--
+
+CREATE TABLE `kategori` (
+  `id_kategori` int(11) NOT NULL,
+  `nama_kategori` varchar(100) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `kendaraan`
 --
 
 CREATE TABLE `kendaraan` (
   `id_kendaraan` int(11) NOT NULL,
+  `kode_kendaraan` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_pegawai` int(11) NOT NULL,
+  `jenis_kendaraan` varchar(80) COLLATE utf8mb4_unicode_ci NOT NULL,
   `merk` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tipe` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `cc` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `bahan` varchar(80) COLLATE utf8mb4_unicode_ci NOT NULL,
   `warna` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `rangka` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mesin` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `pembuatan` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `pembelian` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `no_rangka` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `no_pabrik` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `no_mesin` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tahun_pembuatan` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tahun_pembelian` int(11) NOT NULL,
   `no_polisi` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `bpkb` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `stnk` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `harga` int(11) NOT NULL,
+  `kondisi` enum('baik','rusak') COLLATE utf8mb4_unicode_ci NOT NULL,
   `biaya_stnk` int(11) NOT NULL,
   `keterangan` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `foto` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -220,6 +241,19 @@ CREATE TABLE `kendaraan_pindah` (
   `deleted` tinyint(1) NOT NULL DEFAULT 0,
   `id_user` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ruangan`
+--
+
+CREATE TABLE `ruangan` (
+  `id_ruangan` int(11) NOT NULL,
+  `nama_ruangan` varchar(100) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -322,6 +356,12 @@ ALTER TABLE `barang_pemegang`
   ADD KEY `id_user` (`id_user`);
 
 --
+-- Indexes for table `kategori`
+--
+ALTER TABLE `kategori`
+  ADD PRIMARY KEY (`id_kategori`);
+
+--
 -- Indexes for table `kendaraan`
 --
 ALTER TABLE `kendaraan`
@@ -342,6 +382,12 @@ ALTER TABLE `kendaraan_pindah`
   ADD PRIMARY KEY (`id_kendaraan_pindah`),
   ADD KEY `id_kendaraan` (`id_kendaraan`),
   ADD KEY `id_user` (`id_user`);
+
+--
+-- Indexes for table `ruangan`
+--
+ALTER TABLE `ruangan`
+  ADD PRIMARY KEY (`id_ruangan`);
 
 --
 -- Indexes for table `user`
@@ -391,6 +437,12 @@ ALTER TABLE `barang_pemegang`
   MODIFY `id_barang_pemegang` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `kategori`
+--
+ALTER TABLE `kategori`
+  MODIFY `id_kategori` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `kendaraan`
 --
 ALTER TABLE `kendaraan`
@@ -407,6 +459,12 @@ ALTER TABLE `kendaraan_pemegang`
 --
 ALTER TABLE `kendaraan_pindah`
   MODIFY `id_kendaraan_pindah` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `ruangan`
+--
+ALTER TABLE `ruangan`
+  MODIFY `id_ruangan` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user`

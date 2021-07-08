@@ -1,3 +1,4 @@
+import { FotoBarangSample } from "assets";
 import { getFile } from "context/actions/DownloadFile/getFile";
 import expandableComponentStyle from "datatableStyle/expandableComponentStyle";
 import React, { useState } from "react";
@@ -19,21 +20,62 @@ const ExpandableComponent = ({ data }) => {
       <div style={expandableComponentStyle}>
         <Row className="mb-1">
           <Col md="3">
+            <strong>No. Pabrik</strong>
+          </Col>
+          <Col>{data.no_pabrik}</Col>
+        </Row>
+        <Row className="mb-1">
+          <Col md="3">
+            <strong>Ukuran</strong>
+          </Col>
+          <Col>{data.ukuran}</Col>
+        </Row>
+        <Row className="mb-1">
+          <Col md="3">
             <strong>Bahan</strong>
           </Col>
           <Col>{data.bahan}</Col>
         </Row>
         <Row className="mb-1">
           <Col md="3">
-            <strong>Tahun</strong>
+            <strong>Tahun Pembelian</strong>
           </Col>
-          <Col>{data.tahun}</Col>
+          <Col>{data.tahun_pembelian}</Col>
         </Row>
         <Row className="mb-1">
           <Col md="3">
             <strong>Harga</strong>
           </Col>
-          <Col>{data.harga}</Col>
+          <Col>
+            {data.harga.toLocaleString("id", {
+              style: "currency",
+              currency: "IDR",
+            })}
+          </Col>
+        </Row>
+        <Row className="mb-1">
+          <Col md="3">
+            <strong>Jumlah Baik</strong>
+          </Col>
+          <Col>{data.jumlah_baik}</Col>
+        </Row>
+        <Row className="mb-1">
+          <Col md="3">
+            <strong>Jumlah Rusak</strong>
+          </Col>
+          <Col>{data.jumlah_rusak}</Col>
+        </Row>
+        <Row className="mb-1">
+          <Col md="3">
+            <strong>Jumlah Barang</strong>
+          </Col>
+          <Col>{data.jumlah_barang}</Col>
+        </Row>
+        <Row className="mb-1">
+          <Col md="3">
+            <strong>Satuan</strong>
+          </Col>
+          <Col>{data.satuan}</Col>
         </Row>
         <Row className="mb-1">
           <Col md="3">
@@ -59,7 +101,7 @@ const ExpandableComponent = ({ data }) => {
           </Col>
           <Col>
             <img
-              src={data.foto ? getFile(data.foto) : ""}
+              src={FotoBarangSample}
               alt=""
               width={200}
               className="img-thumbnail"
@@ -67,6 +109,18 @@ const ExpandableComponent = ({ data }) => {
               onClick={() => setModal(!modal)}
             />
           </Col>
+        </Row>
+        <Row className="mb-1">
+          <Col md="3">
+            <strong>Ditambahkan Oleh</strong>
+          </Col>
+          <Col>{data.user_created}</Col>
+        </Row>
+        <Row className="mb-1">
+          <Col md="3">
+            <strong>Diedit Oleh</strong>
+          </Col>
+          <Col>{data.user_updated}</Col>
         </Row>
       </div>
 

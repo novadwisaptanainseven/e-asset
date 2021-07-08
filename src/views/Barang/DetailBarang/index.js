@@ -17,6 +17,7 @@ import {
 } from "reactstrap";
 import { goBackToPrevPage, goToRincianBarang } from "../functions";
 import { GlobalContext } from "context/Provider";
+import { FotoBarangSample } from "assets";
 
 const DetailBarang = () => {
   const history = useHistory();
@@ -82,69 +83,92 @@ const DetailBarang = () => {
                       <table cellPadding={4} style={{ width: "100%" }}>
                         <tbody>
                           <tr>
-                            <th width={150}>No. Barang</th>
+                            <th width={150}>Kode Barang</th>
                             <th width={40}>:</th>
-                            <td>{data.no_barang}</td>
+                            <td>123abc</td>
                           </tr>
                           <tr>
                             <th>Nama Barang</th>
                             <th>:</th>
-                            <td>{data.nama_barang}</td>
+                            <td>Komputer</td>
+                          </tr>
+                          <tr>
+                            <th>Jenis Barang</th>
+                            <th>:</th>
+                            <td>Barang Tidak Tetap</td>
+                          </tr>
+                          <tr>
+                            <th>Kategori</th>
+                            <th>:</th>
+                            <td>TIK</td>
                           </tr>
                           <tr>
                             <th>Merk</th>
                             <th>:</th>
-                            <td>{data.nama_barang}</td>
+                            <td>Lenovo</td>
                           </tr>
                           <tr>
-                            <th>No. Seri Pabrik</th>
+                            <th>No. Pabrik</th>
                             <th>:</th>
-                            <td>{data.no_seri_pabrik}</td>
+                            <td>123123</td>
                           </tr>
                           <tr>
                             <th>Ukuran</th>
                             <th>:</th>
-                            <td>{data.ukuran}</td>
+                            <td>123</td>
                           </tr>
                           <tr>
                             <th>Bahan</th>
                             <th>:</th>
-                            <td>{data.bahan}</td>
+                            <td>Polikarbonat</td>
                           </tr>
                           <tr>
-                            <th>Tahun</th>
+                            <th>Tahun Pembelian</th>
                             <th>:</th>
-                            <td>{data.tahun}</td>
+                            <td>2021</td>
                           </tr>
                           <tr>
                             <th>Harga</th>
                             <th>:</th>
-                            <td>
-                              {data &&
-                                data.harga.toLocaleString("id", {
-                                  style: "currency",
-                                  currency: "IDR",
-                                })}
-                            </td>
+                            <td>Rp. 15.000.000</td>
                           </tr>
                           <tr>
-                            <th>Keterangan</th>
+                            <th>Jumlah Baik</th>
                             <th>:</th>
-                            <td>{data.keterangan}</td>
+                            <td>30</td>
+                          </tr>
+                          <tr>
+                            <th>Jumlah Rusak</th>
+                            <th>:</th>
+                            <td>0</td>
+                          </tr>
+                          <tr>
+                            <th>Jumlah Barang</th>
+                            <th>:</th>
+                            <td>Rp. 15.000.000</td>
+                          </tr>
+                          <tr>
+                            <th>Satuan</th>
+                            <th>:</th>
+                            <td>Unit</td>
+                          </tr>
+                          <tr>
+                            <th valign="top">Keterangan</th>
+                            <th valign="top">:</th>
+                            <td>
+                              Lorem ipsum dolor sit, amet consectetur
+                              adipisicing elit. Accusantium voluptatibus dolor
+                              dolorem quibusdam exercitationem officia quas
+                              placeat officiis laborum architecto. Et ea
+                              corporis laudantium ipsum porro sequi! Dolor,
+                              consequuntur odit?
+                            </td>
                           </tr>
                           <tr>
                             <th>File</th>
                             <th>:</th>
                             <td>
-                              {data && data.file && (
-                                <a
-                                  href={getFile(data.file)}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                >
-                                  {getFileName(data.file)}
-                                </a>
-                              )}
+                              <a href=".">file-barang.pdf</a>
                             </td>
                           </tr>
                         </tbody>
@@ -157,7 +181,7 @@ const DetailBarang = () => {
                         </CardHeader>
                         <CardBody>
                           <img
-                            src={data && data.foto && getFile(data.foto)}
+                            src={FotoBarangSample}
                             alt="foto-barang"
                             width="100%"
                           />
@@ -168,7 +192,7 @@ const DetailBarang = () => {
                   <Row>
                     <Col>
                       <h6 className="heading-small text-muted mb-2">
-                        Bidang - bidang yang menggunakan barang
+                        Pegawai - pegawai yang menggunakan barang
                       </h6>
                       <Table
                         className="align-items-center table-dark"
@@ -177,47 +201,58 @@ const DetailBarang = () => {
                         <thead className="thead-dark">
                           <tr>
                             <th scope="col">No</th>
-                            <th scope="col">Bidang</th>
-                            <th scope="col">Jumlah Baik</th>
-                            <th scope="col">Jumlah Rusak</th>
-                            <th scope="col">Jumlah Rusak Ringan</th>
-                            <th scope="col">Jumlah Total</th>
+                            <th scope="col">Pegawai</th>
+                            <th scope="col">Total yg Digunakan</th>
+                            <th scope="col">TMT Penggunaan Barang</th>
+                            <th scope="col">Keterangan</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {data &&
-                          bidang.length > 0 &&
-                          data.barang_detail.length > 0 ? (
-                            data.barang_detail.map((item, index) => (
-                              <tr key={index}>
-                                <td>{index + 1}</td>
-                                <td>{getNamaBidang(item.id_bidang)}</td>
-                                <td>{item.jumlah_baik}</td>
-                                <td>{item.jumlah_rusak}</td>
-                                <td>{item.jumlah_rusak_ringan}</td>
-                                <td>{item.jumlah_total}</td>
-                              </tr>
-                            ))
-                          ) : (
-                            <tr>
-                              <td colSpan="6" className="text-center">
-                                Data Masih Kosong
-                              </td>
-                            </tr>
-                          )}
+                          <tr>
+                            <td>1</td>
+                            <td>Nova Dwi Sapta Nain Seven</td>
+                            <td>1</td>
+                            <td>12/10/2021</td>
+                            <td>
+                              Lorem ipsum dolor sit amet consectetur adipisicing
+                              elit. Cumque quod perspiciatis, aperiam inventore
+                              illum odit. Accusantium a id perferendis libero
+                              repudiandae ratione iste ipsum animi. Eligendi
+                              eius facilis sit sint.
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>2</td>
+                            <td>Lyntom Irfan Darmawan</td>
+                            <td>1</td>
+                            <td>12/10/2021</td>
+                            <td>
+                              Lorem ipsum dolor sit amet consectetur adipisicing
+                              elit. Cumque quod perspiciatis, aperiam inventore
+                              illum odit. Accusantium a id perferendis libero
+                              repudiandae ratione iste ipsum animi. Eligendi
+                              eius facilis sit sint.
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>3</td>
+                            <td>Muhammad Fahrizal</td>
+                            <td>1</td>
+                            <td>12/10/2021</td>
+                            <td>
+                              Lorem ipsum dolor sit amet consectetur adipisicing
+                              elit. Cumque quod perspiciatis, aperiam inventore
+                              illum odit. Accusantium a id perferendis libero
+                              repudiandae ratione iste ipsum animi. Eligendi
+                              eius facilis sit sint.
+                            </td>
+                          </tr>
                         </tbody>
                       </Table>
                       <Button
                         color="info"
                         className="mt-2"
                         onClick={() => {
-                          rincianBarangDispatch({
-                            type: "CHANGE",
-                            payload: {
-                              id_barang: params.id,
-                              nama_barang: `${data.nama_barang} (${data.merk})`,
-                            },
-                          });
                           goToRincianBarang(
                             "/easset/admin/rincian-barang",
                             history

@@ -28,6 +28,7 @@ import Loading from "components/Loading";
 import { ComponentToPrint } from "./ComponentToPrint";
 import { getDataSet } from "./dataSetExcel";
 import ReactExport from "react-data-export";
+import barang from "assets/dummyData/barang";
 
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
@@ -58,20 +59,19 @@ const DataBarang = ({ path }) => {
     getAllBarang(barangDispatch);
   }, [barangDispatch]);
 
-  const filteredData = !dataBarang
-    ? []
-    : dataBarang.data.filter((item) => {
-        if (item.nama_barang && item.no_barang && item.merk) {
-          if (
-            item.nama_barang.toLowerCase().includes(filterText.toLowerCase()) ||
-            item.no_barang.toLowerCase().includes(filterText.toLowerCase()) ||
-            item.merk.toLowerCase().includes(filterText.toLowerCase())
-          ) {
-            return true;
-          }
-        }
-        return false;
-      });
+  const filteredData = barang.filter((item) => {
+    if (item.nama_barang && item.kategori && item.kode_barang && item.merk) {
+      if (
+        item.nama_barang.toLowerCase().includes(filterText.toLowerCase()) ||
+        item.kategori.toLowerCase().includes(filterText.toLowerCase()) ||
+        item.kode_barang.toLowerCase().includes(filterText.toLowerCase()) ||
+        item.merk.toLowerCase().includes(filterText.toLowerCase())
+      ) {
+        return true;
+      }
+    }
+    return false;
+  });
 
   // Set Data for Export Excel
   const dataSetExcel = getDataSet(filteredData);
@@ -79,28 +79,40 @@ const DataBarang = ({ path }) => {
   // Columns DataTable
   const columnsDataTable = [
     {
-      name: "No. Barang",
-      selector: "no_barang",
+      name: "No",
+      selector: "no",
       sortable: true,
       wrap: true,
       // maxWidth: "200px",
+    },
+    {
+      name: "Kode Barang",
+      selector: "kode_barang",
+      sortable: true,
+      // maxWidth: "200px",
+      wrap: true,
     },
     {
       name: "Nama Barang",
       selector: "nama_barang",
       sortable: true,
-      // maxWidth: "200px",
+      wrap: true,
+    },
+    {
+      name: "Jenis Barang",
+      selector: "jenis_barang",
+      sortable: true,
+      wrap: true,
+    },
+    {
+      name: "Kategori",
+      selector: "kategori",
+      sortable: true,
       wrap: true,
     },
     {
       name: "Merk",
       selector: "merk",
-      sortable: true,
-      wrap: true,
-    },
-    {
-      name: "Ukuran",
-      selector: "ukuran",
       sortable: true,
       wrap: true,
     },
@@ -133,6 +145,16 @@ const DataBarang = ({ path }) => {
               <i className="fas fa-trash"></i>
             </Button>
           </ButtonGroup>
+        </div>
+      ),
+    },
+    {
+      name: "QR Code",
+      cell: (row) => (
+        <div data-tag="allowRowEvents">
+          <Button color="dark" className="btn btn-sm">
+            Generate
+          </Button>
         </div>
       ),
     },
