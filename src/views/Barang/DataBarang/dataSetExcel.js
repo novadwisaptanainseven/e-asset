@@ -3,7 +3,7 @@ export const getDataSet = (data) => {
     {
       columns: [
         {
-          title: "No. Barang",
+          title: "Kode. Barang",
           height: { hpx: 100 },
           style: {
             alignment: { vertical: "top" },

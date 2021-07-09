@@ -13,17 +13,23 @@ const FILE_BARANG_SUPPORTED_FORMATS = [
 ];
 
 const validationSchema = Yup.object().shape({
-  no_barang: Yup.string().required("No. barang harus diisi"),
+  no_barang: Yup.string().required("Kode barang harus diisi"),
   nama_barang: Yup.string().required("Nama barang harus diisi"),
-  tahun: Yup.string().required("Tahun harus diisi"),
+  jenis_barang: Yup.string().required("Jenis barang harus diisi"),
+  kategori: Yup.string().required("Kategori harus diisi"),
+  tahun_pembelian: Yup.string().required("Tahun pembelian harus diisi"),
   merk: Yup.string().required("Merk harus diisi"),
-  no_seri_pabrik: Yup.string().required("No. seri pabrik harus diisi"),
+  no_pabrik: Yup.string().required("No. pabrik harus diisi"),
   ukuran: Yup.string().required("Ukuran harus diisi"),
-  bahan: Yup.string().required("Bahan Barang harus diisi"),
+  bahan: Yup.string().required("Bahan harus diisi"),
   harga: Yup.number()
     .typeError("Harga harus berupa bilangan")
     .integer("Harga harus berupa bilangan")
     .required("Harga Barang harus diisi"),
+  jumlah_baik: Yup.string().required("Jumlah baik harus diisi"),
+  jumlah_rusak: Yup.string().required("Jumlah rusak harus diisi"),
+  jumlah_barang: Yup.string().required("Jumlah barang harus diisi"),
+  satuan: Yup.string().required("Satuan harus diisi"),
   keterangan: Yup.string().required("Keterangan harus diisi"),
   file: Yup.mixed()
     .required("File harus diisi")
@@ -49,10 +55,6 @@ const validationSchema = Yup.object().shape({
       "Ekstensi yang diperbolehkan hanya jpg, jpeg, dan, png",
       (value) => value && FOTO_BARANG_SUPPORTED_FORMATS.includes(value.type)
     ),
-  id_bidang: Yup.string().required("Bidang harus diisi"),
-  jumlah_baik: Yup.string().required("Jumlah baik harus diisi"),
-  jumlah_rusak: Yup.string().required("Jumlah rusak harus diisi"),
-  jumlah_rusak_ringan: Yup.string().required("Jumlah rusak ringan harus diisi"),
 });
 
 export default validationSchema;

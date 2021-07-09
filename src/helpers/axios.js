@@ -4,7 +4,7 @@ const baseURL = "http://localhost:5500/api/v1/";
 const baseURLFile = "http://localhost:5500/file/";
 
 // API E-Pekerja
-const baseUrlEpekerja = "http://127.0.0.1:8000/api/";
+const baseUrlEpekerja = "http://localhost/e-pekerja-api/api/";
 
 sessionStorage.baseURL = baseURL;
 sessionStorage.baseURLFile = baseURLFile;

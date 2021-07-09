@@ -24,7 +24,8 @@ import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import AdminFooter from "components/Footers/AdminFooter.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 
-import routes from "routes.js";
+import routes from "routes/routes";
+import routes_master from "routes/routes_master";
 import Header from "components/Headers/Header";
 import swal2 from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -92,6 +93,7 @@ const Admin = (props) => {
           <Sidebar
             {...props}
             routes={routes}
+            routesMaster={routes_master}
             logo={{
               innerLink: "/admin/index",
               imgSrc: require("../assets/img/brand/argon-react.png").default,

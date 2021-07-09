@@ -3,6 +3,7 @@ import { Redirect, Route, Switch } from "react-router";
 import DataBarang from "./DataBarang";
 import DetailBarang from "./DetailBarang";
 import EditBarang from "./EditBarang";
+import PreviewQrCode from "./PreviewQrCode";
 import TambahBarang from "./TambahBarang";
 
 const Barang = ({ match }) => {
@@ -14,6 +15,7 @@ const Barang = ({ match }) => {
 				<Route exact path={path + "/tambah"} render={() => <TambahBarang />} />
 				<Route exact path={path + "/:id/edit"} render={() => <EditBarang />} />
 				<Route exact path={path + "/:id/detail"} render={() => <DetailBarang />} />
+				<Route exact path={path + "/:id/qr-code"} render={() => <PreviewQrCode />} />
 				<Redirect from="/admin/barang/*" to="/admin/index" />
 			</Switch>
 		</>

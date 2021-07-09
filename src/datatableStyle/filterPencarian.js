@@ -40,7 +40,7 @@ const ClearButton = styled.button`
 // Handle filter pencarian
 
 export const FilterComponent = ({ filterText, onFilter, onClear }) => (
-  <>
+  <div className="d-flex">
     <TextField
       id="search"
       type="text"
@@ -52,5 +52,5 @@ export const FilterComponent = ({ filterText, onFilter, onClear }) => (
     <ClearButton type="button" onClick={onClear}>
       Reset
     </ClearButton>
-  </>
+  </div>
 );

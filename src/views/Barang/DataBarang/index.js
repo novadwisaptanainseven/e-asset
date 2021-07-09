@@ -13,6 +13,7 @@ import {
   ButtonGroup,
 } from "reactstrap";
 import {
+  generateQrCode,
   goToDetail,
   goToEdit,
   goToTambah,
@@ -20,7 +21,7 @@ import {
 } from "../functions";
 import ExpandableComponent from "./ExpandableComponent";
 import { useHistory } from "react-router";
-import SubHeaderComponentMemo from "components/DataTable/SubHeaderComponentMemo";
+import SubHeaderComponentMemo from "./SubHeaderComponentMemo";
 import { GlobalContext } from "context/Provider";
 import { getAllBarang } from "context/actions/Barang";
 // import { LoadAnimationBlue } from "assets";
@@ -83,7 +84,7 @@ const DataBarang = ({ path }) => {
       selector: "no",
       sortable: true,
       wrap: true,
-      // maxWidth: "200px",
+      width: "60px",
     },
     {
       name: "Kode Barang",
@@ -152,7 +153,11 @@ const DataBarang = ({ path }) => {
       name: "QR Code",
       cell: (row) => (
         <div data-tag="allowRowEvents">
-          <Button color="dark" className="btn btn-sm">
+          <Button
+            color="dark"
+            className="btn btn-sm"
+            onClick={() => generateQrCode(path, history, row.id_barang)}
+          >
             Generate
           </Button>
         </div>

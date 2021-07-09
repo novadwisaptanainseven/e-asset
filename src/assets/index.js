@@ -4,6 +4,7 @@ import FotoKendaraanSample from "./img/samples/mobil.jpg";
 import FotoPegawaiSample from "./img/samples/pegawai.jpg";
 import LoadAnimationWhite from "./img/samples/load_animation_white.gif";
 import LoadAnimationBlue from "./img/samples/load_animation_blue.gif";
+import SampleQrCode from "./img/samples/qr_code.png";
 
 export {
   LogoKotaSamarinda,
@@ -12,4 +13,5 @@ export {
   FotoPegawaiSample,
   LoadAnimationWhite,
   LoadAnimationBlue,
+  SampleQrCode,
 };

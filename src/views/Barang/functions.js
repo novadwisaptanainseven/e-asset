@@ -17,6 +17,10 @@ export const goToEdit = (path, history, id) => {
   history.push(`${path}/${id}/edit`);
 };
 
+export const generateQrCode = (path, history, id) => {
+  history.push(`${path}/${id}/qr-code`);
+};
+
 export const goToDetail = (path, history, id) => {
   history.push(`${path}/${id}/detail`);
 };
@@ -48,14 +52,20 @@ export const handleHapusRincianBarang = (rincianBarang, setRincianBarang) => {
 
 // Fungsi - fungsi untuk halaman Edit Barang
 export const setInitStateEdit = (data) => ({
-  no_barang: data ? data.no_barang : "",
+  kode_barang: data ? data.kode_barang : "",
   nama_barang: data ? data.nama_barang : "",
-  tahun: data ? data.tahun : "",
+  jenis_barang: data ? data.jenis_barang : "",
+  kategori: data ? data.kategori : "",
+  tahun_pembelian: data ? data.tahun_pembelian : "",
   merk: data ? data.merk : "",
-  no_seri_pabrik: data ? data.no_seri_pabrik : "",
+  no_pabrik: data ? data.no_pabrik : "",
   ukuran: data ? data.ukuran : "",
   bahan: data ? data.bahan : "",
   harga: data ? data.harga : "",
+  jumlah_baik: data ? data.jumlah_baik : "",
+  jumlah_rusak: data ? data.jumlah_rusak : "",
+  jumlah_barang: data ? data.jumlah_barang : "",
+  satuan: data ? data.satuan : "",
   keterangan: data ? data.keterangan : "",
   file: undefined,
   foto: undefined,

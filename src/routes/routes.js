@@ -15,16 +15,16 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import Index from "views/Dashboard/Index.js";
-// import Register from "views/Auth/Register";
-import Barang from "views/Barang";
-import RincianBarang from "views/RincianBarang";
-import IndexBarangPindah from "views/BarangPindah";
-import IndexBarangMasuk from "views/BarangMasuk";
-import Kendaraan from "views/Kendaraan";
-import IndexKendaraanPindah from "views/KendaraanPindah";
-import IndexPengaturanAkun from "views/PengaturanAkun";
-import IndexUsers from "views/Users";
+import Index from "../views/Dashboard/Index.js";
+// import Register from "../views/Auth/Register";
+import Barang from "../views/Barang";
+import RincianBarang from "../views/RincianBarang";
+import IndexBarangPindah from "../views/BarangPindah";
+import IndexBarangMasuk from "../views/BarangMasuk";
+import Kendaraan from "../views/Kendaraan";
+import IndexKendaraanPindah from "../views/KendaraanPindah";
+import IndexPengaturanAkun from "../views/PengaturanAkun";
+import IndexUsers from "../views/Users";
 
 const layoutAdmin = "/easset/admin";
 // const layoutAuth = "/easset/auth";

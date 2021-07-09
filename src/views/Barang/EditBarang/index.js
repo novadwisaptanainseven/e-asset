@@ -159,8 +159,8 @@ const EditBarang = () => {
             ) : (
               <Formik
                 initialValues={setInitStateEdit(data)}
-                enableReinitialize={true}
                 validationSchema={validationSchema}
+                enableReinitialize={true}
                 onSubmit={(values) => handleFormSubmit(values)}
               >
                 {({
@@ -176,31 +176,34 @@ const EditBarang = () => {
                     <CardBody className="bg-secondary">
                       <div className="pl-lg-4">
                         <Row>
-                          <Col lg="6">
+                          <Col>
+                            <h6 className="heading-small text-muted mb-4">
+                              Data Barang
+                            </h6>
                             <FormGroup>
                               <label
                                 className="form-control-label"
-                                htmlFor="no_barang"
+                                htmlFor="kode_barang"
                               >
-                                No. Barang
+                                Kode Barang
                               </label>
                               <Input
                                 type="text"
-                                id="no_barang"
-                                name="no_barang"
-                                placeholder="No. Barang"
+                                id="kode_barang"
+                                name="kode_barang"
+                                placeholder="Kode Barang"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.no_barang || ""}
+                                value={values.kode_barang || ""}
                                 className={
-                                  errors.no_barang && touched.no_barang
+                                  errors.kode_barang && touched.kode_barang
                                     ? "is-invalid"
                                     : null
                                 }
                               />
-                              {errors.no_barang && touched.no_barang && (
+                              {errors.kode_barang && touched.kode_barang && (
                                 <div className="invalid-feedback">
-                                  {errors.no_barang}
+                                  {errors.kode_barang}
                                 </div>
                               )}
                             </FormGroup>
@@ -234,29 +237,85 @@ const EditBarang = () => {
                             <FormGroup>
                               <label
                                 className="form-control-label"
-                                htmlFor="tahun"
+                                htmlFor="jenis_barang"
                               >
-                                Tahun
+                                Jenis Barang
                               </label>
                               <Input
-                                type="number"
-                                id="tahun"
-                                name="tahun"
-                                placeholder="Tahun"
+                                type="text"
+                                id="jenis_barang"
+                                name="jenis_barang"
+                                placeholder="Jenis Barang"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.tahun || ""}
+                                value={values.jenis_barang || ""}
                                 className={
-                                  errors.tahun && touched.tahun
+                                  errors.jenis_barang && touched.jenis_barang
                                     ? "is-invalid"
                                     : null
                                 }
                               />
-                              {errors.tahun && touched.tahun && (
+                              {errors.jenis_barang && touched.jenis_barang && (
                                 <div className="invalid-feedback">
-                                  {errors.tahun}
+                                  {errors.jenis_barang}
                                 </div>
                               )}
+                            </FormGroup>
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="kategori"
+                              >
+                                Kategori
+                              </label>
+                              <Input
+                                type="text"
+                                id="kategori"
+                                name="kategori"
+                                placeholder="Kategori"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.kategori || ""}
+                                className={
+                                  errors.kategori && touched.kategori
+                                    ? "is-invalid"
+                                    : null
+                                }
+                              />
+                              {errors.kategori && touched.kategori && (
+                                <div className="invalid-feedback">
+                                  {errors.kategori}
+                                </div>
+                              )}
+                            </FormGroup>
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="tahun_pembelian"
+                              >
+                                Tahun Pembelian
+                              </label>
+                              <Input
+                                type="number"
+                                id="tahun_pembelian"
+                                name="tahun_pembelian"
+                                placeholder="Tahun pembelian"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.tahun_pembelian || ""}
+                                className={
+                                  errors.tahun_pembelian &&
+                                  touched.tahun_pembelian
+                                    ? "is-invalid"
+                                    : null
+                                }
+                              />
+                              {errors.tahun_pembelian &&
+                                touched.tahun_pembelian && (
+                                  <div className="invalid-feedback">
+                                    {errors.tahun_pembelian}
+                                  </div>
+                                )}
                             </FormGroup>
                             <FormGroup>
                               <label
@@ -288,31 +347,29 @@ const EditBarang = () => {
                             <FormGroup>
                               <label
                                 className="form-control-label"
-                                htmlFor="no_seri_pabrik"
+                                htmlFor="no_pabrik"
                               >
-                                No. Seri Pabrik
+                                No. Pabrik
                               </label>
                               <Input
                                 type="text"
-                                id="no_seri_pabrik"
-                                name="no_seri_pabrik"
-                                placeholder="No. Seri Pabrik"
+                                id="no_pabrik"
+                                name="no_pabrik"
+                                placeholder="No. Pabrik"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.no_seri_pabrik || ""}
+                                value={values.no_pabrik || ""}
                                 className={
-                                  errors.no_seri_pabrik &&
-                                  touched.no_seri_pabrik
+                                  errors.no_pabrik && touched.no_pabrik
                                     ? "is-invalid"
                                     : null
                                 }
                               />
-                              {errors.no_seri_pabrik &&
-                                touched.no_seri_pabrik && (
-                                  <div className="invalid-feedback">
-                                    {errors.no_seri_pabrik}
-                                  </div>
-                                )}
+                              {errors.no_pabrik && touched.no_pabrik && (
+                                <div className="invalid-feedback">
+                                  {errors.no_pabrik}
+                                </div>
+                              )}
                             </FormGroup>
                             <FormGroup>
                               <label
@@ -367,8 +424,6 @@ const EditBarang = () => {
                                 </div>
                               )}
                             </FormGroup>
-                          </Col>
-                          <Col>
                             <FormGroup>
                               <label
                                 className="form-control-label"
@@ -377,7 +432,7 @@ const EditBarang = () => {
                                 Harga
                               </label>
                               <Input
-                                type="number"
+                                type="text"
                                 id="harga"
                                 name="harga"
                                 placeholder="Harga"
@@ -398,6 +453,128 @@ const EditBarang = () => {
                                 </div>
                               )}
                             </FormGroup>
+                          </Col>
+                          <Col>
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="jumlah_baik"
+                              >
+                                Jumlah Baik
+                              </label>
+                              <Input
+                                disabled
+                                type="number"
+                                id="jumlah_baik"
+                                name="jumlah_baik"
+                                min="0"
+                                placeholder="Jumlah Baik"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.jumlah_baik || ""}
+                                className={
+                                  errors.jumlah_baik && touched.jumlah_baik
+                                    ? "is-invalid"
+                                    : null
+                                }
+                              />
+                              {errors.jumlah_baik && touched.jumlah_baik && (
+                                <div className="invalid-feedback">
+                                  {errors.jumlah_baik}
+                                </div>
+                              )}
+                            </FormGroup>
+                            <FormGroup>
+                              <label
+                                disabled
+                                className="form-control-label"
+                                htmlFor="jumlah_rusak"
+                              >
+                                Jumlah Rusak
+                              </label>
+                              <Input
+                                disabled
+                                type="number"
+                                id="jumlah_rusak"
+                                name="jumlah_rusak"
+                                min="0"
+                                placeholder="Jumlah Rusak"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.jumlah_rusak || ""}
+                                className={
+                                  errors.jumlah_rusak && touched.jumlah_rusak
+                                    ? "is-invalid"
+                                    : null
+                                }
+                              />
+                              {errors.jumlah_rusak && touched.jumlah_rusak && (
+                                <div className="invalid-feedback">
+                                  {errors.jumlah_rusak}
+                                </div>
+                              )}
+                            </FormGroup>
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="jumlah_barang"
+                              >
+                                Jumlah Barang
+                              </label>
+                              <Input
+                                disabled
+                                type="text"
+                                id="jumlah_barang"
+                                name="jumlah_barang"
+                                placeholder="Jumlah Barang"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.jumlah_barang || ""}
+                                className={
+                                  errors.jumlah_barang && touched.jumlah_barang
+                                    ? "is-invalid"
+                                    : null
+                                }
+                              />
+                              {errors.jumlah_barang &&
+                                touched.jumlah_barang && (
+                                  <div className="invalid-feedback">
+                                    {errors.jumlah_barang}
+                                  </div>
+                                )}
+                            </FormGroup>
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="satuan"
+                              >
+                                Satuan
+                              </label>
+                              <Input
+                                type="select"
+                                id="satuan"
+                                name="satuan"
+                                placeholder="Satuan"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.satuan || ""}
+                                className={
+                                  errors.satuan && touched.satuan
+                                    ? "is-invalid"
+                                    : null
+                                }
+                              >
+                                <option value="">-- Pilih Satuan --</option>
+                                <option value="buah">Buah</option>
+                                <option value="unit">Unit</option>
+                                <option value="pack">Pack</option>
+                              </Input>
+                              {errors.satuan && touched.satuan && (
+                                <div className="invalid-feedback">
+                                  {errors.satuan}
+                                </div>
+                              )}
+                            </FormGroup>
                             <FormGroup>
                               <label
                                 className="form-control-label"
@@ -411,7 +588,7 @@ const EditBarang = () => {
                                 name="keterangan"
                                 id="keterangan"
                                 placeholder="Keterangan"
-                                rows="5"
+                                rows="7"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 value={values.keterangan || ""}
@@ -440,27 +617,15 @@ const EditBarang = () => {
                                 name="file"
                                 placeholder="File"
                                 onBlur={handleBlur}
-                                onChange={(e) => {
-                                  onSelectFile2(e);
-                                  setFieldValue("file", e.target.files[0]);
-                                }}
+                                onChange={(e) =>
+                                  setFieldValue("file", e.target.files[0])
+                                }
                                 className={`form-control ${
                                   errors.file && touched.file
                                     ? "is-invalid"
                                     : null
                                 }`}
                               />
-                              {data && data.file && (
-                                <div className="mt-1">
-                                  <a
-                                    href={getFile(data.file)}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                  >
-                                    {preview2}
-                                  </a>
-                                </div>
-                              )}
                               {errors.file && touched.file && (
                                 <div className="invalid-feedback">
                                   {errors.file}
@@ -512,9 +677,9 @@ const EditBarang = () => {
                       <Button
                         type="submit"
                         color="primary"
-                        disabled={loadingSubmit ? true : false}
+                        disabled={loading ? true : false}
                       >
-                        {loadingSubmit ? (
+                        {loading ? (
                           <img
                             width={30}
                             src={LoadAnimationWhite}
