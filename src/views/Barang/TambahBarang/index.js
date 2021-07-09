@@ -17,14 +17,9 @@ import {
   CardFooter,
   FormText,
 } from "reactstrap";
-import {
-  goBackToPrevPage,
-  handleHapusRincianBarang,
-  handleTambahRincianBarang,
-} from "../functions";
+import { goBackToPrevPage } from "../functions";
 import initState from "./Formik/initState";
 import validationSchema from "./Formik/validationSchema";
-import RincianBarang from "./RincianBarang";
 
 const TambahBarang = () => {
   const history = useHistory();
@@ -38,7 +33,7 @@ const TambahBarang = () => {
 
   useEffect(() => {
     // Get All Bidang
-    getAllBidang(setBidang);
+    // getAllBidang(setBidang);
   }, []);
 
   // Mengubah format harga dari number menjadi Currency Rupiah
@@ -86,37 +81,32 @@ const TambahBarang = () => {
   }, [handleSelectedFile]);
 
   const handleFormSubmit = (values) => {
+    console.log("submit");
+
     const formData = new FormData();
-    formData.append("no_barang", values.no_barang);
+    formData.append("kode_barang", values.kode_barang);
     formData.append("nama_barang", values.nama_barang);
-    formData.append("tahun", values.tahun);
+    formData.append("jenis_barang", values.jenis_barang);
+    formData.append("kategori", values.kategori);
+    formData.append("tahun_pembelian", values.tahun_pembelian);
     formData.append("merk", values.merk);
-    formData.append("no_seri_pabrik", values.no_seri_pabrik);
+    formData.append("no_pabrik", values.no_pabrik);
     formData.append("ukuran", values.ukuran);
     formData.append("bahan", values.bahan);
     formData.append("harga", values.harga);
+    formData.append("jumlah_baik", values.jumlah_baik);
+    formData.append("jumlah_rusak", values.jumlah_rusak);
+    formData.append("jumlah_barang", values.jumlah_barang);
+    formData.append("satuan", values.satuan);
     formData.append("keterangan", values.keterangan);
     formData.append("file", values.file);
     formData.append("foto", values.foto);
-
-    rincianBarang.forEach((item, index) => {
-      let idBidang = item.id_bidang.split("-");
-      let idBidang2 = idBidang[0];
-
-      formData.append(`id_bidang[${index}]`, idBidang2);
-      formData.append(`jumlah_baik[${index}]`, item.jumlah_baik);
-      formData.append(`jumlah_rusak[${index}]`, item.jumlah_rusak);
-      formData.append(
-        `jumlah_rusak_ringan[${index}]`,
-        item.jumlah_rusak_ringan
-      );
-    });
 
     for (let item of formData.entries()) {
       console.log(item);
     }
 
-    insertBarang(formData, setLoading, history);
+    // insertBarang(formData, setLoading, history);
   };
 
   return (
@@ -218,7 +208,7 @@ const TambahBarang = () => {
                               Jenis Barang
                             </label>
                             <Input
-                              type="text"
+                              type="select"
                               id="jenis_barang"
                               name="jenis_barang"
                               placeholder="Jenis Barang"
@@ -230,7 +220,11 @@ const TambahBarang = () => {
                                   ? "is-invalid"
                                   : null
                               }
-                            />
+                            >
+                              <option value="">-- Pilih Jenis Barang --</option>
+                              <option value="tetap">Tetap</option>
+                              <option value="tidak-tetap">Tidak Tetap</option>
+                            </Input>
                             {errors.jenis_barang && touched.jenis_barang && (
                               <div className="invalid-feedback">
                                 {errors.jenis_barang}
@@ -245,7 +239,7 @@ const TambahBarang = () => {
                               Kategori
                             </label>
                             <Input
-                              type="text"
+                              type="select"
                               id="kategori"
                               name="kategori"
                               placeholder="Kategori"
@@ -257,7 +251,12 @@ const TambahBarang = () => {
                                   ? "is-invalid"
                                   : null
                               }
-                            />
+                            >
+                              <option value="">-- Pilih Kategori --</option>
+                              <option value="tik">TIK</option>
+                              <option value="meubel">Meubel</option>
+                              <option value="elektronik">Elektronik</option>
+                            </Input>
                             {errors.kategori && touched.kategori && (
                               <div className="invalid-feedback">
                                 {errors.kategori}

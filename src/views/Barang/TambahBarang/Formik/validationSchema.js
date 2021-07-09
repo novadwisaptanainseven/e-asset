@@ -13,7 +13,7 @@ const FILE_BARANG_SUPPORTED_FORMATS = [
 ];
 
 const validationSchema = Yup.object().shape({
-  no_barang: Yup.string().required("Kode barang harus diisi"),
+  kode_barang: Yup.string().required("Kode barang harus diisi"),
   nama_barang: Yup.string().required("Nama barang harus diisi"),
   jenis_barang: Yup.string().required("Jenis barang harus diisi"),
   kategori: Yup.string().required("Kategori harus diisi"),

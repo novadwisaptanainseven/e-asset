@@ -26,6 +26,7 @@ import Sidebar from "components/Sidebar/Sidebar.js";
 
 import routes from "routes/routes";
 import routes_master from "routes/routes_master";
+import routes_dashboard from "routes/routes_dashboard";
 import Header from "components/Headers/Header";
 import swal2 from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -94,6 +95,7 @@ const Admin = (props) => {
             {...props}
             routes={routes}
             routesMaster={routes_master}
+            routesDashboard={routes_dashboard}
             logo={{
               innerLink: "/admin/index",
               imgSrc: require("../assets/img/brand/argon-react.png").default,
@@ -110,6 +112,8 @@ const Admin = (props) => {
             {/* Page Content */}
             <Container className="mt--7" fluid>
               <Switch>
+                {getRoutes(routes_dashboard)}
+                {getRoutes(routes_master)}
                 {getRoutes(routes)}
                 <Redirect from="*" to="/easset/admin/index" />
               </Switch>

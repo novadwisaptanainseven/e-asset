@@ -116,14 +116,20 @@ const EditBarang = () => {
   const handleFormSubmit = (values) => {
     const formData = new FormData();
 
-    formData.append("no_barang", values.no_barang);
+    formData.append("kode_barang", values.kode_barang);
     formData.append("nama_barang", values.nama_barang);
-    formData.append("tahun", values.tahun);
+    formData.append("jenis_barang", values.jenis_barang);
+    formData.append("kategori", values.kategori);
+    formData.append("tahun_pembelian", values.tahun_pembelian);
     formData.append("merk", values.merk);
-    formData.append("no_seri_pabrik", values.no_seri_pabrik);
+    formData.append("no_pabrik", values.no_pabrik);
     formData.append("ukuran", values.ukuran);
     formData.append("bahan", values.bahan);
     formData.append("harga", values.harga);
+    formData.append("jumlah_baik", values.jumlah_baik);
+    formData.append("jumlah_rusak", values.jumlah_rusak);
+    formData.append("jumlah_barang", values.jumlah_barang);
+    formData.append("satuan", values.satuan);
     formData.append("keterangan", values.keterangan);
     if (values.file) {
       formData.append("file", values.file);
@@ -136,7 +142,7 @@ const EditBarang = () => {
       console.log(pair);
     }
 
-    editBarang(params.id, formData, setLoadingSubmit, history);
+    // editBarang(params.id, formData, setLoadingSubmit, history);
   };
 
   return (
@@ -242,7 +248,7 @@ const EditBarang = () => {
                                 Jenis Barang
                               </label>
                               <Input
-                                type="text"
+                                type="select"
                                 id="jenis_barang"
                                 name="jenis_barang"
                                 placeholder="Jenis Barang"
@@ -254,7 +260,13 @@ const EditBarang = () => {
                                     ? "is-invalid"
                                     : null
                                 }
-                              />
+                              >
+                                <option value="">
+                                  -- Pilih Jenis Barang --
+                                </option>
+                                <option value="tetap">Tetap</option>
+                                <option value="tidak-tetap">Tidak Tetap</option>
+                              </Input>
                               {errors.jenis_barang && touched.jenis_barang && (
                                 <div className="invalid-feedback">
                                   {errors.jenis_barang}
@@ -269,7 +281,7 @@ const EditBarang = () => {
                                 Kategori
                               </label>
                               <Input
-                                type="text"
+                                type="select"
                                 id="kategori"
                                 name="kategori"
                                 placeholder="Kategori"
@@ -281,7 +293,12 @@ const EditBarang = () => {
                                     ? "is-invalid"
                                     : null
                                 }
-                              />
+                              >
+                                <option value="">-- Pilih Kategori --</option>
+                                <option value="tik">TIK</option>
+                                <option value="meubel">Meubel</option>
+                                <option value="elektronik">Elektronik</option>
+                              </Input>
                               {errors.kategori && touched.kategori && (
                                 <div className="invalid-feedback">
                                   {errors.kategori}

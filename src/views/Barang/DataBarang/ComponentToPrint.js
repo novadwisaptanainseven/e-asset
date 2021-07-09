@@ -18,31 +18,41 @@ export class ComponentToPrint extends React.Component {
         <table className="my-table">
           <thead>
             <tr>
-              <th>No. Barang</th>
+              <th>Kode. Barang</th>
               <th>Nama Barang</th>
+              <th>Kategori</th>
               <th>Merk</th>
               <th>Ukuran</th>
               <th>Bahan</th>
-              <th>Tahun</th>
+              <th>Tahun Pembelian</th>
               <th>Harga</th>
+              <th>Jml. Baik</th>
+              <th>Jml. Rusak</th>
+              <th>Jml. Barang</th>
+              <th>Satuan</th>
               <th>Keterangan</th>
             </tr>
           </thead>
           <tbody>
             {this.props.data.map((item, index) => (
               <tr key={index}>
-                <td valign="top">{item.no_barang}</td>
+                <td valign="top">{item.kode_barang}</td>
                 <td valign="top">{item.nama_barang}</td>
+                <td valign="top">{item.kategori}</td>
                 <td valign="top">{item.merk}</td>
                 <td valign="top">{item.ukuran}</td>
                 <td valign="top">{item.bahan}</td>
-                <td valign="top">{item.tahun}</td>
+                <td valign="top">{item.tahun_pembelian}</td>
                 <td valign="top">
                   {item.harga.toLocaleString("id", {
                     style: "currency",
                     currency: "IDR",
                   })}
                 </td>
+                <td valign="top">{item.jumlah_baik}</td>
+                <td valign="top">{item.jumlah_rusak}</td>
+                <td valign="top">{item.jumlah_barang}</td>
+                <td valign="top">{item.satuan}</td>
                 <td valign="top">{item.keterangan}</td>
               </tr>
             ))}

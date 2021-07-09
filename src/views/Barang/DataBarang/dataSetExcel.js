@@ -4,7 +4,7 @@ export const getDataSet = (data) => {
       columns: [
         {
           title: "Kode. Barang",
-          height: { hpx: 100 },
+          width: { wpx: 120 },
           style: {
             alignment: { vertical: "top" },
             font: { bold: true },
@@ -33,7 +33,52 @@ export const getDataSet = (data) => {
           },
         },
         {
+          title: "Kategori",
+          width: { wpx: 150 },
+          style: {
+            alignment: { vertical: "top" },
+            font: { bold: true },
+            fill: { patternType: "solid", fgColor: { rgb: "FFF86B00" } },
+            border: {
+              left: { style: "thin", color: { rgb: "000000" } },
+              right: { style: "thin", color: { rgb: "000000" } },
+              top: { style: "thin", color: { rgb: "000000" } },
+              bottom: { style: "thin", color: { rgb: "000000" } },
+            },
+          },
+        },
+        {
+          title: "Jenis Barang",
+          width: { wpx: 150 },
+          style: {
+            alignment: { vertical: "top" },
+            font: { bold: true },
+            fill: { patternType: "solid", fgColor: { rgb: "FFF86B00" } },
+            border: {
+              left: { style: "thin", color: { rgb: "000000" } },
+              right: { style: "thin", color: { rgb: "000000" } },
+              top: { style: "thin", color: { rgb: "000000" } },
+              bottom: { style: "thin", color: { rgb: "000000" } },
+            },
+          },
+        },
+        {
           title: "Merk",
+          width: { wpx: 100 },
+          style: {
+            alignment: { vertical: "top" },
+            font: { bold: true },
+            fill: { patternType: "solid", fgColor: { rgb: "FFF86B00" } },
+            border: {
+              left: { style: "thin", color: { rgb: "000000" } },
+              right: { style: "thin", color: { rgb: "000000" } },
+              top: { style: "thin", color: { rgb: "000000" } },
+              bottom: { style: "thin", color: { rgb: "000000" } },
+            },
+          },
+        },
+        {
+          title: "No. Pabrik",
           width: { wpx: 100 },
           style: {
             alignment: { vertical: "top" },
@@ -78,8 +123,8 @@ export const getDataSet = (data) => {
           },
         },
         {
-          title: "Tahun",
-          width: { wpx: 80 },
+          title: "Tahun Pembelian",
+          width: { wpx: 150 },
           style: {
             alignment: { vertical: "top" },
             font: { bold: true },
@@ -94,6 +139,66 @@ export const getDataSet = (data) => {
         },
         {
           title: "Harga",
+          width: { wpx: 80 },
+          style: {
+            alignment: { vertical: "top" },
+            font: { bold: true },
+            fill: { patternType: "solid", fgColor: { rgb: "FFF86B00" } },
+            border: {
+              left: { style: "thin", color: { rgb: "000000" } },
+              right: { style: "thin", color: { rgb: "000000" } },
+              top: { style: "thin", color: { rgb: "000000" } },
+              bottom: { style: "thin", color: { rgb: "000000" } },
+            },
+          },
+        },
+        {
+          title: "Jumlah Baik",
+          width: { wpx: 110 },
+          style: {
+            alignment: { vertical: "top" },
+            font: { bold: true },
+            fill: { patternType: "solid", fgColor: { rgb: "FFF86B00" } },
+            border: {
+              left: { style: "thin", color: { rgb: "000000" } },
+              right: { style: "thin", color: { rgb: "000000" } },
+              top: { style: "thin", color: { rgb: "000000" } },
+              bottom: { style: "thin", color: { rgb: "000000" } },
+            },
+          },
+        },
+        {
+          title: "Jumlah Rusak",
+          width: { wpx: 110 },
+          style: {
+            alignment: { vertical: "top" },
+            font: { bold: true },
+            fill: { patternType: "solid", fgColor: { rgb: "FFF86B00" } },
+            border: {
+              left: { style: "thin", color: { rgb: "000000" } },
+              right: { style: "thin", color: { rgb: "000000" } },
+              top: { style: "thin", color: { rgb: "000000" } },
+              bottom: { style: "thin", color: { rgb: "000000" } },
+            },
+          },
+        },
+        {
+          title: "Jumlah Barang",
+          width: { wpx: 110 },
+          style: {
+            alignment: { vertical: "top" },
+            font: { bold: true },
+            fill: { patternType: "solid", fgColor: { rgb: "FFF86B00" } },
+            border: {
+              left: { style: "thin", color: { rgb: "000000" } },
+              right: { style: "thin", color: { rgb: "000000" } },
+              top: { style: "thin", color: { rgb: "000000" } },
+              bottom: { style: "thin", color: { rgb: "000000" } },
+            },
+          },
+        },
+        {
+          title: "Satuan",
           width: { wpx: 80 },
           style: {
             alignment: { vertical: "top" },
@@ -125,7 +230,7 @@ export const getDataSet = (data) => {
       ],
       data: data.map((item) => [
         {
-          value: item.no_barang,
+          value: item.kode_barang,
           style: {
             alignment: { vertical: "top" },
             border: {
@@ -149,7 +254,43 @@ export const getDataSet = (data) => {
           },
         },
         {
+          value: item.kategori,
+          style: {
+            alignment: { vertical: "top", horizontal: "center" },
+            border: {
+              left: { style: "thin", color: { rgb: "000000" } },
+              right: { style: "thin", color: { rgb: "000000" } },
+              top: { style: "thin", color: { rgb: "000000" } },
+              bottom: { style: "thin", color: { rgb: "000000" } },
+            },
+          },
+        },
+        {
+          value: item.jenis_barang,
+          style: {
+            alignment: { vertical: "top", horizontal: "center" },
+            border: {
+              left: { style: "thin", color: { rgb: "000000" } },
+              right: { style: "thin", color: { rgb: "000000" } },
+              top: { style: "thin", color: { rgb: "000000" } },
+              bottom: { style: "thin", color: { rgb: "000000" } },
+            },
+          },
+        },
+        {
           value: item.merk,
+          style: {
+            alignment: { vertical: "top" },
+            border: {
+              left: { style: "thin", color: { rgb: "000000" } },
+              right: { style: "thin", color: { rgb: "000000" } },
+              top: { style: "thin", color: { rgb: "000000" } },
+              bottom: { style: "thin", color: { rgb: "000000" } },
+            },
+          },
+        },
+        {
+          value: item.no_pabrik,
           style: {
             alignment: { vertical: "top" },
             border: {
@@ -185,7 +326,7 @@ export const getDataSet = (data) => {
           },
         },
         {
-          value: item.tahun,
+          value: item.tahun_pembelian,
           style: {
             alignment: { vertical: "top", horizontal: "center" },
             border: {
@@ -198,6 +339,54 @@ export const getDataSet = (data) => {
         },
         {
           value: item.harga,
+          style: {
+            alignment: { vertical: "top", horizontal: "center" },
+            border: {
+              left: { style: "thin", color: { rgb: "000000" } },
+              right: { style: "thin", color: { rgb: "000000" } },
+              top: { style: "thin", color: { rgb: "000000" } },
+              bottom: { style: "thin", color: { rgb: "000000" } },
+            },
+          },
+        },
+        {
+          value: item.jumlah_baik,
+          style: {
+            alignment: { vertical: "top", horizontal: "center" },
+            border: {
+              left: { style: "thin", color: { rgb: "000000" } },
+              right: { style: "thin", color: { rgb: "000000" } },
+              top: { style: "thin", color: { rgb: "000000" } },
+              bottom: { style: "thin", color: { rgb: "000000" } },
+            },
+          },
+        },
+        {
+          value: item.jumlah_rusak,
+          style: {
+            alignment: { vertical: "top", horizontal: "center" },
+            border: {
+              left: { style: "thin", color: { rgb: "000000" } },
+              right: { style: "thin", color: { rgb: "000000" } },
+              top: { style: "thin", color: { rgb: "000000" } },
+              bottom: { style: "thin", color: { rgb: "000000" } },
+            },
+          },
+        },
+        {
+          value: item.jumlah_barang,
+          style: {
+            alignment: { vertical: "top", horizontal: "center" },
+            border: {
+              left: { style: "thin", color: { rgb: "000000" } },
+              right: { style: "thin", color: { rgb: "000000" } },
+              top: { style: "thin", color: { rgb: "000000" } },
+              bottom: { style: "thin", color: { rgb: "000000" } },
+            },
+          },
+        },
+        {
+          value: item.satuan,
           style: {
             alignment: { vertical: "top", horizontal: "center" },
             border: {

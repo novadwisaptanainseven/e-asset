@@ -1,19 +1,21 @@
 const initState = {
-  no_barang: "",
+  kode_barang: "",
   nama_barang: "",
-  tahun: "",
+  jenis_barang: "",
+  kategori: "",
+  tahun_pembelian: "",
   merk: "",
-  no_seri_pabrik: "",
+  no_pabrik: "",
   ukuran: "",
   bahan: "",
   harga: "",
+  jumlah_baik: "",
+  jumlah_rusak: "",
+  jumlah_barang: "",
+  satuan: "",
   keterangan: "",
   file: undefined,
   foto: undefined,
-  id_bidang: "",
-  jumlah_baik: "",
-  jumlah_rusak: "",
-  jumlah_rusak_ringan: "",
 };
 
 export default initState;

@@ -13,6 +13,7 @@
   border: 1px solid black;
   border-collapse: collapse;
   width: 100%;
+  font-size: small;
 }
 
 .my-table th {
@@ -44,7 +45,7 @@ div.my-table-header .line2 {
 
 @media print {
   @page {
-    size: landscape;
+    size: 330mm 210mm;
   }
 }
 // End of style for printing table
@@ -53,4 +54,9 @@ div.my-table-header .line2 {
 .my-btn-excel {
   height: 35px;
   padding-top: 5px !important;
+}
+
+// Style di halaman kendaraan index
+.link-pengguna-hover:hover {
+  text-decoration: underline;
 }

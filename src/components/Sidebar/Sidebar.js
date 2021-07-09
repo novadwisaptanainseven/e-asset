@@ -80,7 +80,7 @@ const Sidebar = (props) => {
     });
   };
 
-  const { bgColor, routes, routesMaster, logo } = props;
+  const { bgColor, routes, routesMaster, routesDashboard, logo } = props;
   let navbarBrandProps;
   if (logo && logo.innerLink) {
     navbarBrandProps = {
@@ -230,14 +230,19 @@ const Sidebar = (props) => {
               </InputGroupAddon>
             </InputGroup>
           </Form>
-          {/* Navigation */}
-          <Nav navbar>{createLinks(routes)}</Nav>
+          {/* Navigation Dashboard */}
+          <h6 className="navbar-heading text-muted">Dashboard</h6>
+          <Nav navbar>{createLinks(routesDashboard)}</Nav>
           {/* Divider */}
           <hr className="my-3" />
-          {/* Heading */}
-          <h6 className="navbar-heading text-muted">Data Master</h6>
           {/* Navigation Data Master */}
+          <h6 className="navbar-heading text-muted">Data Master</h6>
           <Nav navbar>{createLinks(routesMaster)}</Nav>
+          {/* Divider */}
+          <hr className="my-3" />
+          {/* Navigation */}
+          <h6 className="navbar-heading text-muted">Lain - Lain</h6>
+          <Nav navbar>{createLinks(routes)}</Nav>
         </Collapse>
       </Container>
     </Navbar>

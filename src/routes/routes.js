@@ -15,9 +15,6 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import Index from "../views/Dashboard/Index.js";
-// import Register from "../views/Auth/Register";
-import Barang from "../views/Barang";
 import RincianBarang from "../views/RincianBarang";
 import IndexBarangPindah from "../views/BarangPindah";
 import IndexBarangMasuk from "../views/BarangMasuk";
@@ -30,20 +27,6 @@ const layoutAdmin = "/easset/admin";
 // const layoutAuth = "/easset/auth";
 
 var routes = [
-  {
-    path: "/index",
-    name: "Dashboard",
-    icon: "ni ni-tv-2 text-primary",
-    component: Index,
-    layout: layoutAdmin,
-  },
-  {
-    path: "/barang",
-    name: "Barang",
-    icon: "ni ni-briefcase-24 text-blue",
-    component: Barang,
-    layout: layoutAdmin,
-  },
   {
     path: "/rincian-barang",
     name: "Rincian Barang",

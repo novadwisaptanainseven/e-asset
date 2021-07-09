@@ -48,7 +48,7 @@ const DataBarang = ({ path }) => {
     pageStyle: `
       @media print {
         @page {
-          size: landscape;
+          size: 330mm 210mm;
         }
       }
     `,

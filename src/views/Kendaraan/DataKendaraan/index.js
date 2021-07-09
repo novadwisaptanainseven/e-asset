@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState, useRef } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import customStyles from "datatableStyle/customStyles";
 import DataTable from "react-data-table-component";
@@ -17,8 +17,6 @@ import {
   goToEdit,
   goToTambah,
   showDeleteAlert,
-  getCleanTanggal,
-  getNamaPegawai,
 } from "../functions";
 import ExpandableComponent from "./ExpandableComponent";
 import { useHistory } from "react-router";
@@ -26,11 +24,11 @@ import { useHistory } from "react-router";
 import SubHeaderComponentMemo from "components/DataTable/SubHeaderComponentMemo";
 import { GlobalContext } from "context/Provider";
 import { getAllKendaraan } from "context/actions/Kendaraan";
-import { getAllPegawai } from "context/actions/EPekerjaAPI/Pegawai";
 import Loading from "components/Loading";
 import { ComponentToPrint } from "./ComponentToPrint";
 import ReactExport from "react-data-export";
 import { getDataSet } from "./dataSetExcel";
+import kendaraan from "assets/dummyData/kendaraan";
 
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
@@ -58,37 +56,14 @@ const DataKendaraan = ({ path }) => {
     documentTitle: "Data Kendaraan",
   });
 
-  useEffect(() => {
-    getAllKendaraan(kendaraanDispatch);
-  }, [kendaraanDispatch]);
+  // useEffect(() => {
+  //   getAllKendaraan(kendaraanDispatch);
+  // }, [kendaraanDispatch]);
 
-  useEffect(() => {
-    // Get All Pegawai
-    getAllPegawai(setPegawai);
-  }, []);
-
-  // Memperbaiki sebagian isi data dari api untuk ditampilkan di tabel Kendaraan, tujuannya untuk mengubah nilai field 'id_barang_detail' menjadi String 'nama_bidang' berdasarkan id_bidang
-  const dataForDisplay = useMemo(() => {
-    const fixData = [];
-
-    if (dataKendaraan && pegawai.length > 0) {
-      dataKendaraan.data.forEach((item) => {
-        fixData.push({
-          ...item,
-          createdAt: getCleanTanggal(item.createdAt),
-          nama_pegawai: getNamaPegawai(item.id_pegawai, pegawai),
-        });
-      });
-    }
-
-    console.log(fixData);
-
-    return fixData;
-  }, [dataKendaraan, pegawai]);
-
-  const filteredData = dataForDisplay.filter((item) => {
+  const filteredData = kendaraan.filter((item) => {
     if (
-      item.nama_pegawai.toLowerCase().includes(filterText.toLowerCase()) ||
+      item.kode_kendaraan.toLowerCase().includes(filterText.toLowerCase()) ||
+      item.jenis_kendaraan.toLowerCase().includes(filterText.toLowerCase()) ||
       item.merk.toLowerCase().includes(filterText.toLowerCase()) ||
       item.tipe.toLowerCase().includes(filterText.toLowerCase()) ||
       item.cc.toLowerCase().includes(filterText.toLowerCase()) ||
@@ -106,8 +81,15 @@ const DataKendaraan = ({ path }) => {
   // Columns DataTable
   const columnsDataTable = [
     {
-      name: "Nama Pegawai",
-      selector: "nama_pegawai",
+      name: "Kode",
+      selector: "kode_kendaraan",
+      sortable: true,
+      wrap: true,
+      // maxWidth: "200px",
+    },
+    {
+      name: "Jenis",
+      selector: "jenis_kendaraan",
       sortable: true,
       wrap: true,
       // maxWidth: "200px",
@@ -169,6 +151,20 @@ const DataKendaraan = ({ path }) => {
         </div>
       ),
     },
+    {
+      name: "QR Code",
+      cell: (row) => (
+        <div data-tag="allowRowEvents">
+          <Button
+            color="dark"
+            className="btn btn-sm"
+            // onClick={() => generateQrCode(path, history, row.id_barang)}
+          >
+            Generate
+          </Button>
+        </div>
+      ),
+    },
   ];
 
   return (
@@ -180,7 +176,7 @@ const DataKendaraan = ({ path }) => {
               <h2>Kendaraan</h2>
             </CardHeader>
             <CardBody>
-              {!dataForDisplay.length > 0 ? (
+              {false ? (
                 <Loading />
               ) : (
                 <>
@@ -231,7 +227,7 @@ const DataKendaraan = ({ path }) => {
       </Row>
 
       {/* Component untuk print data kendaraan */}
-      {dataForDisplay.length > 0 && (
+      {true && (
         <div style={{ display: "none" }}>
           <ComponentToPrint ref={componentPrintRef} data={filteredData} />
         </div>
