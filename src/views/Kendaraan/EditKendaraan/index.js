@@ -49,29 +49,6 @@ const EditKendaraan = () => {
   const [loading, setLoading] = useState(false);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
 
-  // Get All Pegawai
-  useEffect(() => {
-    getAllPegawai(setPegawai);
-  }, []);
-
-  // Get All Kendaraan
-  useEffect(() => {
-    getKendaraanById(params.id, setData, setLoading);
-  }, [params]);
-
-  const optionsPegawai = useMemo(() => {
-    let options = [];
-
-    pegawai.forEach((item) => {
-      options.push({
-        value: item.id_pegawai,
-        label: item.nama,
-      });
-    });
-
-    return options;
-  }, [pegawai]);
-
   // Menangani preview input gambar setelah dipilih
   const handleSelectedFile = useCallback(() => {
     if (!selectedFile) {
@@ -139,9 +116,11 @@ const EditKendaraan = () => {
       formData.append(item, values[item]);
     }
 
-    editKendaraan(params.id, formData, setLoadingSubmit, history);
+    for (let item of formData.entries()) {
+      console.log(item);
+    }
 
-    console.log(values);
+    // editKendaraan(params.id, formData, setLoadingSubmit, history);
   };
 
   return (
@@ -159,7 +138,7 @@ const EditKendaraan = () => {
                 Edit Kendaraan
               </h2>
             </CardHeader>
-            {!loading && pegawai.length > 0 ? (
+            {true ? (
               <Formik
                 initialValues={setInitState(data)}
                 enableReinitialize={true}
@@ -183,42 +162,60 @@ const EditKendaraan = () => {
                             <FormGroup>
                               <label
                                 className="form-control-label"
-                                htmlFor="no_barang"
+                                htmlFor="kode_kendaraan"
                               >
-                                Pilih Pegawai
+                                Kode Kendaraan
                               </label>
-                              <Select
-                                styles={{
-                                  control: (provided, state) => ({
-                                    ...provided,
-                                    border:
-                                      errors.id_pegawai && touchedSelect
-                                        ? "1px solid #fb6340"
-                                        : null,
-                                  }),
-                                }}
-                                id="pegawai"
-                                name="pegawai"
-                                placeholder="-- Pilih Pegawai --"
-                                onChange={(opt) => {
-                                  setTouchedSelect(false);
-                                  setFieldValue(
-                                    "id_pegawai",
-                                    opt ? opt.value : ""
-                                  );
-                                }}
-                                onFocus={() => setTouchedSelect(true)}
-                                isSearchable
-                                isClearable
-                                options={optionsPegawai}
-                                defaultValue={{
-                                  label: getNamaPegawai(
-                                    data.id_pegawai,
-                                    pegawai
-                                  ),
-                                  value: data.id_pegawai,
-                                }}
+                              <Input
+                                type="text"
+                                id="kode_kendaraan"
+                                name="kode_kendaraan"
+                                placeholder="Kode Kendaraan"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.kode_kendaraan || ""}
+                                className={
+                                  errors.kode_kendaraan &&
+                                  touched.kode_kendaraan
+                                    ? "is-invalid"
+                                    : null
+                                }
                               />
+                              {errors.kode_kendaraan &&
+                                touched.kode_kendaraan && (
+                                  <div className="invalid-feedback">
+                                    {errors.kode_kendaraan}
+                                  </div>
+                                )}
+                            </FormGroup>
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="jenis_kendaraan"
+                              >
+                                Jenis Kendaraan
+                              </label>
+                              <Input
+                                type="text"
+                                id="jenis_kendaraan"
+                                name="jenis_kendaraan"
+                                placeholder="Jenis Kendaraan"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.jenis_kendaraan || ""}
+                                className={
+                                  errors.jenis_kendaraan &&
+                                  touched.jenis_kendaraan
+                                    ? "is-invalid"
+                                    : null
+                                }
+                              />
+                              {errors.kode_kendaraan &&
+                                touched.kode_kendaraan && (
+                                  <div className="invalid-feedback">
+                                    {errors.kode_kendaraan}
+                                  </div>
+                                )}
                             </FormGroup>
                             <FormGroup>
                               <label
@@ -302,6 +299,33 @@ const EditKendaraan = () => {
                             <FormGroup>
                               <label
                                 className="form-control-label"
+                                htmlFor="bahan"
+                              >
+                                Bahan
+                              </label>
+                              <Input
+                                type="text"
+                                id="bahan"
+                                name="bahan"
+                                placeholder="Bahan"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.bahan || ""}
+                                className={
+                                  errors.bahan && touched.bahan
+                                    ? "is-invalid"
+                                    : null
+                                }
+                              />
+                              {errors.bahan && touched.bahan && (
+                                <div className="invalid-feedback">
+                                  {errors.bahan}
+                                </div>
+                              )}
+                            </FormGroup>
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
                                 htmlFor="warna"
                               >
                                 Warna
@@ -329,108 +353,81 @@ const EditKendaraan = () => {
                             <FormGroup>
                               <label
                                 className="form-control-label"
-                                htmlFor="rangka"
+                                htmlFor="no_rangka"
                               >
-                                Rangka
+                                No. Rangka
                               </label>
                               <Input
                                 type="text"
-                                id="rangka"
-                                name="rangka"
-                                placeholder="Rangka"
+                                id="no_rangka"
+                                name="no_rangka"
+                                placeholder="no_rangka"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.rangka || ""}
+                                value={values.no_rangka || ""}
                                 className={
-                                  errors.rangka && touched.rangka
+                                  errors.no_rangka && touched.no_rangka
                                     ? "is-invalid"
                                     : null
                                 }
                               />
-                              {errors.rangka && touched.rangka && (
+                              {errors.no_rangka && touched.no_rangka && (
                                 <div className="invalid-feedback">
-                                  {errors.rangka}
+                                  {errors.no_rangka}
                                 </div>
                               )}
                             </FormGroup>
                             <FormGroup>
                               <label
                                 className="form-control-label"
-                                htmlFor="mesin"
+                                htmlFor="no_mesin"
                               >
-                                Mesin
+                                No. Mesin
                               </label>
                               <Input
                                 type="text"
-                                id="mesin"
-                                name="mesin"
-                                placeholder="Mesin"
+                                id="no_mesin"
+                                name="no_mesin"
+                                placeholder="No. Mesin"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.mesin || ""}
+                                value={values.no_mesin || ""}
                                 className={
-                                  errors.mesin && touched.mesin
+                                  errors.no_mesin && touched.no_mesin
                                     ? "is-invalid"
                                     : null
                                 }
                               />
-                              {errors.mesin && touched.mesin && (
+                              {errors.no_mesin && touched.no_mesin && (
                                 <div className="invalid-feedback">
-                                  {errors.mesin}
+                                  {errors.no_mesin}
                                 </div>
                               )}
                             </FormGroup>
                             <FormGroup>
                               <label
                                 className="form-control-label"
-                                htmlFor="pembuatan"
+                                htmlFor="no_pabrik"
                               >
-                                Pembuatan
+                                No. Pabrik
                               </label>
                               <Input
                                 type="text"
-                                id="pembuatan"
-                                name="pembuatan"
-                                placeholder="Pembuatan"
+                                id="no_pabrik"
+                                name="no_pabrik"
+                                placeholder="No. pabrik"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.pembuatan || ""}
+                                value={values.no_pabrik || ""}
                                 className={
-                                  errors.pembuatan && touched.pembuatan
+                                  errors.no_pabrik && touched.no_pabrik
                                     ? "is-invalid"
                                     : null
                                 }
                               />
-                              {errors.pembuatan && touched.pembuatan && (
+                              {errors.no_pabrik && touched.no_pabrik && (
                                 <div className="invalid-feedback">
-                                  {errors.pembuatan}
-                                </div>
-                              )}
-                            </FormGroup>
-                            <FormGroup>
-                              <label
-                                className="form-control-label"
-                                htmlFor="pembelian"
-                              >
-                                Pembelian
-                              </label>
-                              <Input
-                                type="text"
-                                id="pembelian"
-                                name="pembelian"
-                                placeholder="Pembelian"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.pembelian || ""}
-                                className={
-                                  errors.pembelian && touched.pembelian
-                                    ? "is-invalid"
-                                    : null
-                                }
-                              />
-                              {errors.pembelian && touched.pembelian && (
-                                <div className="invalid-feedback">
-                                  {errors.pembelian}
+                                  {errors.no_pabrik}
                                 </div>
                               )}
                             </FormGroup>
@@ -445,6 +442,7 @@ const EditKendaraan = () => {
                                 type="text"
                                 id="no_polisi"
                                 name="no_polisi"
+                                placeholder="No. polisi"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 value={values.no_polisi || ""}
@@ -460,6 +458,68 @@ const EditKendaraan = () => {
                                 </div>
                               )}
                             </FormGroup>
+                          </Col>
+
+                          <Col>
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="tahun_pembuatan"
+                              >
+                                Tahun Pembuatan
+                              </label>
+                              <Input
+                                type="text"
+                                id="tahun_pembuatan"
+                                name="tahun_pembuatan"
+                                placeholder="Tahun Pembuatan"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.tahun_pembuatan || ""}
+                                className={
+                                  errors.tahun_pembuatan &&
+                                  touched.tahun_pembuatan
+                                    ? "is-invalid"
+                                    : null
+                                }
+                              />
+                              {errors.tahun_pembuatan &&
+                                touched.tahun_pembuatan && (
+                                  <div className="invalid-feedback">
+                                    {errors.tahun_pembuatan}
+                                  </div>
+                                )}
+                            </FormGroup>
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="tahun_pembelian"
+                              >
+                                Tahun Pembelian
+                              </label>
+                              <Input
+                                type="text"
+                                id="tahun_pembelian"
+                                name="tahun_pembelian"
+                                placeholder="Tahun Pembelian"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.tahun_pembelian || ""}
+                                className={
+                                  errors.tahun_pembelian &&
+                                  touched.tahun_pembelian
+                                    ? "is-invalid"
+                                    : null
+                                }
+                              />
+                              {errors.tahun_pembelian &&
+                                touched.tahun_pembelian && (
+                                  <div className="invalid-feedback">
+                                    {errors.tahun_pembelian}
+                                  </div>
+                                )}
+                            </FormGroup>
+
                             <FormGroup>
                               <label
                                 className="form-control-label"
@@ -487,9 +547,6 @@ const EditKendaraan = () => {
                                 </div>
                               )}
                             </FormGroup>
-                          </Col>
-
-                          <Col>
                             <FormGroup>
                               <label
                                 className="form-control-label"
@@ -525,7 +582,7 @@ const EditKendaraan = () => {
                                 Biaya STNK
                               </label>
                               <Input
-                                type="number"
+                                type="text"
                                 id="biaya_stnk"
                                 name="biaya_stnk"
                                 placeholder="Biaya STNK"
@@ -559,7 +616,7 @@ const EditKendaraan = () => {
                                 Harga
                               </label>
                               <Input
-                                type="number"
+                                type="text"
                                 id="harga"
                                 name="harga"
                                 placeholder="Harga"
@@ -582,6 +639,35 @@ const EditKendaraan = () => {
                               {errors.harga && touched.harga && (
                                 <div className="invalid-feedback">
                                   {errors.harga}
+                                </div>
+                              )}
+                            </FormGroup>
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="kondisi"
+                              >
+                                Kondisi
+                              </label>
+                              <Input
+                                type="select"
+                                id="kondisi"
+                                name="kondisi"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.kondisi || ""}
+                                className={
+                                  errors.kondisi && touched.kondisi
+                                    ? "is-invalid"
+                                    : null
+                                }
+                              >
+                                <option value="baik">Baik</option>
+                                <option value="rusak">Rusak</option>
+                              </Input>
+                              {errors.kondisi && touched.kondisi && (
+                                <div className="invalid-feedback">
+                                  {errors.kondisi}
                                 </div>
                               )}
                             </FormGroup>
@@ -625,7 +711,6 @@ const EditKendaraan = () => {
                                 id="file"
                                 placeholder="File"
                                 onChange={(e) => {
-                                  onSelectFile2(e);
                                   setFieldValue("file", e.target.files[0]);
                                 }}
                                 onBlur={handleBlur}
@@ -636,17 +721,6 @@ const EditKendaraan = () => {
                                 }
                               `}
                               />
-                              {preview2 && (
-                                <div className="mt-1">
-                                  <a
-                                    href={getFile(data.file)}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                  >
-                                    {preview2}
-                                  </a>
-                                </div>
-                              )}
                               {errors.file && touched.file && (
                                 <div className="invalid-feedback">
                                   {errors.file}
@@ -704,7 +778,7 @@ const EditKendaraan = () => {
                             : setTouchedSelect(false);
                         }}
                       >
-                        {loadingSubmit ? (
+                        {loading ? (
                           <img
                             width={30}
                             src={LoadAnimationWhite}

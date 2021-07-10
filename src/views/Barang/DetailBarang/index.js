@@ -35,12 +35,12 @@ const DetailBarang = () => {
     return file3;
   };
 
-  useEffect(() => {
-    // Get barang by id
-    getBarangById(params.id, setData, setLoading);
-    // Get all bidang from E-Pekerja
-    getAllBidang(setBidang);
-  }, [params]);
+  // useEffect(() => {
+  //   // Get barang by id
+  //   getBarangById(params.id, setData, setLoading);
+  //   // Get all bidang from E-Pekerja
+  //   getAllBidang(setBidang);
+  // }, [params]);
 
   const getNamaBidang = (id) => {
     const search = bidang.filter((item) => {
@@ -68,7 +68,7 @@ const DetailBarang = () => {
               </h2>
             </CardHeader>
             <CardBody className="bg-secondary">
-              {loading ? (
+              {false ? (
                 <Loading />
               ) : (
                 <div

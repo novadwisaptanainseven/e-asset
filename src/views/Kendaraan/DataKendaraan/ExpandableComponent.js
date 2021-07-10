@@ -38,6 +38,12 @@ const ExpandableComponent = ({ data }) => {
         </Row>
         <Row className="mb-1">
           <Col md="3">
+            <strong>Bahan</strong>
+          </Col>
+          <Col>{data.bahan}</Col>
+        </Row>
+        <Row className="mb-1">
+          <Col md="3">
             <strong>No. Pabrik</strong>
           </Col>
           <Col>{data.no_pabrik}</Col>

@@ -1,0 +1,14 @@
+Progress Aplikasi
+
+
+1. Data Master (FE)
+  - Barang (done)
+  - Kategori (done)
+  - Kendaraan (done)
+  Data Master (BE)
+  - Barang ()
+  - Kategori ()
+  - Kendaraan ()
+
+2. Fitur Login
+  

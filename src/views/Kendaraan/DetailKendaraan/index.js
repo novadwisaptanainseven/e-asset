@@ -1,11 +1,24 @@
 // import { FotoPegawaiSample } from "assets";
+import { ProfileImageBlank } from "assets";
+import { FotoPegawaiSample } from "assets";
+import { FotoKendaraanSample } from "assets";
 import Loading from "components/Loading";
 import { getFile } from "context/actions/DownloadFile/getFile";
 import { getAllPegawai } from "context/actions/EPekerjaAPI/Pegawai";
 import { getKendaraanById } from "context/actions/Kendaraan";
 import React, { useEffect, useState } from "react";
 import { useHistory, useRouteMatch } from "react-router";
-import { Card, Col, Row, CardHeader, CardBody, CardFooter } from "reactstrap";
+import {
+  Card,
+  Col,
+  Row,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Badge,
+  Button,
+  Table,
+} from "reactstrap";
 import ModalPreviewImage from "../DataKendaraan/ModalPreviewImage";
 import ModalPreviewImagePegawai from "../DataKendaraan/ModalPreviewImagePegawai";
 import {
@@ -25,12 +38,12 @@ const DetailKendaraan = () => {
   const [modalPreview, setModalPreview] = useState(false);
   const [modalPreviewPegawai, setModalPreviewPegawai] = useState(false);
 
-  useEffect(() => {
-    // Get Kendaraan By ID
-    getKendaraanById(params.id, setData, setLoading);
-    // Get All Pegawai
-    getAllPegawai(setPegawai);
-  }, [params]);
+  // useEffect(() => {
+  //   // Get Kendaraan By ID
+  //   getKendaraanById(params.id, setData, setLoading);
+  //   // Get All Pegawai
+  //   getAllPegawai(setPegawai);
+  // }, [params]);
 
   return (
     <>
@@ -57,18 +70,35 @@ const DetailKendaraan = () => {
                       Deskripsi Kendaraan
                     </h6>
                     <hr className="my-3" />
-                    {loading || pegawai.length === 0 ? (
+                    {false ? (
                       <Loading />
                     ) : (
                       <table cellPadding={4} style={{ width: "100%" }}>
                         <tbody>
                           <tr>
-                            <th width={150}>Nama Pegawai</th>
-                            <th width={40}>:</th>
+                            <th>Pengguna Kendaraan</th>
+                            <th>:</th>
                             <td>
-                              {pegawai.length > 0 &&
-                                getNamaPegawai(data.id_pegawai, pegawai)}
+                              <Badge color="danger" pill>
+                                Pengguna belum ada.{" "}
+                                <a
+                                  className="text-dark link-pengguna-hover"
+                                  href="."
+                                >
+                                  Atur Pengguna
+                                </a>
+                              </Badge>
                             </td>
+                          </tr>
+                          <tr>
+                            <th>Kode Kendaraan</th>
+                            <th>:</th>
+                            <td>{data.kode_kendaraan}</td>
+                          </tr>
+                          <tr>
+                            <th>Jenis Kendaraan</th>
+                            <th>:</th>
+                            <td>{data.jenis_kendaraan}</td>
                           </tr>
                           <tr>
                             <th>Merk Kendaraan</th>
@@ -86,34 +116,44 @@ const DetailKendaraan = () => {
                             <td>{data.cc}</td>
                           </tr>
                           <tr>
+                            <th>Bahan</th>
+                            <th>:</th>
+                            <td>{data.bahan}</td>
+                          </tr>
+                          <tr>
                             <th>Warna</th>
                             <th>:</th>
                             <td>{data.warna}</td>
                           </tr>
                           <tr>
-                            <th>Rangka</th>
+                            <th>No. Polisi</th>
                             <th>:</th>
-                            <td>{data.rangka}</td>
+                            <td>{data.no_polisi}</td>
                           </tr>
                           <tr>
-                            <th>Mesin</th>
+                            <th>No. Rangka</th>
                             <th>:</th>
-                            <td>{data.mesin}</td>
+                            <td>{data.no_rangka}</td>
                           </tr>
                           <tr>
-                            <th>Pembuatan</th>
+                            <th>No. Mesin</th>
                             <th>:</th>
-                            <td>{data.pembuatan}</td>
-                          </tr>
-                          <tr>
-                            <th>Pembelian</th>
-                            <th>:</th>
-                            <td>{data.pembelian}</td>
+                            <td>{data.no_mesin}</td>
                           </tr>
                           <tr>
                             <th>No. Polisi</th>
                             <th>:</th>
-                            <td>{data.no_polisi}</td>
+                            <td>{data.merk}</td>
+                          </tr>
+                          <tr>
+                            <th>Tahun Pembuatan</th>
+                            <th>:</th>
+                            <td>{data.tahun_pembuatan}</td>
+                          </tr>
+                          <tr>
+                            <th>Tahun Pembelian</th>
+                            <th>:</th>
+                            <td>{data.tahun_pembelian}</td>
                           </tr>
                           <tr>
                             <th>BPKB</th>
@@ -178,6 +218,12 @@ const DetailKendaraan = () => {
                       </CardHeader>
                       <CardBody>
                         <img
+                          src={ProfileImageBlank}
+                          alt="foto-pegawai"
+                          width="100%"
+                          style={{ cursor: "pointer" }}
+                        />
+                        {/* <img
                           src={
                             pegawai.length > 0
                               ? getImagePegawai(data.id_pegawai, pegawai)
@@ -187,7 +233,7 @@ const DetailKendaraan = () => {
                           width="100%"
                           style={{ cursor: "pointer" }}
                           onClick={() => setModalPreviewPegawai(true)}
-                        />
+                        /> */}
                       </CardBody>
                     </Card>
                     <Card>
@@ -196,7 +242,7 @@ const DetailKendaraan = () => {
                       </CardHeader>
                       <CardBody>
                         <img
-                          src={data && data.file ? getFile(data.foto) : "."}
+                          src={FotoKendaraanSample}
                           alt="foto-kendaraan"
                           width="100%"
                           style={{ cursor: "pointer" }}
@@ -208,8 +254,81 @@ const DetailKendaraan = () => {
                 </Row>
               </div>
             </CardBody>
-            <CardFooter className="text-right"></CardFooter>
           </Card>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col>
+          <h6 className="heading-small text-muted mb-2">
+            Riwayat Pengguna Kendaraan
+          </h6>
+          <Table className="align-items-center table-dark" responsive>
+            <thead className="thead-dark">
+              <tr>
+                <th scope="col">No</th>
+                <th scope="col">Foto</th>
+                <th scope="col">Pegawai</th>
+                <th scope="col">TMT Penggunaan Kendaraan</th>
+                <th scope="col">Keterangan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>
+                  <img
+                    src={FotoPegawaiSample}
+                    width={100}
+                    className="img-thumbnail"
+                    alt="foto-pegawai"
+                  />
+                </td>
+                <td>Nova Dwi Sapta Nain Seven</td>
+                <td>12/10/2021</td>
+                <td>Lorem ipsum dolor sit amet</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>
+                  <img
+                    src={FotoPegawaiSample}
+                    width={100}
+                    className="img-thumbnail"
+                    alt="foto-pegawai"
+                  />
+                </td>
+                <td>Lyntom Irfan Darmawan</td>
+                <td>12/10/2021</td>
+                <td>Lorem ipsum dolor sit amet consectetur</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>
+                  <img
+                    src={FotoPegawaiSample}
+                    width={100}
+                    className="img-thumbnail"
+                    alt="foto-pegawai"
+                  />
+                </td>
+                <td>Muhammad Fahrizal</td>
+                <td>12/10/2021</td>
+                <td>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                </td>
+              </tr>
+            </tbody>
+          </Table>
+          <Button
+            color="info"
+            className="mt-2"
+            // onClick={() => {
+            //   goToRincianBarang("/easset/admin/rincian-barang", history);
+            // }}
+          >
+            Edit Riwayat
+          </Button>
         </Col>
       </Row>
 

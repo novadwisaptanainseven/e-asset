@@ -15,6 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+import Kategori from "views/Kategori";
 import Barang from "../views/Barang";
 import Kendaraan from "../views/Kendaraan";
 
@@ -22,6 +23,13 @@ const layoutAdmin = "/easset/admin";
 // const layoutAuth = "/easset/auth";
 
 var routes_master = [
+  {
+    path: "/kategori",
+    name: "Kategori",
+    icon: "ni ni-archive-2 text-info",
+    component: Kategori,
+    layout: layoutAdmin,
+  },
   {
     path: "/barang",
     name: "Barang",

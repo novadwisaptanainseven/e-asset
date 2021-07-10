@@ -7,19 +7,27 @@ import PreviewQrCode from "./PreviewQrCode";
 import TambahBarang from "./TambahBarang";
 
 const Barang = ({ match }) => {
-	const { path } = match;
-	return (
-		<>
-			<Switch>
-				<Route exact path={path} render={() => <DataBarang path={path} />} />
-				<Route exact path={path + "/tambah"} render={() => <TambahBarang />} />
-				<Route exact path={path + "/:id/edit"} render={() => <EditBarang />} />
-				<Route exact path={path + "/:id/detail"} render={() => <DetailBarang />} />
-				<Route exact path={path + "/:id/qr-code"} render={() => <PreviewQrCode />} />
-				<Redirect from="/admin/barang/*" to="/admin/index" />
-			</Switch>
-		</>
-	);
+  const { path } = match;
+  return (
+    <>
+      <Switch>
+        <Route exact path={path} render={() => <DataBarang path={path} />} />
+        <Route exact path={path + "/tambah"} render={() => <TambahBarang />} />
+        <Route exact path={path + "/:id/edit"} render={() => <EditBarang />} />
+        <Route
+          exact
+          path={path + "/:id/detail"}
+          render={() => <DetailBarang />}
+        />
+        <Route
+          exact
+          path={path + "/:id/qr-code"}
+          render={() => <PreviewQrCode />}
+        />
+        <Redirect from="/admin/barang/*" to="/admin/index" />
+      </Switch>
+    </>
+  );
 };
 
 export default Barang;

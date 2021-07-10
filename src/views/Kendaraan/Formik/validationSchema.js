@@ -17,16 +17,19 @@ const FILE_KENDARAAN_SUPPORTED_FORMATS = [
 ];
 
 const validationSchema = Yup.object().shape({
-  id_pegawai: Yup.string().required("Pegawai harus diisi"),
+  kode_kendaraan: Yup.string().required("Kode kendaraan harus diisi"),
+  jenis_kendaraan: Yup.string().required("Jenis kendaraan harus diisi"),
   merk: Yup.string().required("Merk harus diisi"),
   tipe: Yup.string().required("Tipe harus diisi"),
   cc: Yup.string().required("CC harus diisi"),
+  bahan: Yup.string().required("Bahan harus diisi"),
   warna: Yup.string().required("Warna harus diisi"),
-  rangka: Yup.string().required("Rangka harus diisi"),
-  mesin: Yup.string().required("Mesin harus diisi"),
-  pembuatan: Yup.string().required("Pembuatan harus diisi"),
-  pembelian: Yup.string().required("Pembelian harus diisi"),
+  no_rangka: Yup.string().required("No. Rangka harus diisi"),
+  no_pabrik: Yup.string().required("No. Pabrik harus diisi"),
+  no_mesin: Yup.string().required("No. Mesin harus diisi"),
   no_polisi: Yup.string().required("No. Polisi harus diisi"),
+  tahun_pembuatan: Yup.string().required("Tahun pembuatan harus diisi"),
+  tahun_pembelian: Yup.string().required("Tahun pembelian harus diisi"),
   bpkb: Yup.string().required("BPKB harus diisi"),
   stnk: Yup.string().required("STNK harus diisi"),
   biaya_stnk: Yup.number()

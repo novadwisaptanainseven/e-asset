@@ -3,6 +3,7 @@ import { Redirect, Route, Switch } from "react-router";
 import DataKendaraan from "./DataKendaraan";
 import DetailKendaraan from "./DetailKendaraan";
 import EditKendaraan from "./EditKendaraan";
+import PreviewQrCode from "./PreviewQrCode";
 import TambahKendaraan from "./TambahKendaraan";
 
 const Kendaraan = ({ match }) => {
@@ -25,6 +26,11 @@ const Kendaraan = ({ match }) => {
           exact
           path={path + "/:id/detail"}
           render={() => <DetailKendaraan />}
+        />
+        <Route
+          exact
+          path={path + "/:id/qr-code"}
+          render={() => <PreviewQrCode />}
         />
         <Redirect from="/admin/kendaraan/*" to="/admin/index" />
       </Switch>

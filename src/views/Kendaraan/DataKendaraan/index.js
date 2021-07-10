@@ -13,6 +13,7 @@ import {
 } from "reactstrap";
 // import columnsDataTable from "../columnsDataTable";
 import {
+  generateQrCode,
   goToDetail,
   goToEdit,
   goToTambah,
@@ -158,7 +159,7 @@ const DataKendaraan = ({ path }) => {
           <Button
             color="dark"
             className="btn btn-sm"
-            // onClick={() => generateQrCode(path, history, row.id_barang)}
+            onClick={() => generateQrCode(path, history, row.id_kendaraan)}
           >
             Generate
           </Button>

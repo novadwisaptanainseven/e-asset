@@ -14,6 +14,10 @@ export const goToTambah = (history, path) => {
   history.push(`${path}/tambah`);
 };
 
+export const generateQrCode = (path, history, id) => {
+  history.push(`${path}/${id}/qr-code`);
+};
+
 export const goToEdit = (path, history, id) => {
   history.push(`${path}/${id}/edit`);
 };
@@ -28,16 +32,19 @@ export const handleDelete = (id, history) => {
 
 // Fungsi - fungsi untuk halaman Kendaraan
 export const setInitState = (data) => ({
-  id_pegawai: data ? data.id_pegawai : "",
+  kode_kendaraan: data ? data.kode_kendaraan : "",
+  jenis_kendaraan: data ? data.jenis_kendaraan : "",
   merk: data ? data.merk : "",
   tipe: data ? data.tipe : "",
   cc: data ? data.cc : "",
+  bahan: data ? data.bahan : "",
   warna: data ? data.warna : "",
-  rangka: data ? data.rangka : "",
-  mesin: data ? data.mesin : "",
-  pembuatan: data ? data.pembuatan : "",
-  pembelian: data ? data.pembelian : "",
+  no_rangka: data ? data.no_rangka : "",
+  no_mesin: data ? data.no_mesin : "",
+  no_pabrik: data ? data.no_pabrik : "",
   no_polisi: data ? data.no_polisi : "",
+  tahun_pembuatan: data ? data.tahun_pembuatan : "",
+  tahun_pembelian: data ? data.tahun_pembelian : "",
   bpkb: data ? data.bpkb : "",
   stnk: data ? data.stnk : "",
   biaya_stnk: data ? data.biaya_stnk : "",
