@@ -1,10 +1,8 @@
 import LoadingSubmit from "components/LoadingSubmit";
-import { getKategoriById } from "context/actions/Kategori";
-import { editKategori } from "context/actions/Kategori";
+import { insertRuangan } from "context/actions/Ruangan";
 import { Formik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router";
-import { useRouteMatch } from "react-router-dom";
 import {
   Form,
   Row,
@@ -17,24 +15,23 @@ import {
   FormGroup,
   Input,
 } from "reactstrap";
-import { goBackToPrevPage, setInitStateEdit } from "../functions";
+import { goBackToPrevPage } from "../functions";
 import initState from "./Formik/initState";
 import validationSchema from "./Formik/validationSchema";
 
-const EditKategori = () => {
+const TambahRuangan = () => {
   const history = useHistory();
-  const match = useRouteMatch();
-  const { params } = match;
-  const [data, setData] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Get kategori by id
-  useEffect(() => {
-    getKategoriById(params.id, setData, setLoading);
-  }, [params]);
-
   const handleFormSubmit = (values) => {
-    editKategori(params.id, values, setLoading, history);
+    const formData = new FormData();
+    formData.append("nama_ruangan", values.nama_ruangan);
+
+    for (let item of formData.entries()) {
+      console.log(item);
+    }
+
+    insertRuangan(formData, setLoading, history);
   };
 
   return (
@@ -48,12 +45,11 @@ const EditKategori = () => {
                 style={{ cursor: "pointer" }}
                 className="fas fa-long-arrow-alt-left text-primary mr-3"
               ></i>{" "}
-              Edit Kategori
+              Tambah Ruangan
             </h2>
           </CardHeader>
           <Formik
-            initialValues={setInitStateEdit(data)}
-            enableReinitialize={true}
+            initialValues={initState}
             validationSchema={validationSchema}
             onSubmit={handleFormSubmit}
           >
@@ -70,27 +66,27 @@ const EditKategori = () => {
                   <FormGroup>
                     <label
                       className="form-control-label"
-                      htmlFor="nama_kategori"
+                      htmlFor="nama_ruangan"
                     >
-                      Nama Kategori
+                      Nama Ruangan
                     </label>
                     <Input
                       type="text"
-                      id="nama_kategori"
-                      name="nama_kategori"
-                      placeholder="Nama kategori"
+                      id="nama_ruangan"
+                      name="nama_ruangan"
+                      placeholder="Nama ruangan"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.nama_kategori || ""}
+                      value={values.nama_ruangan || ""}
                       className={
-                        errors.nama_kategori && touched.nama_kategori
+                        errors.nama_ruangan && touched.nama_ruangan
                           ? "is-invalid"
                           : null
                       }
                     />
-                    {errors.nama_kategori && touched.nama_kategori && (
+                    {errors.nama_ruangan && touched.nama_ruangan && (
                       <div className="invalid-feedback">
-                        {errors.nama_kategori}
+                        {errors.nama_ruangan}
                       </div>
                     )}
                   </FormGroup>
@@ -113,4 +109,4 @@ const EditKategori = () => {
   );
 };
 
-export default EditKategori;
+export default TambahRuangan;

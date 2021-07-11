@@ -1,5 +1,8 @@
+import { LoadAnimationWhite } from "assets";
+import LoadingSubmit from "components/LoadingSubmit";
+import insertKategori from "context/actions/Kategori/insertKategori";
 import { Formik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router";
 import {
   Form,
@@ -19,10 +22,9 @@ import validationSchema from "./Formik/validationSchema";
 
 const TambahKategori = () => {
   const history = useHistory();
+  const [loading, setLoading] = useState(false);
 
   const handleFormSubmit = (values) => {
-    console.log("submit");
-
     const formData = new FormData();
     formData.append("nama_kategori", values.nama_kategori);
 
@@ -30,7 +32,7 @@ const TambahKategori = () => {
       console.log(item);
     }
 
-    // insertBarang(formData, setLoading, history);
+    insertKategori(formData, setLoading, history);
   };
 
   return (
@@ -73,7 +75,7 @@ const TambahKategori = () => {
                       type="text"
                       id="nama_kategori"
                       name="nama_kategori"
-                      placeholder="Kode Barang"
+                      placeholder="Nama kategori"
                       onChange={handleChange}
                       onBlur={handleBlur}
                       value={values.nama_kategori || ""}
@@ -94,9 +96,9 @@ const TambahKategori = () => {
                   <Button
                     type="submit"
                     color="primary"
-                    // disabled={loading ? true : false}
+                    disabled={loading ? true : false}
                   >
-                    Simpan
+                    {loading ? <LoadingSubmit /> : "Simpan"}
                   </Button>
                 </CardFooter>
               </Form>

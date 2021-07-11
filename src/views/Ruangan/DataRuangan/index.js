@@ -1,6 +1,8 @@
 import kategori from "assets/dummyData/kategori";
+import ruangan from "assets/dummyData/ruangan";
 import Loading from "components/Loading";
 import { getAllKategori } from "context/actions/Kategori";
+import { getAllRuangan } from "context/actions/Ruangan";
 import { GlobalContext } from "context/Provider";
 import customStyles from "datatableStyle/customStyles";
 import React, { useContext, useEffect } from "react";
@@ -17,16 +19,16 @@ import {
 } from "reactstrap";
 import { goToEdit, goToTambah, showDeleteAlert } from "../functions";
 
-const DataKategori = ({ path }) => {
+const DataRuangan = ({ path }) => {
   const history = useHistory();
 
-  const { kategoriState, kategoriDispatch } = useContext(GlobalContext);
-  const { data, loading } = kategoriState;
+  const { ruanganState, ruanganDispatch } = useContext(GlobalContext);
+  const { data, loading } = ruanganState;
 
-  // Get all kategori
+  // Get all ruangan
   useEffect(() => {
-    getAllKategori(kategoriDispatch);
-  }, [kategoriDispatch]);
+    getAllRuangan(ruanganDispatch);
+  }, [ruanganDispatch]);
 
   // Columns DataTable
   const columnsDataTable = [
@@ -38,8 +40,8 @@ const DataKategori = ({ path }) => {
       width: "60px",
     },
     {
-      name: "Nama Kategori",
-      selector: "nama_kategori",
+      name: "Nama Ruangan",
+      selector: "nama_ruangan",
       sortable: true,
       // maxWidth: "200px",
       wrap: true,
@@ -66,14 +68,14 @@ const DataKategori = ({ path }) => {
             <Button
               color="success"
               className="btn btn-sm"
-              onClick={() => goToEdit(path, history, row.id_kategori)}
+              onClick={() => goToEdit(path, history, row.id_ruangan)}
             >
               <i className="fas fa-edit"></i>
             </Button>
             <Button
               color="danger"
               className="btn btn-sm"
-              onClick={() => showDeleteAlert(row.id_kategori, kategoriDispatch)}
+              onClick={() => showDeleteAlert(row.id_ruangan, ruanganDispatch)}
             >
               <i className="fas fa-trash"></i>
             </Button>
@@ -88,7 +90,7 @@ const DataKategori = ({ path }) => {
       <Col>
         <Card className="shadow">
           <CardHeader>
-            <h2>Kategori</h2>
+            <h2>Ruangan</h2>
           </CardHeader>
           <CardBody>
             <Button
@@ -126,4 +128,4 @@ const DataKategori = ({ path }) => {
   );
 };
 
-export default DataKategori;
+export default DataRuangan;

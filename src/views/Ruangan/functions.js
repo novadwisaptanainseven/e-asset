@@ -1,4 +1,4 @@
-import { deleteKategori } from "context/actions/Kategori";
+import { deleteRuangan } from "context/actions/Ruangan";
 import swal2 from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 const Swal = withReactContent(swal2);
@@ -17,7 +17,7 @@ export const goToEdit = (path, history, id) => {
 };
 
 export const setInitStateEdit = (data) => ({
-  nama_kategori: data ? data.nama_kategori : "",
+  nama_ruangan: data ? data.nama_ruangan : "",
 });
 
 // Alert untuk hapus data
@@ -32,7 +32,7 @@ export const showDeleteAlert = (id, dispatch) => {
     confirmButtonText: "Iya",
   }).then((result) => {
     if (result.isConfirmed) {
-      deleteKategori(id, dispatch, Swal);
+      deleteRuangan(id, dispatch, Swal);
     }
   });
 };

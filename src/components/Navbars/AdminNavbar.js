@@ -54,8 +54,7 @@ const AdminNavbar = (props) => {
         text: "Masa Waktu Login Anda Sudah Kadaluarsa. Silahkan Login Ulang!",
         showConfirmButton: true,
       }).then((result) => {
-        localStorage.clear();
-        history.push("/easset/auth/login");
+        logout();
       });
     }
   }, [Swal]);

@@ -1,6 +1,7 @@
 import LoadingSubmit from "components/LoadingSubmit";
 import { getKategoriById } from "context/actions/Kategori";
-import { editKategori } from "context/actions/Kategori";
+import { getRuanganById } from "context/actions/Ruangan";
+import { editRuangan } from "context/actions/Ruangan";
 import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
@@ -18,23 +19,22 @@ import {
   Input,
 } from "reactstrap";
 import { goBackToPrevPage, setInitStateEdit } from "../functions";
-import initState from "./Formik/initState";
 import validationSchema from "./Formik/validationSchema";
 
-const EditKategori = () => {
+const EditRuangan = () => {
   const history = useHistory();
   const match = useRouteMatch();
   const { params } = match;
   const [data, setData] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Get kategori by id
+  // Get ruangan by id
   useEffect(() => {
-    getKategoriById(params.id, setData, setLoading);
+    getRuanganById(params.id, setData, setLoading);
   }, [params]);
 
   const handleFormSubmit = (values) => {
-    editKategori(params.id, values, setLoading, history);
+    editRuangan(params.id, values, setLoading, history);
   };
 
   return (
@@ -48,7 +48,7 @@ const EditKategori = () => {
                 style={{ cursor: "pointer" }}
                 className="fas fa-long-arrow-alt-left text-primary mr-3"
               ></i>{" "}
-              Edit Kategori
+              Edit Ruangan
             </h2>
           </CardHeader>
           <Formik
@@ -70,27 +70,27 @@ const EditKategori = () => {
                   <FormGroup>
                     <label
                       className="form-control-label"
-                      htmlFor="nama_kategori"
+                      htmlFor="nama_ruangan"
                     >
-                      Nama Kategori
+                      Nama Ruangan
                     </label>
                     <Input
                       type="text"
-                      id="nama_kategori"
-                      name="nama_kategori"
-                      placeholder="Nama kategori"
+                      id="nama_ruangan"
+                      name="nama_ruangan"
+                      placeholder="Nama ruangan"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.nama_kategori || ""}
+                      value={values.nama_ruangan || ""}
                       className={
-                        errors.nama_kategori && touched.nama_kategori
+                        errors.nama_ruangan && touched.nama_ruangan
                           ? "is-invalid"
                           : null
                       }
                     />
-                    {errors.nama_kategori && touched.nama_kategori && (
+                    {errors.nama_ruangan && touched.nama_ruangan && (
                       <div className="invalid-feedback">
-                        {errors.nama_kategori}
+                        {errors.nama_ruangan}
                       </div>
                     )}
                   </FormGroup>
@@ -113,4 +113,4 @@ const EditKategori = () => {
   );
 };
 
-export default EditKategori;
+export default EditRuangan;

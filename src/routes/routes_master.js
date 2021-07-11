@@ -16,6 +16,7 @@
 
 */
 import Kategori from "views/Kategori";
+import Ruangan from "views/Ruangan";
 import Barang from "../views/Barang";
 import Kendaraan from "../views/Kendaraan";
 
@@ -23,6 +24,13 @@ const layoutAdmin = "/easset/admin";
 // const layoutAuth = "/easset/auth";
 
 var routes_master = [
+  {
+    path: "/ruangan",
+    name: "Ruangan",
+    icon: "ni ni-building text-warning",
+    component: Ruangan,
+    layout: layoutAdmin,
+  },
   {
     path: "/kategori",
     name: "Kategori",

@@ -19,6 +19,10 @@ export const GlobalProvider = ({ children }) => {
     authReducer,
     initState
   );
+  // Kategori
+  const [kategoriState, kategoriDispatch] = useReducer(reducer, initState);
+  // Ruangan
+  const [ruanganState, ruanganDispatch] = useReducer(reducer, initState);
   // Barang
   const [barangState, barangDispatch] = useReducer(reducer, initStateMain);
   // Riwayat Barang Pindah
@@ -57,6 +61,10 @@ export const GlobalProvider = ({ children }) => {
         currentUserDispatch,
         usersState,
         usersDispatch,
+        kategoriState,
+        kategoriDispatch,
+        ruanganState,
+        ruanganDispatch,
         barangState,
         barangDispatch,
         barangPindahState,
