@@ -2,7 +2,7 @@ import axios from "axios";
 
 const getAllBidang = (setData) => {
   axios
-    .get(sessionStorage.baseUrlEpekerja + `bidang`)
+    .get(localStorage.baseUrlEpekerja + `bidang`)
     .then((res) => {
       console.log(res.data.data);
       setData(res.data.data);

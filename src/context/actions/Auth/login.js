@@ -7,15 +7,19 @@ export const login = (values, dispatch) => {
   });
 
   axiosInstance
-    .post("user/login", values)
+    .post("login", values)
     .then((res) => {
-      sessionStorage.token = res.data.accessToken;
-      sessionStorage.refreshToken = res.data.refreshToken;
-      sessionStorage.id_user = res.data.data.id_user;
+      localStorage.token = res.data.token;
+      localStorage.level = res.data.user.level;
+      localStorage.id_user = res.data.user.id;
+      localStorage.loginTimestamp = new Date().getTime() + 1 * 60 * 60 * 1000; // Durasi login = 1 jam
       dispatch({
         type: SUCCESS,
-        payload: res.data.data,
+        payload: res.data.user,
       });
+      // Redirect to dashboard
+      window.location.href = "/easset/admin";
+
       console.log(res.data);
     })
     .catch((err) => {

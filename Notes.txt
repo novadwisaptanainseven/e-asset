@@ -7,8 +7,8 @@ Progress Aplikasi
   - Kendaraan (done)
   Data Master (BE)
   - Barang ()
-  - Kategori ()
+  - Kategori (done)
   - Kendaraan ()
 
-2. Fitur Login
+2. Fitur Login (done)
   

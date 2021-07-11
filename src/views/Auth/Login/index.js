@@ -46,7 +46,7 @@ import { LoadAnimationWhite } from "assets";
 const Login = () => {
   const history = useHistory();
   const { loginState, loginDispatch } = useContext(GlobalContext);
-  const { loading, data, error } = loginState;
+  const { loading, error } = loginState;
   const [tokenAlert, setTokenAlert] = useState(true);
 
   useEffect(() => {
@@ -55,17 +55,17 @@ const Login = () => {
       checkToken(history);
     }
 
-    if (data) {
-      // Jika login berhasil maka redirect ke halaman dashboard admin
-      window.location.href = "/easset/admin";
-    }
+    // if (data) {
+    //   // Jika login berhasil maka redirect ke halaman dashboard admin
+    //   window.location.href = "/easset/admin";
+    // }
 
     return () => {
       loginDispatch({
         type: CLEAN_UP,
       });
     };
-  }, [data, tokenAlert, history, loginDispatch]);
+  }, [tokenAlert, history, loginDispatch]);
 
   const handleFormSubmit = (values) => {
     // Lakukan proses login

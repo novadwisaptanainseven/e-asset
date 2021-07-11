@@ -15,11 +15,11 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import { getUserByIdDispatch } from "context/actions/Auth/getUserByIdDispatch";
+import { cekUser } from "context/actions/Auth/cekUser";
 import { logout } from "context/actions/Auth/logout";
 import { GlobalContext } from "context/Provider";
 import React, { useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 // reactstrap components
 import {
   DropdownMenu,
@@ -40,11 +40,34 @@ const Swal = withReactContent(swal2);
 const AdminNavbar = (props) => {
   const { currentUserState, currentUserDispatch } = useContext(GlobalContext);
   const { data } = currentUserState;
+  const history = useHistory();
+
+  // Cek Masa Kadaluarsa Login
+  useEffect(() => {
+    let tsNow = new Date().getTime();
+
+    if (tsNow > localStorage.loginTimestamp) {
+      // Jika login kadaluarsa
+      Swal.fire({
+        icon: "error",
+        title: "Akses Dilarang",
+        text: "Masa Waktu Login Anda Sudah Kadaluarsa. Silahkan Login Ulang!",
+        showConfirmButton: true,
+      }).then((result) => {
+        localStorage.clear();
+        history.push("/easset/auth/login");
+      });
+    }
+  }, [Swal]);
 
   // Get Current User
   useEffect(() => {
-    getUserByIdDispatch(sessionStorage.id_user, currentUserDispatch);
-  }, [currentUserDispatch]);
+    cekUser(currentUserDispatch, Swal, history);
+  }, [currentUserDispatch, Swal, history]);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -90,7 +113,7 @@ const AdminNavbar = (props) => {
                   </span> */}
                   <Media className="ml-2 d-none d-lg-block">
                     <span className="mb-0 text-sm font-weight-bold">
-                      {data.username}
+                      {data.name}
                     </span>
                   </Media>
                 </Media>

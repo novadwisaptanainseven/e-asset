@@ -40,7 +40,7 @@ const Admin = (props) => {
   // Cek Apakah user sudah login
   // Jika belum, maka paksa user untuk login terlebih dahulu
   useEffect(() => {
-    if (!sessionStorage.token) {
+    if (!localStorage.token) {
       Swal.fire({
         icon: "error",
         title: "Akses Diblog",
@@ -52,7 +52,7 @@ const Admin = (props) => {
   }, []);
 
   React.useEffect(() => {
-    if (sessionStorage.token) {
+    if (localStorage.token) {
       document.documentElement.scrollTop = 0;
       document.scrollingElement.scrollTop = 0;
       mainContent.current.scrollTop = 0;
@@ -89,7 +89,7 @@ const Admin = (props) => {
 
   return (
     <>
-      {sessionStorage.token && (
+      {localStorage.token && (
         <>
           <Sidebar
             {...props}

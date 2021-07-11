@@ -2,6 +2,7 @@ import React, { createContext, useReducer } from "react";
 import initState from "./initStates/initState";
 import initStateMain from "./initStates/initStateMain";
 import initStateRincianBarang from "./initStates/initStateRincianBarang";
+import authReducer from "./reducers/Auth/authReducer";
 import loginReducer from "./reducers/loginReducer";
 import reducer from "./reducers/reducer";
 import reducerRincianBarang from "./reducers/reducerRincianBarang";
@@ -15,7 +16,7 @@ export const GlobalProvider = ({ children }) => {
   const [usersState, usersDispatch] = useReducer(reducer, initState);
   // Current User
   const [currentUserState, currentUserDispatch] = useReducer(
-    loginReducer,
+    authReducer,
     initState
   );
   // Barang
