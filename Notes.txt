@@ -5,10 +5,11 @@ Progress Aplikasi
   - Barang (done)
   - Kategori (done)
   - Kendaraan (done)
+  - Ruangan (done)
   Data Master (BE)
-  - Barang ()
+  - Barang (done)
   - Kategori (done)
-  - Kendaraan ()
+  - Ruangan (done)
 
 2. Fitur Login (done)
   
