@@ -1,5 +1,7 @@
-export const getFile = (file) => {
-  let file2 = file.replace(/\\/g, "%2F");
-  // console.log(`${localStorage.baseURLFile}${file2}`);
-  return `${localStorage.baseURLFile}${file2}`;
+const getFile = (file) => {
+  let file2 = file.split("/");
+  let file3 = `document/${file2[file2.length - 1]}`;
+  return `${localStorage.baseURL}${file3}`;
 };
+
+export default getFile;

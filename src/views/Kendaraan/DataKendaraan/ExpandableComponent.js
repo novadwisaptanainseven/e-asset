@@ -1,6 +1,6 @@
 // import { FotoKendaraanSample } from "assets";
 import { FotoKendaraanSample } from "assets";
-import { getFile } from "context/actions/DownloadFile/getFile";
+import getFile from "context/actions/DownloadFile/getFile";
 import expandableComponentStyle from "datatableStyle/expandableComponentStyle";
 import React, { useState } from "react";
 import { Row, Col, Badge } from "reactstrap";

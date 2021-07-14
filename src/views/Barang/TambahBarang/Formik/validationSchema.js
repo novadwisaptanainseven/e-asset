@@ -45,15 +45,23 @@ const validationSchema = Yup.object().shape({
     ),
   foto: Yup.mixed()
     .required("Foto harus diisi")
-    .test(
-      "size",
-      "Kapasitas file maksimal 2 mb",
-      (value) => value && value.size <= FOTO_BARANG_SIZE
-    )
+    .test("size", "Kapasitas file maksimal 2 mb", (value) => {
+      if (value) {
+        return value && value.size <= FOTO_BARANG_SIZE;
+      } else {
+        return true;
+      }
+    })
     .test(
       "type",
       "Ekstensi yang diperbolehkan hanya jpg, jpeg, dan, png",
-      (value) => value && FOTO_BARANG_SUPPORTED_FORMATS.includes(value.type)
+      (value) => {
+        if (value) {
+          return value && FOTO_BARANG_SUPPORTED_FORMATS.includes(value.type);
+        } else {
+          return true;
+        }
+      }
     ),
 });
 

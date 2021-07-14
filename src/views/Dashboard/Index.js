@@ -56,11 +56,11 @@ const Index = (props) => {
   }
 
   // Get All Barang
-  useEffect(() => {
-    if (!dataBarang) {
-      getAllBarang(barangDispatch);
-    }
-  }, [dataBarang, barangDispatch]);
+  // useEffect(() => {
+  //   if (!dataBarang) {
+  //     getAllBarang(barangDispatch);
+  //   }
+  // }, [dataBarang, barangDispatch]);
 
   // Get All Barang Pindah
   useEffect(() => {

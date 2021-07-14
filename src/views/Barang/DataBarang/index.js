@@ -29,7 +29,7 @@ import Loading from "components/Loading";
 import { ComponentToPrint } from "./ComponentToPrint";
 import { getDataSet } from "./dataSetExcel";
 import ReactExport from "react-data-export";
-import barang from "assets/dummyData/barang";
+// import barang from "assets/dummyData/barang";
 
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
@@ -41,6 +41,9 @@ const DataBarang = ({ path }) => {
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const { barangState, barangDispatch } = useContext(GlobalContext);
   const { data: dataBarang } = barangState;
+  const [jenisBarang, setJenisBarang] = useState("");
+  const [kategori, setKategori] = useState("");
+  const [loadingFilter, setLoadingFilter] = useState(false);
 
   // Handle print data barang
   const handlePrintBarang = useReactToPrint({
@@ -57,22 +60,28 @@ const DataBarang = ({ path }) => {
   });
 
   useEffect(() => {
-    getAllBarang(barangDispatch);
-  }, [barangDispatch]);
+    const filter = {
+      jenisBarang: jenisBarang,
+      kategori: kategori,
+    };
 
-  const filteredData = barang.filter((item) => {
-    if (item.nama_barang && item.kategori && item.kode_barang && item.merk) {
-      if (
-        item.nama_barang.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.kategori.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.kode_barang.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.merk.toLowerCase().includes(filterText.toLowerCase())
-      ) {
-        return true;
-      }
-    }
-    return false;
-  });
+    getAllBarang(barangDispatch, filter, setLoadingFilter);
+  }, [barangDispatch, jenisBarang, kategori]);
+
+  const filteredData = !dataBarang
+    ? []
+    : dataBarang.data.filter((item) => {
+        if (
+          item.nama_barang.toLowerCase().includes(filterText.toLowerCase()) ||
+          item.kategori.toLowerCase().includes(filterText.toLowerCase()) ||
+          item.kode_barang.toLowerCase().includes(filterText.toLowerCase()) ||
+          item.merk.toLowerCase().includes(filterText.toLowerCase())
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      });
 
   // Set Data for Export Excel
   const dataSetExcel = getDataSet(filteredData);
@@ -174,17 +183,15 @@ const DataBarang = ({ path }) => {
               <h2>Barang</h2>
             </CardHeader>
             <CardBody>
-              {dataBarang && dataBarang.data.length === 0 ? (
-                <Loading />
-              ) : (
+              <Button
+                color="primary"
+                className="btn btn-md"
+                onClick={() => goToTambah(history, path)}
+              >
+                Tambah Data
+              </Button>
+              {dataBarang ? (
                 <>
-                  <Button
-                    color="primary"
-                    className="btn btn-md"
-                    onClick={() => goToTambah(history, path)}
-                  >
-                    Tambah Data
-                  </Button>
                   <DataTable
                     columns={columnsDataTable}
                     data={filteredData}
@@ -201,6 +208,14 @@ const DataBarang = ({ path }) => {
                         resetPaginationToggle={resetPaginationToggle}
                         setResetPaginationToggle={setResetPaginationToggle}
                         isPrintingButtonActive={true}
+                        // Set Jenis Barang
+                        jenisBarang={jenisBarang}
+                        setJenisBarang={setJenisBarang}
+                        setLoadingFilter={setLoadingFilter}
+                        loadingFilter={loadingFilter}
+                        // Set Kategori
+                        kategori={kategori}
+                        setKategori={setKategori}
                         // Export PDF
                         handlePrint={handlePrintBarang}
                         // Export Excel
@@ -218,6 +233,8 @@ const DataBarang = ({ path }) => {
                     expandableRowsComponent={<ExpandableComponent />}
                   />
                 </>
+              ) : (
+                <Loading />
               )}
             </CardBody>
           </Card>

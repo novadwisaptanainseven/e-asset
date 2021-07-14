@@ -25,16 +25,8 @@ const TambahBarang = () => {
   const history = useHistory();
   const [selectedFile, setSelectedFile] = useState();
   const [preview, setPreview] = useState();
-  const [rincianBarang, setRincianBarang] = useState([]);
-  const [inputVal, setInputVal] = useState({});
   const [hargaFormatRp, setHargaFormatRp] = useState("");
-  const [bidang, setBidang] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    // Get All Bidang
-    // getAllBidang(setBidang);
-  }, []);
 
   // Mengubah format harga dari number menjadi Currency Rupiah
   const convertToCurrency = (harga) => {
@@ -106,7 +98,7 @@ const TambahBarang = () => {
       console.log(item);
     }
 
-    // insertBarang(formData, setLoading, history);
+    insertBarang(formData, setLoading, history);
   };
 
   return (

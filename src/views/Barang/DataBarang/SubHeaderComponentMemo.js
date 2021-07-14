@@ -1,5 +1,7 @@
+import { LoadAnimationBlue } from "assets";
+import getSelectKategori from "context/actions/Barang/getSelectKategori";
 import { FilterComponent } from "datatableStyle/filterPencarian";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, FormGroup, Input } from "reactstrap";
 
 const SubHeaderComponentMemo = ({
@@ -10,8 +12,18 @@ const SubHeaderComponentMemo = ({
   isPrintingButtonActive,
   handlePrint,
   exportExcel,
+  setJenisBarang,
+  jenisBarang,
+  setKategori,
+  kategori,
+  loadingFilter,
 }) => {
   const { ExcelFile, ExcelSheet, fileName, dataSet } = exportExcel;
+  const [selectKategori, setSelectKategori] = useState([]);
+
+  useEffect(() => {
+    getSelectKategori(setSelectKategori);
+  }, []);
 
   const handleClear = () => {
     if (filterText) {
@@ -25,21 +37,45 @@ const SubHeaderComponentMemo = ({
       className="d-flex justify-content-between mt-3"
       style={{ width: "100%" }}
     >
-      <div className="d-flex">
+      <div className="d-flex align-items-center">
         <FormGroup className="mb-0">
-          <Input type="select" name="filter-jenis-barang">
-            <option value="">-- Jenis Barang --</option>
+          <Input
+            type="select"
+            name="filter-jenis-barang"
+            value={jenisBarang}
+            onChange={(e) => {
+              setJenisBarang(e.target.value);
+              setKategori("");
+            }}
+          >
+            <option value="">-- Semua Jenis --</option>
             <option value="tidak-tetap">Tidak Tetap</option>
             <option value="tetap">Tetap</option>
           </Input>
         </FormGroup>
         <FormGroup className="mb-0 ml-2">
-          <Input type="select" name="filter-kategori">
-            <option value="">-- Kategori --</option>
-            <option value="tidak-tetap">TIK</option>
-            <option value="tetap">Meubel</option>
+          <Input
+            type="select"
+            name="filter-kategori"
+            value={kategori}
+            onChange={(e) => {
+              setKategori(e.target.value);
+              setJenisBarang("");
+            }}
+          >
+            <option value="">-- Semua Kategori --</option>
+            {selectKategori.map((item, index) => (
+              <option key={index} value={item.id_kategori}>
+                {item.nama_kategori}
+              </option>
+            ))}
           </Input>
         </FormGroup>
+        {loadingFilter && (
+          <>
+            <img className="ml-2" src={LoadAnimationBlue} width={30} height={30} alt="loading..." />
+          </>
+        )}
       </div>
       <div className="d-flex">
         {isPrintingButtonActive && (

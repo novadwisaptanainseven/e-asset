@@ -1,4 +1,4 @@
-// import { getFile } from "context/actions/DownloadFile/getFile";
+// import getFile from "context/actions/DownloadFile/getFile";
 import React from "react";
 import { Modal, Button } from "reactstrap";
 import { getImagePegawai } from "../functions";

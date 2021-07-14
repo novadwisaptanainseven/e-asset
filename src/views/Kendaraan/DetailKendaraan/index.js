@@ -3,7 +3,7 @@ import { ProfileImageBlank } from "assets";
 import { FotoPegawaiSample } from "assets";
 import { FotoKendaraanSample } from "assets";
 import Loading from "components/Loading";
-import { getFile } from "context/actions/DownloadFile/getFile";
+import getFile from "context/actions/DownloadFile/getFile";
 import { getAllPegawai } from "context/actions/EPekerjaAPI/Pegawai";
 import { getKendaraanById } from "context/actions/Kendaraan";
 import React, { useEffect, useState } from "react";

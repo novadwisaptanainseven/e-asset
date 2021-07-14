@@ -4,7 +4,7 @@ export const getBarangById = (id, setData, setLoading) => {
   setLoading(true);
 
   axiosInstance
-    .get(`barang/detail/${id}`)
+    .get(`admin/barang/${id}`)
     .then((res) => {
       console.log(res.data);
       setData(res.data.data);

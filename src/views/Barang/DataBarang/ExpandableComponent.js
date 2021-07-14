@@ -1,5 +1,6 @@
-import { FotoBarangSample } from "assets";
-import { getFile } from "context/actions/DownloadFile/getFile";
+
+import getFile from "context/actions/DownloadFile/getFile";
+import getImage from "context/actions/DownloadFile/getImage";
 import expandableComponentStyle from "datatableStyle/expandableComponentStyle";
 import React, { useState } from "react";
 import { Row, Col } from "reactstrap";
@@ -9,7 +10,7 @@ const ExpandableComponent = ({ data }) => {
   const [modal, setModal] = useState(false);
 
   const getFileName = (file) => {
-    let file2 = file.split("\\");
+    let file2 = file.split("/");
     let file3 = file2[file2.length - 1];
 
     return file3;
@@ -101,8 +102,8 @@ const ExpandableComponent = ({ data }) => {
           </Col>
           <Col>
             <img
-              src={FotoBarangSample}
-              alt=""
+              src={data.foto ? getImage(data.foto) : ""}
+              alt="Tidak Ada Gambar"
               width={200}
               className="img-thumbnail"
               style={{ cursor: "pointer" }}

@@ -1,9 +1,7 @@
 // import { FotoBarangSample } from "assets";
 import Loading from "components/Loading";
 import { getBarangById } from "context/actions/Barang";
-import { getFile } from "context/actions/DownloadFile/getFile";
-import { getAllBidang } from "context/actions/EPekerjaAPI/Bidang";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory, useRouteMatch } from "react-router";
 import {
   Card,
@@ -16,41 +14,28 @@ import {
   Table,
 } from "reactstrap";
 import { goBackToPrevPage, goToRincianBarang } from "../functions";
-import { GlobalContext } from "context/Provider";
 import { FotoBarangSample } from "assets";
+import getFile from "context/actions/DownloadFile/getFile";
+import getImage from "context/actions/DownloadFile/getImage";
 
 const DetailBarang = () => {
   const history = useHistory();
   const match = useRouteMatch();
   const { params } = match;
   const [data, setData] = useState("");
-  const [bidang, setBidang] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { rincianBarangDispatch } = useContext(GlobalContext);
 
   const getFileName = (file) => {
-    let file2 = file.split("\\");
+    let file2 = file.split("/");
     let file3 = file2[file2.length - 1];
 
     return file3;
   };
 
-  // useEffect(() => {
-  //   // Get barang by id
-  //   getBarangById(params.id, setData, setLoading);
-  //   // Get all bidang from E-Pekerja
-  //   getAllBidang(setBidang);
-  // }, [params]);
-
-  const getNamaBidang = (id) => {
-    const search = bidang.filter((item) => {
-      return item.id_bidang && item.id_bidang === id;
-    });
-
-    const getValue = search[0];
-
-    return getValue.nama_bidang;
-  };
+  useEffect(() => {
+    // Get barang by id
+    getBarangById(params.id, setData, setLoading);
+  }, [params]);
 
   return (
     <>
@@ -68,7 +53,7 @@ const DetailBarang = () => {
               </h2>
             </CardHeader>
             <CardBody className="bg-secondary">
-              {false ? (
+              {!data ? (
                 <Loading />
               ) : (
                 <div
@@ -85,91 +70,102 @@ const DetailBarang = () => {
                           <tr>
                             <th width={150}>Kode Barang</th>
                             <th width={40}>:</th>
-                            <td>123abc</td>
+                            <td>{data.kode_barang}</td>
                           </tr>
                           <tr>
                             <th>Nama Barang</th>
                             <th>:</th>
-                            <td>Komputer</td>
+                            <td>{data.nama_barang}</td>
                           </tr>
                           <tr>
                             <th>Jenis Barang</th>
                             <th>:</th>
-                            <td>Barang Tidak Tetap</td>
+                            <td>
+                              {data.jenis_barang === "tidak-tetap"
+                                ? "Tidak Tetap"
+                                : "Tetap"}
+                            </td>
                           </tr>
                           <tr>
                             <th>Kategori</th>
                             <th>:</th>
-                            <td>TIK</td>
+                            <td>{data.nama_kategori}</td>
                           </tr>
                           <tr>
                             <th>Merk</th>
                             <th>:</th>
-                            <td>Lenovo</td>
+                            <td>{data.merk}</td>
                           </tr>
                           <tr>
                             <th>No. Pabrik</th>
                             <th>:</th>
-                            <td>123123</td>
+                            <td>{data.no_pabrik}</td>
                           </tr>
                           <tr>
                             <th>Ukuran</th>
                             <th>:</th>
-                            <td>123</td>
+                            <td>{data.ukuran}</td>
                           </tr>
                           <tr>
                             <th>Bahan</th>
                             <th>:</th>
-                            <td>Polikarbonat</td>
+                            <td>{data.bahan}</td>
                           </tr>
                           <tr>
                             <th>Tahun Pembelian</th>
                             <th>:</th>
-                            <td>2021</td>
+                            <td>{data.tahun_pembelian}</td>
                           </tr>
                           <tr>
                             <th>Harga</th>
                             <th>:</th>
-                            <td>Rp. 15.000.000</td>
+                            <td>
+                              {data &&
+                                data.harga.toLocaleString("id", {
+                                  style: "currency",
+                                  currency: "IDR",
+                                })}
+                            </td>
                           </tr>
                           <tr>
                             <th>Jumlah Baik</th>
                             <th>:</th>
-                            <td>30</td>
+                            <td>{data.jumlah_baik}</td>
                           </tr>
                           <tr>
                             <th>Jumlah Rusak</th>
                             <th>:</th>
-                            <td>0</td>
+                            <td>{data.jumlah_rusak}</td>
                           </tr>
                           <tr>
                             <th>Jumlah Barang</th>
                             <th>:</th>
-                            <td>Rp. 15.000.000</td>
+                            <td>{data.jumlah_barang}</td>
                           </tr>
                           <tr>
                             <th>Satuan</th>
                             <th>:</th>
-                            <td>Unit</td>
-                          </tr>
-                          <tr>
-                            <th valign="top">Keterangan</th>
-                            <th valign="top">:</th>
-                            <td>
-                              Lorem ipsum dolor sit, amet consectetur
-                              adipisicing elit. Accusantium voluptatibus dolor
-                              dolorem quibusdam exercitationem officia quas
-                              placeat officiis laborum architecto. Et ea
-                              corporis laudantium ipsum porro sequi! Dolor,
-                              consequuntur odit?
-                            </td>
+                            <td>{data.satuan}</td>
                           </tr>
                           <tr>
                             <th>File</th>
                             <th>:</th>
                             <td>
-                              <a href=".">file-barang.pdf</a>
+                              {data.file && (
+                                <a
+                                  href={getFile(data.file)}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                >
+                                  {getFileName(data.file)}
+                                </a>
+                              )}
                             </td>
+                          </tr>
+                          <tr>
+                            <th valign="top">Keterangan</th>
+                            <th valign="top">:</th>
+                            <td>{data.keterangan}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -181,7 +177,7 @@ const DetailBarang = () => {
                         </CardHeader>
                         <CardBody>
                           <img
-                            src={FotoBarangSample}
+                            src={data.foto ? getImage(data.foto) : ""}
                             alt="foto-barang"
                             width="100%"
                           />
@@ -208,45 +204,20 @@ const DetailBarang = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>1</td>
-                            <td>Nova Dwi Sapta Nain Seven</td>
-                            <td>1</td>
-                            <td>12/10/2021</td>
-                            <td>
-                              Lorem ipsum dolor sit amet consectetur adipisicing
-                              elit. Cumque quod perspiciatis, aperiam inventore
-                              illum odit. Accusantium a id perferendis libero
-                              repudiandae ratione iste ipsum animi. Eligendi
-                              eius facilis sit sint.
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>2</td>
-                            <td>Lyntom Irfan Darmawan</td>
-                            <td>1</td>
-                            <td>12/10/2021</td>
-                            <td>
-                              Lorem ipsum dolor sit amet consectetur adipisicing
-                              elit. Cumque quod perspiciatis, aperiam inventore
-                              illum odit. Accusantium a id perferendis libero
-                              repudiandae ratione iste ipsum animi. Eligendi
-                              eius facilis sit sint.
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>3</td>
-                            <td>Muhammad Fahrizal</td>
-                            <td>1</td>
-                            <td>12/10/2021</td>
-                            <td>
-                              Lorem ipsum dolor sit amet consectetur adipisicing
-                              elit. Cumque quod perspiciatis, aperiam inventore
-                              illum odit. Accusantium a id perferendis libero
-                              repudiandae ratione iste ipsum animi. Eligendi
-                              eius facilis sit sint.
-                            </td>
-                          </tr>
+                          {data.pengguna.length > 0 ?
+                            data.pengguna.map((item, index) => (
+                              <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td>{item.pegawai.nama}</td>
+                                <td>{item.jumlah}</td>
+                                <td>{item.tmt_penggunaan}</td>
+                                <td>{item.keterangan}</td>
+                              </tr>
+                            )) : (
+                              <tr >
+                                <td colspan="5" align="center">Barang ini belum ada pengguna</td>
+                              </tr>
+                            )}
                         </tbody>
                       </Table>
                       <Button

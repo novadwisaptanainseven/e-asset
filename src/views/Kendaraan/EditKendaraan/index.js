@@ -1,7 +1,7 @@
 // import optionsPegawai from "assets/dummyData/optionsPegawai";
 import { LoadAnimationWhite } from "assets";
 import Loading from "components/Loading";
-import { getFile } from "context/actions/DownloadFile/getFile";
+import getFile from "context/actions/DownloadFile/getFile";
 
 import { getAllPegawai } from "context/actions/EPekerjaAPI/Pegawai";
 import { editKendaraan } from "context/actions/Kendaraan";

@@ -20,7 +20,7 @@ import { getBarangById } from "context/actions/Barang";
 import Loading from "components/Loading";
 import { editBarang } from "context/actions/Barang/editBarang";
 import { LoadAnimationWhite } from "assets";
-import { getFile } from "context/actions/DownloadFile/getFile";
+import getFile from "context/actions/DownloadFile/getFile";
 
 const EditBarang = () => {
   const history = useHistory();
