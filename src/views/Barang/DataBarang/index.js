@@ -168,13 +168,24 @@ const DataBarang = ({ path }) => {
       name: "QR Code",
       cell: (row) => (
         <div data-tag="allowRowEvents">
-          <Button
-            color="dark"
-            className="btn btn-sm"
-            onClick={() => generateQrCode(path, history, row.id_barang)}
-          >
-            Generate
-          </Button>
+          {row.qr_code && (
+            <Button
+              color="secondary"
+              className="btn btn-sm"
+              onClick={() => generateQrCode(path, history, row.id_barang, row.qr_code)}
+            >
+              Lihat
+            </Button>
+          )}
+          {!row.qr_code && (
+            <Button
+              color="dark"
+              className="btn btn-sm"
+              onClick={() => generateQrCode(path, history, row.qr_code)}
+            >
+              Generate
+            </Button>
+          )}
         </div>
       ),
     },

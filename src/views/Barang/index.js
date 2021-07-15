@@ -21,7 +21,7 @@ const Barang = ({ match }) => {
         />
         <Route
           exact
-          path={path + "/:id/qr-code"}
+          path={path + "/:id/qr-code/:qrcode/"}
           render={() => <PreviewQrCode />}
         />
         <Redirect from="/admin/barang/*" to="/admin/index" />

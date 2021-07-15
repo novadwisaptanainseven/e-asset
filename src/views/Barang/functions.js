@@ -17,8 +17,8 @@ export const goToEdit = (path, history, id) => {
   history.push(`${path}/${id}/edit`);
 };
 
-export const generateQrCode = (path, history, id) => {
-  history.push(`${path}/${id}/qr-code`);
+export const generateQrCode = (path, history, id, qrcode) => {
+  history.push(`${path}/${id}/qr-code/${qrcode}`);
 };
 
 export const goToDetail = (path, history, id) => {
