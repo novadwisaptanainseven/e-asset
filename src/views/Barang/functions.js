@@ -35,7 +35,7 @@ export const handleDelete = (id, history) => {
 
 // Fungsi untuk mendapatkan nama file
 export const getFileName = (file) => {
-  let file2 = file.split("\\");
+  let file2 = file.split("/");
   let file3 = file2[file2.length - 1];
 
   return file3;
@@ -55,7 +55,7 @@ export const setInitStateEdit = (data) => ({
   kode_barang: data ? data.kode_barang : "",
   nama_barang: data ? data.nama_barang : "",
   jenis_barang: data ? data.jenis_barang : "",
-  kategori: data ? data.kategori : "",
+  id_kategori: data ? data.id_kategori : "",
   tahun_pembelian: data ? data.tahun_pembelian : "",
   merk: data ? data.merk : "",
   no_pabrik: data ? data.no_pabrik : "",

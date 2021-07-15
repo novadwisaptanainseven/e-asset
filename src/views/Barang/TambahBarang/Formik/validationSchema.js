@@ -16,7 +16,7 @@ const validationSchema = Yup.object().shape({
   kode_barang: Yup.string().required("Kode barang harus diisi"),
   nama_barang: Yup.string().required("Nama barang harus diisi"),
   jenis_barang: Yup.string().required("Jenis barang harus diisi"),
-  kategori: Yup.string().required("Kategori harus diisi"),
+  id_kategori: Yup.string().required("Kategori harus diisi"),
   tahun_pembelian: Yup.string().required("Tahun pembelian harus diisi"),
   merk: Yup.string().required("Merk harus diisi"),
   no_pabrik: Yup.string().required("No. pabrik harus diisi"),
@@ -32,19 +32,23 @@ const validationSchema = Yup.object().shape({
   satuan: Yup.string().required("Satuan harus diisi"),
   keterangan: Yup.string().required("Keterangan harus diisi"),
   file: Yup.mixed()
-    .required("File harus diisi")
-    .test(
-      "size",
-      "Kapasitas file maksimal 2 mb",
-      (value) => value && value.size <= FILE_BARANG_SIZE
-    )
-    .test(
-      "type",
-      "Ekstensi yang diperbolehkan hanya pdf dan word",
-      (value) => value && FILE_BARANG_SUPPORTED_FORMATS.includes(value.type)
-    ),
+    // .required("File harus diisi")
+    .test("size", "Kapasitas file maksimal 2 mb", (value) => {
+      if (value) {
+        return value && value.size <= FILE_BARANG_SIZE;
+      } else {
+        return true;
+      }
+    })
+    .test("type", "Ekstensi yang diperbolehkan hanya pdf dan word", (value) => {
+      if (value) {
+        return value && FILE_BARANG_SUPPORTED_FORMATS.includes(value.type);
+      } else {
+        return true;
+      }
+    }),
   foto: Yup.mixed()
-    .required("Foto harus diisi")
+    // .required("Foto harus diisi")
     .test("size", "Kapasitas file maksimal 2 mb", (value) => {
       if (value) {
         return value && value.size <= FOTO_BARANG_SIZE;

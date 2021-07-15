@@ -16,7 +16,7 @@ const validationSchema = Yup.object().shape({
   kode_barang: Yup.string().required("Kode barang harus diisi"),
   nama_barang: Yup.string().required("Nama barang harus diisi"),
   jenis_barang: Yup.string().required("Jenis barang harus diisi"),
-  kategori: Yup.string().required("Kategori harus diisi"),
+  id_kategori: Yup.string().required("Kategori harus diisi"),
   tahun_pembelian: Yup.string().required("Tahun pembelian harus diisi"),
   merk: Yup.string().required("Merk harus diisi"),
   no_pabrik: Yup.string().required("No. pabrik harus diisi"),

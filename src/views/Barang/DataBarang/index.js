@@ -113,10 +113,16 @@ const DataBarang = ({ path }) => {
       selector: "jenis_barang",
       sortable: true,
       wrap: true,
+      cell: (row) => (
+        <div>
+          {row.jenis_barang === "tidak-tetap" && "Tidak Tetap"}
+          {row.jenis_barang === "tetap" && "Tetap"}
+        </div>
+      ),
     },
     {
       name: "Kategori",
-      selector: "kategori",
+      selector: "nama_kategori",
       sortable: true,
       wrap: true,
     },

@@ -19,8 +19,9 @@ import validationSchema from "./Formik/validationSchema";
 import { getBarangById } from "context/actions/Barang";
 import Loading from "components/Loading";
 import { editBarang } from "context/actions/Barang/editBarang";
-import { LoadAnimationWhite } from "assets";
-import getFile from "context/actions/DownloadFile/getFile";
+import getSelectKategori from "context/actions/Barang/getSelectKategori";
+import getImage from "context/actions/DownloadFile/getImage";
+import LoadingSubmit from "components/LoadingSubmit";
 
 const EditBarang = () => {
   const history = useHistory();
@@ -34,6 +35,16 @@ const EditBarang = () => {
   const [hargaFormatRp, setHargaFormatRp] = useState("");
   const [loading, setLoading] = useState(false);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const [selectKategori, setSelectKategori] = useState([]);
+  const [inputJumlah, setInputJumlah] = useState({
+    jumlah_baik: 0,
+    jumlah_rusak: 0,
+  });
+
+  // Get select kategori
+  useEffect(() => {
+    getSelectKategori(setSelectKategori);
+  }, []);
 
   // Mengubah format harga dari number menjadi Currency Rupiah
   const convertToCurrency = (harga) => {
@@ -67,7 +78,7 @@ const EditBarang = () => {
   // Menangani preview input gambar setelah dipilih
   const handleSelectedFile = useCallback(() => {
     if (!selectedFile) {
-      setPreview(data ? getFile(data.foto) : null);
+      setPreview(data ? getImage(data.foto) : null);
       return;
     }
 
@@ -103,6 +114,7 @@ const EditBarang = () => {
     }
 
     setSelectedFile2(e.target.files[0]);
+    console.log(e.target.files[0]);
   };
 
   useEffect(() => {
@@ -119,7 +131,7 @@ const EditBarang = () => {
     formData.append("kode_barang", values.kode_barang);
     formData.append("nama_barang", values.nama_barang);
     formData.append("jenis_barang", values.jenis_barang);
-    formData.append("kategori", values.kategori);
+    formData.append("id_kategori", values.id_kategori);
     formData.append("tahun_pembelian", values.tahun_pembelian);
     formData.append("merk", values.merk);
     formData.append("no_pabrik", values.no_pabrik);
@@ -128,7 +140,10 @@ const EditBarang = () => {
     formData.append("harga", values.harga);
     formData.append("jumlah_baik", values.jumlah_baik);
     formData.append("jumlah_rusak", values.jumlah_rusak);
-    formData.append("jumlah_barang", values.jumlah_barang);
+    formData.append(
+      "jumlah_barang",
+      parseInt(values.jumlah_baik) + parseInt(values.jumlah_rusak)
+    );
     formData.append("satuan", values.satuan);
     formData.append("keterangan", values.keterangan);
     if (values.file) {
@@ -142,7 +157,7 @@ const EditBarang = () => {
       console.log(pair);
     }
 
-    // editBarang(params.id, formData, setLoadingSubmit, history);
+    editBarang(params.id, formData, setLoadingSubmit, history);
   };
 
   return (
@@ -276,32 +291,34 @@ const EditBarang = () => {
                             <FormGroup>
                               <label
                                 className="form-control-label"
-                                htmlFor="kategori"
+                                htmlFor="id_kategori"
                               >
                                 Kategori
                               </label>
                               <Input
                                 type="select"
-                                id="kategori"
-                                name="kategori"
-                                placeholder="Kategori"
+                                id="id_kategori"
+                                name="id_kategori"
+                                placeholder="id_Kategori"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.kategori || ""}
+                                value={values.id_kategori || ""}
                                 className={
-                                  errors.kategori && touched.kategori
+                                  errors.id_kategori && touched.id_kategori
                                     ? "is-invalid"
                                     : null
                                 }
                               >
                                 <option value="">-- Pilih Kategori --</option>
-                                <option value="tik">TIK</option>
-                                <option value="meubel">Meubel</option>
-                                <option value="elektronik">Elektronik</option>
+                                {selectKategori.map((item, index) => (
+                                  <option key={index} value={item.id_kategori}>
+                                    {item.nama_kategori}
+                                  </option>
+                                ))}
                               </Input>
-                              {errors.kategori && touched.kategori && (
+                              {errors.id_kategori && touched.id_kategori && (
                                 <div className="invalid-feedback">
-                                  {errors.kategori}
+                                  {errors.id_kategori}
                                 </div>
                               )}
                             </FormGroup>
@@ -480,13 +497,18 @@ const EditBarang = () => {
                                 Jumlah Baik
                               </label>
                               <Input
-                                disabled
                                 type="number"
                                 id="jumlah_baik"
                                 name="jumlah_baik"
                                 min="0"
                                 placeholder="Jumlah Baik"
-                                onChange={handleChange}
+                                onChange={(e) => {
+                                  handleChange(e);
+                                  setInputJumlah({
+                                    ...inputJumlah,
+                                    [e.target.name]: e.target.value,
+                                  });
+                                }}
                                 onBlur={handleBlur}
                                 value={values.jumlah_baik || ""}
                                 className={
@@ -503,20 +525,24 @@ const EditBarang = () => {
                             </FormGroup>
                             <FormGroup>
                               <label
-                                disabled
                                 className="form-control-label"
                                 htmlFor="jumlah_rusak"
                               >
                                 Jumlah Rusak
                               </label>
                               <Input
-                                disabled
                                 type="number"
                                 id="jumlah_rusak"
                                 name="jumlah_rusak"
                                 min="0"
                                 placeholder="Jumlah Rusak"
-                                onChange={handleChange}
+                                onChange={(e) => {
+                                  handleChange(e);
+                                  setInputJumlah({
+                                    ...inputJumlah,
+                                    [e.target.name]: e.target.value,
+                                  });
+                                }}
                                 onBlur={handleBlur}
                                 value={values.jumlah_rusak || ""}
                                 className={
@@ -539,14 +565,17 @@ const EditBarang = () => {
                                 Jumlah Barang
                               </label>
                               <Input
-                                disabled
+                                readOnly
                                 type="text"
                                 id="jumlah_barang"
                                 name="jumlah_barang"
                                 placeholder="Jumlah Barang"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.jumlah_barang || ""}
+                                value={
+                                  parseInt(values.jumlah_baik) +
+                                  parseInt(values.jumlah_rusak)
+                                }
                                 className={
                                   errors.jumlah_barang && touched.jumlah_barang
                                     ? "is-invalid"
@@ -634,15 +663,17 @@ const EditBarang = () => {
                                 name="file"
                                 placeholder="File"
                                 onBlur={handleBlur}
-                                onChange={(e) =>
-                                  setFieldValue("file", e.target.files[0])
-                                }
+                                onChange={(e) => {
+                                  onSelectFile2(e);
+                                  setFieldValue("file", e.target.files[0]);
+                                }}
                                 className={`form-control ${
                                   errors.file && touched.file
                                     ? "is-invalid"
                                     : null
                                 }`}
                               />
+                              {preview2 && <FormText>{preview2}</FormText>}
                               {errors.file && touched.file && (
                                 <div className="invalid-feedback">
                                   {errors.file}
@@ -694,17 +725,9 @@ const EditBarang = () => {
                       <Button
                         type="submit"
                         color="primary"
-                        disabled={loading ? true : false}
+                        disabled={loadingSubmit ? true : false}
                       >
-                        {loading ? (
-                          <img
-                            width={30}
-                            src={LoadAnimationWhite}
-                            alt="load-animation"
-                          />
-                        ) : (
-                          "Simpan"
-                        )}
+                        {loadingSubmit ? <LoadingSubmit /> : "Simpan"}
                       </Button>
                     </CardFooter>
                   </Form>

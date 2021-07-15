@@ -9,7 +9,7 @@ export const insertBarang = (values, setLoading, history) => {
   let failedMessage = "Tambah Barang Gagal";
 
   axiosInstance
-    .post(`barang/create`, values, {
+    .post(`admin/barang`, values, {
       header: {
         "Content-Type": `multipart/form-data; boundary=${values._boundary}`,
       },

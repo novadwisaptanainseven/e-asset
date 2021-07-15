@@ -1,5 +1,6 @@
 import { LoadAnimationWhite } from "assets";
 import { insertBarang } from "context/actions/Barang";
+import getSelectKategori from "context/actions/Barang/getSelectKategori";
 import { getAllBidang } from "context/actions/EPekerjaAPI/Bidang";
 import { Formik } from "formik";
 import React, { useCallback, useEffect, useState } from "react";
@@ -27,6 +28,16 @@ const TambahBarang = () => {
   const [preview, setPreview] = useState();
   const [hargaFormatRp, setHargaFormatRp] = useState("");
   const [loading, setLoading] = useState(false);
+  const [selectKategori, setSelectKategori] = useState([]);
+  const [inputJumlah, setInputJumlah] = useState({
+    jumlah_baik: 0,
+    jumlah_rusak: 0,
+  });
+
+  // Get select kategori
+  useEffect(() => {
+    getSelectKategori(setSelectKategori);
+  }, []);
 
   // Mengubah format harga dari number menjadi Currency Rupiah
   const convertToCurrency = (harga) => {
@@ -79,7 +90,7 @@ const TambahBarang = () => {
     formData.append("kode_barang", values.kode_barang);
     formData.append("nama_barang", values.nama_barang);
     formData.append("jenis_barang", values.jenis_barang);
-    formData.append("kategori", values.kategori);
+    formData.append("id_kategori", values.kategori);
     formData.append("tahun_pembelian", values.tahun_pembelian);
     formData.append("merk", values.merk);
     formData.append("no_pabrik", values.no_pabrik);
@@ -88,11 +99,18 @@ const TambahBarang = () => {
     formData.append("harga", values.harga);
     formData.append("jumlah_baik", values.jumlah_baik);
     formData.append("jumlah_rusak", values.jumlah_rusak);
-    formData.append("jumlah_barang", values.jumlah_barang);
+    formData.append(
+      "jumlah_barang",
+      parseInt(inputJumlah.jumlah_baik) + parseInt(inputJumlah.jumlah_rusak)
+    );
     formData.append("satuan", values.satuan);
     formData.append("keterangan", values.keterangan);
-    formData.append("file", values.file);
-    formData.append("foto", values.foto);
+    if (values.file) {
+      formData.append("file", values.file);
+    }
+    if (values.foto) {
+      formData.append("foto", values.foto);
+    }
 
     for (let item of formData.entries()) {
       console.log(item);
@@ -245,9 +263,11 @@ const TambahBarang = () => {
                               }
                             >
                               <option value="">-- Pilih Kategori --</option>
-                              <option value="tik">TIK</option>
-                              <option value="meubel">Meubel</option>
-                              <option value="elektronik">Elektronik</option>
+                              {selectKategori.map((item, index) => (
+                                <option key={index} value={item.id_kategori}>
+                                  {item.nama_kategori}
+                                </option>
+                              ))}
                             </Input>
                             {errors.kategori && touched.kategori && (
                               <div className="invalid-feedback">
@@ -435,7 +455,13 @@ const TambahBarang = () => {
                               name="jumlah_baik"
                               min="0"
                               placeholder="Jumlah Baik"
-                              onChange={handleChange}
+                              onChange={(e) => {
+                                handleChange(e);
+                                setInputJumlah({
+                                  ...inputJumlah,
+                                  [e.target.name]: e.target.value,
+                                });
+                              }}
                               onBlur={handleBlur}
                               value={values.jumlah_baik || ""}
                               className={
@@ -463,7 +489,13 @@ const TambahBarang = () => {
                               name="jumlah_rusak"
                               min="0"
                               placeholder="Jumlah Rusak"
-                              onChange={handleChange}
+                              onChange={(e) => {
+                                handleChange(e);
+                                setInputJumlah({
+                                  ...inputJumlah,
+                                  [e.target.name]: e.target.value,
+                                });
+                              }}
                               onBlur={handleBlur}
                               value={values.jumlah_rusak || ""}
                               className={
@@ -486,13 +518,17 @@ const TambahBarang = () => {
                               Jumlah Barang
                             </label>
                             <Input
+                              readOnly
                               type="text"
                               id="jumlah_barang"
                               name="jumlah_barang"
                               placeholder="Jumlah Barang"
                               onChange={handleChange}
                               onBlur={handleBlur}
-                              value={values.jumlah_barang || ""}
+                              value={
+                                parseInt(inputJumlah.jumlah_baik) +
+                                parseInt(inputJumlah.jumlah_rusak)
+                              }
                               className={
                                 errors.jumlah_barang && touched.jumlah_barang
                                   ? "is-invalid"
