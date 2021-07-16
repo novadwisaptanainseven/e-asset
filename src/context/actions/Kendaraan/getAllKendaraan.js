@@ -9,11 +9,11 @@ export const getAllKendaraan = (dispatch) => {
   });
 
   axiosInstance
-    .get("kendaraan")
+    .get("admin/kendaraan")
     .then((res) => {
       dispatch({
         type: SUCCESS,
-        payload: res.data,
+        payload: res.data.data,
       });
       console.log(res.data);
     })

@@ -41,7 +41,6 @@ const DataKendaraan = ({ path }) => {
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const { kendaraanState, kendaraanDispatch } = useContext(GlobalContext);
   const { data: dataKendaraan } = kendaraanState;
-  const [pegawai, setPegawai] = useState([]);
 
   // Handle print data kendaraan
   const handlePrintKendaraan = useReactToPrint({
@@ -57,24 +56,30 @@ const DataKendaraan = ({ path }) => {
     documentTitle: "Data Kendaraan",
   });
 
-  // useEffect(() => {
-  //   getAllKendaraan(kendaraanDispatch);
-  // }, [kendaraanDispatch]);
+  useEffect(() => {
+    getAllKendaraan(kendaraanDispatch);
+  }, [kendaraanDispatch]);
 
-  const filteredData = kendaraan.filter((item) => {
-    if (
-      item.kode_kendaraan.toLowerCase().includes(filterText.toLowerCase()) ||
-      item.jenis_kendaraan.toLowerCase().includes(filterText.toLowerCase()) ||
-      item.merk.toLowerCase().includes(filterText.toLowerCase()) ||
-      item.tipe.toLowerCase().includes(filterText.toLowerCase()) ||
-      item.cc.toLowerCase().includes(filterText.toLowerCase()) ||
-      item.warna.toLowerCase().includes(filterText.toLowerCase())
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  });
+  const filteredData = !dataKendaraan
+    ? []
+    : dataKendaraan.filter((item) => {
+        if (
+          item.kode_kendaraan
+            .toLowerCase()
+            .includes(filterText.toLowerCase()) ||
+          item.jenis_kendaraan
+            .toLowerCase()
+            .includes(filterText.toLowerCase()) ||
+          item.merk.toLowerCase().includes(filterText.toLowerCase()) ||
+          item.tipe.toLowerCase().includes(filterText.toLowerCase()) ||
+          item.cc.toLowerCase().includes(filterText.toLowerCase()) ||
+          item.warna.toLowerCase().includes(filterText.toLowerCase())
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      });
 
   // Set Data for Export Excel
   const dataSetExcel = getDataSet(filteredData);
@@ -188,38 +193,42 @@ const DataKendaraan = ({ path }) => {
                   >
                     Tambah Data
                   </Button>
-                  <DataTable
-                    columns={columnsDataTable}
-                    data={filteredData}
-                    noHeader
-                    responsive={true}
-                    customStyles={customStyles}
-                    pagination
-                    paginationResetDefaultPage={resetPaginationToggle}
-                    subHeader
-                    subHeaderComponent={
-                      <SubHeaderComponentMemo
-                        filterText={filterText}
-                        setFilterText={setFilterText}
-                        resetPaginationToggle={resetPaginationToggle}
-                        setResetPaginationToggle={setResetPaginationToggle}
-                        isPrintingButtonActive={true}
-                        // Export PDF
-                        handlePrint={handlePrintKendaraan}
-                        // Export Excel
-                        exportExcel={{
-                          ExcelFile: ExcelFile,
-                          ExcelSheet: ExcelSheet,
-                          fileName: "Data Kendaraan",
-                          dataSet: dataSetExcel,
-                        }}
-                      />
-                    }
-                    expandableRows
-                    expandOnRowClicked
-                    highlightOnHover
-                    expandableRowsComponent={<ExpandableComponent />}
-                  />
+                  {dataKendaraan ? (
+                    <DataTable
+                      columns={columnsDataTable}
+                      data={filteredData}
+                      noHeader
+                      responsive={true}
+                      customStyles={customStyles}
+                      pagination
+                      paginationResetDefaultPage={resetPaginationToggle}
+                      subHeader
+                      subHeaderComponent={
+                        <SubHeaderComponentMemo
+                          filterText={filterText}
+                          setFilterText={setFilterText}
+                          resetPaginationToggle={resetPaginationToggle}
+                          setResetPaginationToggle={setResetPaginationToggle}
+                          isPrintingButtonActive={true}
+                          // Export PDF
+                          handlePrint={handlePrintKendaraan}
+                          // Export Excel
+                          exportExcel={{
+                            ExcelFile: ExcelFile,
+                            ExcelSheet: ExcelSheet,
+                            fileName: "Data Kendaraan",
+                            dataSet: dataSetExcel,
+                          }}
+                        />
+                      }
+                      expandableRows
+                      expandOnRowClicked
+                      highlightOnHover
+                      expandableRowsComponent={<ExpandableComponent />}
+                    />
+                  ) : (
+                    <Loading />
+                  )}
                 </>
               )}
             </CardBody>

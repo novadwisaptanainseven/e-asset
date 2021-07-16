@@ -9,7 +9,7 @@ const insertKendaraan = (values, setLoading, history) => {
   let failedMessage = "Tambah Data Gagal";
 
   axiosInstance
-    .post(`kendaraan/create`, values, {
+    .post(`admin/kendaraan`, values, {
       header: {
         "Content-Type": `multipart/form-data; boundary=${values._boundary}`,
       },

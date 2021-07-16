@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useHistory } from "react-router";
-import Select from "react-select";
 import {
   Card,
   Col,
@@ -17,9 +16,7 @@ import {
 import { goBackToPrevPage, setInitState, handleFormatRp } from "../functions";
 
 import { Formik } from "formik";
-// import optionsPegawai from "assets/dummyData/optionsPegawai";
 import validationSchema from "../Formik/validationSchema";
-import { getAllPegawai } from "context/actions/EPekerjaAPI/Pegawai";
 import { insertKendaraan } from "context/actions/Kendaraan";
 import { LoadAnimationWhite } from "assets";
 
@@ -27,31 +24,11 @@ const TambahKendaraan = () => {
   const history = useHistory();
   const [selectedFile, setSelectedFile] = useState();
   const [preview, setPreview] = useState();
-  const [touchedSelect, setTouchedSelect] = useState(false);
   const [hargaFormatRp, setHargaFormatRp] = useState("");
   const [biayaStnkFormatRp, setBiayaStnkFormatRp] = useState("");
-  const [pegawai, setPegawai] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const initState = setInitState("");
-
-  // useEffect(() => {
-  //   // Get All Pegawai
-  //   getAllPegawai(setPegawai);
-  // }, []);
-
-  const optionsPegawai = useMemo(() => {
-    let options = [];
-
-    pegawai.forEach((item) => {
-      options.push({
-        value: item.id_pegawai,
-        label: item.nama,
-      });
-    });
-
-    return options;
-  }, [pegawai]);
 
   // Menangani preview input gambar setelah dipilih
   const handleSelectedFile = useCallback(() => {
@@ -681,6 +658,34 @@ const TambahKendaraan = () => {
                           <FormGroup>
                             <label
                               className="form-control-label"
+                              htmlFor="asal_usul"
+                            >
+                              Asal Usul
+                            </label>
+                            <Input
+                              type="text"
+                              id="asal_usul"
+                              name="asal_usul"
+                              placeholder="Asal usul"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.asal_usul || ""}
+                              className={
+                                errors.asal_usul && touched.asal_usul
+                                  ? "is-invalid"
+                                  : null
+                              }
+                            />
+                            {errors.asal_usul && touched.asal_usul && (
+                              <div className="invalid-feedback">
+                                {errors.asal_usul}
+                              </div>
+                            )}
+                          </FormGroup>
+
+                          <FormGroup>
+                            <label
+                              className="form-control-label"
                               htmlFor="file"
                             >
                               File
@@ -748,15 +753,7 @@ const TambahKendaraan = () => {
                     </div>
                   </CardBody>
                   <CardFooter className="text-right">
-                    <Button
-                      type="submit"
-                      color="primary"
-                      onClick={() => {
-                        !values.id_pegawai
-                          ? setTouchedSelect(true)
-                          : setTouchedSelect(false);
-                      }}
-                    >
+                    <Button type="submit" color="primary">
                       {loading ? (
                         <img
                           width={30}

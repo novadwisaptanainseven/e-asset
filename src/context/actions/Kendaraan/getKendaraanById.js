@@ -4,7 +4,7 @@ const getKendaraanById = (id, setData, setLoading) => {
   setLoading(true);
 
   axiosInstance
-    .get(`kendaraan/detail/${id}`)
+    .get(`admin/kendaraan/${id}`)
     .then((res) => {
       console.log(res.data);
       setData(res.data.data);

@@ -17,6 +17,7 @@ import {
   goToDetail,
   goToEdit,
   goToTambah,
+  handleGenerateQrCode,
   showDeleteAlert,
 } from "../functions";
 import ExpandableComponent from "./ExpandableComponent";
@@ -73,8 +74,8 @@ const DataBarang = ({ path }) => {
     : dataBarang.data.filter((item) => {
         if (
           item.nama_barang.toLowerCase().includes(filterText.toLowerCase()) ||
-          item.kategori.toLowerCase().includes(filterText.toLowerCase()) ||
           item.kode_barang.toLowerCase().includes(filterText.toLowerCase()) ||
+          item.nama_kategori.toLowerCase().includes(filterText.toLowerCase()) ||
           item.merk.toLowerCase().includes(filterText.toLowerCase())
         ) {
           return true;
@@ -172,7 +173,9 @@ const DataBarang = ({ path }) => {
             <Button
               color="secondary"
               className="btn btn-sm"
-              onClick={() => generateQrCode(path, history, row.id_barang, row.qr_code)}
+              onClick={() =>
+                generateQrCode(path, history, row.id_barang, row.qr_code)
+              }
             >
               Lihat
             </Button>
@@ -181,7 +184,13 @@ const DataBarang = ({ path }) => {
             <Button
               color="dark"
               className="btn btn-sm"
-              onClick={() => generateQrCode(path, history, row.qr_code)}
+              onClick={() =>
+                handleGenerateQrCode(
+                  row.id_barang,
+                  barangDispatch,
+                  setLoadingFilter
+                )
+              }
             >
               Generate
             </Button>

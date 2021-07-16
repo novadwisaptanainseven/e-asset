@@ -1,4 +1,4 @@
-import { deleteBarang } from "context/actions/Barang";
+import { deleteBarang, generateQrCode2 } from "context/actions/Barang";
 import swal2 from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
@@ -108,5 +108,30 @@ export const showAlertError = (failedMessage = "", message, setLoading) => {
     text: message,
   }).then((result) => {
     setLoading(false);
+  });
+};
+
+export const handleGenerateQrCode = (id, dispatch, setLoadingFilter) => {
+  Swal.fire({
+    title: "Generating QR Code!",
+    html: "Loading...",
+    timer: 1000,
+    timerProgressBar: true,
+    didOpen: () => {
+      Swal.showLoading();
+      // Generate QR Code
+      generateQrCode2(id, dispatch, setLoadingFilter);
+    },
+  }).then((result) => {
+    if (result.dismiss === Swal.DismissReason.timer) {
+      Swal.fire({
+        icon: "success",
+        title: "Generate QR Code Berhasil",
+        showConfirmButton: false,
+        timer: 1500,
+      }).then((res) => {
+        // history.push(`/easset/admin/barang`);
+      });
+    }
   });
 };

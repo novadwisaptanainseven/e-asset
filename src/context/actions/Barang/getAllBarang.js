@@ -3,7 +3,7 @@ import { ERROR } from "context/actionTypes";
 import { LOADING } from "context/actionTypes";
 import axiosInstance from "helpers/axios";
 
-export const getAllBarang = (dispatch, filter, setLoadingFilter) => {
+export const getAllBarang = (dispatch, filter = "", setLoadingFilter) => {
   dispatch({
     type: LOADING,
   });

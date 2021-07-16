@@ -3,7 +3,7 @@ export const getDataSet = (data) => {
     {
       columns: [
         {
-          title: "Kode. Barang",
+          title: "Kode Barang",
           width: { wpx: 120 },
           style: {
             alignment: { vertical: "top" },
@@ -254,7 +254,7 @@ export const getDataSet = (data) => {
           },
         },
         {
-          value: item.kategori,
+          value: item.nama_kategori,
           style: {
             alignment: { vertical: "top", horizontal: "center" },
             border: {
@@ -266,7 +266,7 @@ export const getDataSet = (data) => {
           },
         },
         {
-          value: item.jenis_barang,
+          value: item.jenis_barang === "tetap" ? "Tetap" : "Tidak Tetap",
           style: {
             alignment: { vertical: "top", horizontal: "center" },
             border: {

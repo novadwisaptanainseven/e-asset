@@ -40,30 +40,43 @@ const validationSchema = Yup.object().shape({
     .typeError("Harga harus berupa bilangan numerik")
     .integer("Harga harus berupa bilangan numerik")
     .required("Harga harus diisi"),
+  asal_usul: Yup.string().required("Asal usul harus diisi"),
   keterangan: Yup.string().required("Keterangan harus diisi"),
   file: Yup.mixed()
-    .required("File harus diisi")
-    .test(
-      "size",
-      "Kapasitas file maksimal 2 mb",
-      (value) => value && value.size <= FILE_KENDARAAN_SIZE
-    )
-    .test(
-      "type",
-      "Ekstensi yang diperbolehkan hanya pdf dan word",
-      (value) => value && FILE_KENDARAAN_SUPPORTED_FORMATS.includes(value.type)
-    ),
+    // .required("File harus diisi")
+    .test("size", "Kapasitas file maksimal 2 mb", (value) => {
+      if (value) {
+        return value && value.size <= FILE_KENDARAAN_SIZE;
+      } else {
+        return true;
+      }
+    })
+    .test("type", "Ekstensi yang diperbolehkan hanya pdf dan word", (value) => {
+      if (value) {
+        return value && FILE_KENDARAAN_SUPPORTED_FORMATS.includes(value.type);
+      } else {
+        return true;
+      }
+    }),
   foto: Yup.mixed()
-    .required("Foto harus diisi")
-    .test(
-      "size",
-      "Kapasitas file maksimal 2 mb",
-      (value) => value && value.size <= FOTO_KENDARAAN_SIZE
-    )
+    // .required("Foto harus diisi")
+    .test("size", "Kapasitas file maksimal 2 mb", (value) => {
+      if (value) {
+        return value && value.size <= FOTO_KENDARAAN_SIZE;
+      } else {
+        return true;
+      }
+    })
     .test(
       "type",
       "Ekstensi yang diperbolehkan hanya jpg, jpeg, dan, png",
-      (value) => value && FOTO_KENDARAAN_SUPPORTED_FORMATS.includes(value.type)
+      (value) => {
+        if (value) {
+          return value && FOTO_KENDARAAN_SUPPORTED_FORMATS.includes(value.type);
+        } else {
+          return true;
+        }
+      }
     ),
 });
 

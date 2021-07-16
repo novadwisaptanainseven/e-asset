@@ -18,10 +18,10 @@ const ExpandableComponent = ({ data }) => {
             <strong>Pengguna Kendaraan</strong>
           </Col>
           <Col>
-            {data.nama_pegawai ? (
+            {data.pengguna ? (
               <>
                 <div>
-                  {data.nama_pegawai}, <a href=".">Atur Pengguna</a>
+                  {data.pengguna.nama}, <a href=".">Atur Pengguna</a>
                 </div>
               </>
             ) : (
