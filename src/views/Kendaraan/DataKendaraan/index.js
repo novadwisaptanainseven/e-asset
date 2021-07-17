@@ -11,17 +11,16 @@ import {
   Button,
   ButtonGroup,
 } from "reactstrap";
-// import columnsDataTable from "../columnsDataTable";
 import {
   generateQrCode,
   goToDetail,
   goToEdit,
   goToTambah,
+  handleGenerateQrCode,
   showDeleteAlert,
 } from "../functions";
 import ExpandableComponent from "./ExpandableComponent";
 import { useHistory } from "react-router";
-// import kendaraan from "assets/dummyData/kendaraan";
 import SubHeaderComponentMemo from "components/DataTable/SubHeaderComponentMemo";
 import { GlobalContext } from "context/Provider";
 import { getAllKendaraan } from "context/actions/Kendaraan";
@@ -29,7 +28,6 @@ import Loading from "components/Loading";
 import { ComponentToPrint } from "./ComponentToPrint";
 import ReactExport from "react-data-export";
 import { getDataSet } from "./dataSetExcel";
-import kendaraan from "assets/dummyData/kendaraan";
 
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
@@ -161,13 +159,31 @@ const DataKendaraan = ({ path }) => {
       name: "QR Code",
       cell: (row) => (
         <div data-tag="allowRowEvents">
-          <Button
-            color="dark"
-            className="btn btn-sm"
-            onClick={() => generateQrCode(path, history, row.id_kendaraan)}
-          >
-            Generate
-          </Button>
+          {row.qr_code && (
+            <Button
+              color="secondary"
+              className="btn btn-sm"
+              onClick={() =>
+                generateQrCode(path, history, row.id_kendaraan, row.qr_code)
+              }
+            >
+              Lihat
+            </Button>
+          )}
+          {!row.qr_code && (
+            <Button
+              color="dark"
+              className="btn btn-sm"
+              onClick={() =>
+                handleGenerateQrCode(
+                  row.id_kendaraan,
+                  kendaraanDispatch,
+                )
+              }
+            >
+              Generate
+            </Button>
+          )}
         </div>
       ),
     },

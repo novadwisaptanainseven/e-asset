@@ -1,5 +1,4 @@
 import LoadingSubmit from "components/LoadingSubmit";
-import { getKategoriById } from "context/actions/Kategori";
 import { getRuanganById } from "context/actions/Ruangan";
 import { editRuangan } from "context/actions/Ruangan";
 import { Formik } from "formik";

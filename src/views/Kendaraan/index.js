@@ -29,7 +29,7 @@ const Kendaraan = ({ match }) => {
         />
         <Route
           exact
-          path={path + "/:id/qr-code"}
+          path={path + "/:id/qr-code/:qrcode/"}
           render={() => <PreviewQrCode />}
         />
         <Redirect from="/admin/kendaraan/*" to="/admin/index" />

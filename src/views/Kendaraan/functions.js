@@ -1,5 +1,5 @@
 import { getImage } from "context/actions/EPekerjaAPI/DownloadFile";
-import { deleteKendaraan } from "context/actions/Kendaraan";
+import { deleteKendaraan, generateQrCode2 } from "context/actions/Kendaraan";
 import { format } from "date-fns";
 import swal2 from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -14,8 +14,8 @@ export const goToTambah = (history, path) => {
   history.push(`${path}/tambah`);
 };
 
-export const generateQrCode = (path, history, id) => {
-  history.push(`${path}/${id}/qr-code`);
+export const generateQrCode = (path, history, id, qrcode) => {
+  history.push(`${path}/${id}/qr-code/${qrcode}`);
 };
 
 export const goToEdit = (path, history, id) => {
@@ -111,7 +111,7 @@ export const getNamaPegawai = (id = 1, pegawai = []) => {
 
 // Fungsi untuk mendapatkan nama file
 export const getFileName = (file) => {
-  let file2 = file.split("\\");
+  let file2 = file.split("/");
   let file3 = file2[file2.length - 1];
 
   return file3;
@@ -146,5 +146,30 @@ export const showAlertError = (failedMessage = "", message, setLoading) => {
     text: message,
   }).then((result) => {
     setLoading(false);
+  });
+};
+
+export const handleGenerateQrCode = (id, dispatch) => {
+  Swal.fire({
+    title: "Generating QR Code!",
+    html: "Loading...",
+    timer: 1000,
+    timerProgressBar: true,
+    didOpen: () => {
+      Swal.showLoading();
+      // Generate QR Code
+      generateQrCode2(id, dispatch);
+    },
+  }).then((result) => {
+    if (result.dismiss === Swal.DismissReason.timer) {
+      Swal.fire({
+        icon: "success",
+        title: "Generate QR Code Berhasil",
+        showConfirmButton: false,
+        timer: 1500,
+      }).then((res) => {
+        // history.push(`/easset/admin/barang`);
+      });
+    }
   });
 };

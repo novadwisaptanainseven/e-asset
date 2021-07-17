@@ -28,6 +28,13 @@ const layoutAdmin = "/easset/admin";
 
 var routes = [
   {
+    path: "/recycle-bin",
+    name: "Recycle Bin",
+    icon: "ni ni-bag-17 text-orange",
+    component: RincianBarang,
+    layout: layoutAdmin,
+  },
+  {
     path: "/rincian-barang",
     name: "Rincian Barang",
     icon: "ni ni-bullet-list-67 text-orange",

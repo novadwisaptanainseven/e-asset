@@ -1,9 +1,11 @@
 // import getFile from "context/actions/DownloadFile/getFile";
+import { ProfileImageBlank } from "assets";
+import { getImage } from "context/actions/EPekerjaAPI/DownloadFile";
 import React from "react";
 import { Modal, Button } from "reactstrap";
 import { getImagePegawai } from "../functions";
 
-const ModalPreviewImagePegawai = ({ modal, setModal, data, pegawai }) => {
+const ModalPreviewImagePegawai = ({ modal, setModal, pengguna }) => {
   return (
     <div>
       <Modal
@@ -28,11 +30,7 @@ const ModalPreviewImagePegawai = ({ modal, setModal, data, pegawai }) => {
         </div>
         <div className="modal-body">
           <img
-            src={
-              pegawai.length > 0
-                ? getImagePegawai(data.id_pegawai, pegawai)
-                : ""
-            }
+            src={pengguna.length > 0 ? getImage(pengguna[0].pegawai.foto) : ProfileImageBlank}
             alt="foto-pegawai"
             style={{ width: "100%" }}
           />

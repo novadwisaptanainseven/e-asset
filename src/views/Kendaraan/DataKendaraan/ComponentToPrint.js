@@ -42,8 +42,8 @@ export class ComponentToPrint extends React.Component {
                 <td valign="top">{item.bahan}</td>
                 <td valign="top">{item.warna}</td>
                 <td valign="top">{item.no_mesin}</td>
-                <td valign="top">{item.tahun_pembuatan}</td>
-                <td valign="top">{item.tahun_pembelian}</td>
+                <td valign="top" align="center">{item.tahun_pembuatan}</td>
+                <td valign="top" align="center">{item.tahun_pembelian}</td>
                 <td valign="top">
                   {item.harga.toLocaleString("id", {
                     style: "currency",

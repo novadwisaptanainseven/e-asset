@@ -3,6 +3,7 @@ import getKendaraanById from "./getKendaraanById";
 import insertKendaraan from "./insertKendaraan";
 import editKendaraan from "./editKendaraan";
 import deleteKendaraan from "./deleteKendaraan";
+import generateQrCode2 from "./generateQrCode2";
 
 export {
   getAllKendaraan,
@@ -10,4 +11,5 @@ export {
   insertKendaraan,
   deleteKendaraan,
   editKendaraan,
+  generateQrCode2
 };

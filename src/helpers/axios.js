@@ -4,7 +4,8 @@ const baseURL = "http://127.0.0.1:8000/api/";
 const baseURLFile = "http://localhost:5500/file/";
 
 // API E-Pekerja
-const baseUrlEpekerja = "http://localhost/e-pekerja-api/api/";
+const baseUrlEpekerja =
+  "http://disperkim.samarindakota.go.id/e-pekerja-api/api/";
 
 localStorage.baseURL = baseURL;
 localStorage.baseURLFile = baseURLFile;

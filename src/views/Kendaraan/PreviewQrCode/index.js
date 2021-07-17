@@ -1,6 +1,8 @@
-import { SampleQrCode } from "assets";
-import React from "react";
-import { useHistory } from "react-router-dom";
+import getQrCode from "context/actions/DownloadFile/getQrCode";
+import { getKendaraanById } from "context/actions/Kendaraan";
+import React, { useEffect, useState, useRef } from "react";
+import { useHistory, useRouteMatch } from "react-router-dom";
+import { useReactToPrint } from "react-to-print";
 import {
   Col,
   Row,
@@ -11,9 +13,40 @@ import {
   Button,
 } from "reactstrap";
 import { goBackToPrevPage } from "../functions";
+import { ComponentToPrint } from "./ComponentToPrint";
 
 const PreviewQrCode = () => {
   const history = useHistory();
+  const match = useRouteMatch();
+  const { params } = match;
+  const componentPrintRef = useRef();
+  const [data, setData] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  // Get kendaraan by id
+  useEffect(() => {
+    getKendaraanById(params.id, setData, setLoading);
+  }, [params]);
+
+  // Handle print data qrcode
+  const handlePrintQrCode = useReactToPrint({
+    content: () => componentPrintRef.current,
+    pageStyle: `
+      @media print {
+        @page {
+          size: 140mm 140mm;
+        }
+      }
+      .myStyle {
+        display: flex;
+        font-family: Arial, Helvetica, sans-serif;
+        text-align: center;
+        justify-content: center;
+      }
+    `,
+    copyStyles: false,
+    documentTitle: "QR Code Kendaraan",
+  });
 
   return (
     <Row>
@@ -35,25 +68,35 @@ const PreviewQrCode = () => {
                 <i className="ni ni-like-2" />
               </span>{" "}
               <span className="alert-inner--text">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Quibusdam temporibus ex hic. Consequatur sapiente magni commodi
-                eum assumenda ipsam, molestiae ab iusto! Vitae explicabo natus
-                facere ratione corrupti velit laborum!
+                Ini adalah qr code kendaraan yang bertujuan untuk monitoring
+                kendaraan dengan cara scan menggunakan aplikasi barcode scanner.
+                Simpan atau print qr code di bawah ini.
               </span>
             </UncontrolledAlert>
             <img
-              width="300px"
+              width="250px"
               className="img-thumbnail"
-              src={SampleQrCode}
+              src={getQrCode(params.qrcode)}
               alt="qr-code"
             />
             <br />
-            <Button color="primary" className="mt-2">
-              <i className="fas fa-download"></i> Download
+            <Button
+              className="mt-3"
+              color="primary"
+              onClick={handlePrintQrCode}
+              disabled={loading ? true : false}
+            >
+              Print QR Code
             </Button>
           </CardBody>
         </Card>
       </Col>
+
+      {data && (
+        <div style={{ display: "none" }}>
+          <ComponentToPrint ref={componentPrintRef} data={data} />
+        </div>
+      )}
     </Row>
   );
 };

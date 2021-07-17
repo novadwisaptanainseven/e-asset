@@ -1,9 +1,10 @@
 import { ProfileImageBlank } from "assets";
-import { FotoPegawaiSample } from "assets";
-import { FotoKendaraanSample } from "assets";
 import Loading from "components/Loading";
 import getFile from "context/actions/DownloadFile/getFile";
+import { getImage } from "context/actions/EPekerjaAPI/DownloadFile";
+import getImageKendaraan from "context/actions/DownloadFile/getImage";
 import { getKendaraanById } from "context/actions/Kendaraan";
+import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { useHistory, useRouteMatch } from "react-router";
 import {
@@ -76,15 +77,19 @@ const DetailKendaraan = () => {
                               <th>Pengguna Kendaraan</th>
                               <th>:</th>
                               <td>
-                                <Badge color="danger" pill>
-                                  Pengguna belum ada.{" "}
-                                  <a
-                                    className="text-dark link-pengguna-hover"
-                                    href="."
-                                  >
-                                    Atur Pengguna
-                                  </a>
-                                </Badge>
+                                {data && data.pengguna.length > 0 ? (
+                                  <>{data.pengguna[0].pegawai.nama}</>
+                                ) : (
+                                  <Badge color="danger" pill>
+                                    Pengguna belum ada.{" "}
+                                    <a
+                                      className="text-dark link-pengguna-hover"
+                                      href="."
+                                    >
+                                      Atur Pengguna
+                                    </a>
+                                  </Badge>
+                                )}
                               </td>
                             </tr>
                             <tr>
@@ -215,22 +220,16 @@ const DetailKendaraan = () => {
                         </CardHeader>
                         <CardBody>
                           <img
-                            src={ProfileImageBlank}
+                            src={
+                              data && data.pengguna.length > 0
+                                ? getImage(data.pengguna[0].pegawai.foto)
+                                : ProfileImageBlank
+                            }
                             alt="foto-pegawai"
                             width="100%"
                             style={{ cursor: "pointer" }}
+                            onClick={() => setModalPreviewPegawai(true)}
                           />
-                          {/* <img
-                          src={
-                            pegawai.length > 0
-                              ? getImagePegawai(data.id_pegawai, pegawai)
-                              : "."
-                          }
-                          alt="foto-pegawai"
-                          width="100%"
-                          style={{ cursor: "pointer" }}
-                          onClick={() => setModalPreviewPegawai(true)}
-                        /> */}
                         </CardBody>
                       </Card>
                       <Card>
@@ -239,7 +238,7 @@ const DetailKendaraan = () => {
                         </CardHeader>
                         <CardBody>
                           <img
-                            src={FotoKendaraanSample}
+                            src={data ? getImageKendaraan(data.foto) : ""}
                             alt="foto-kendaraan"
                             width="100%"
                             style={{ cursor: "pointer" }}
@@ -268,51 +267,35 @@ const DetailKendaraan = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>1</td>
-                            <td>
-                              <img
-                                src={FotoPegawaiSample}
-                                width={100}
-                                className="img-thumbnail"
-                                alt="foto-pegawai"
-                              />
-                            </td>
-                            <td>Nova Dwi Sapta Nain Seven</td>
-                            <td>12/10/2021</td>
-                            <td>Lorem ipsum dolor sit amet</td>
-                          </tr>
-                          <tr>
-                            <td>2</td>
-                            <td>
-                              <img
-                                src={FotoPegawaiSample}
-                                width={100}
-                                className="img-thumbnail"
-                                alt="foto-pegawai"
-                              />
-                            </td>
-                            <td>Lyntom Irfan Darmawan</td>
-                            <td>12/10/2021</td>
-                            <td>Lorem ipsum dolor sit amet consectetur</td>
-                          </tr>
-                          <tr>
-                            <td>3</td>
-                            <td>
-                              <img
-                                src={FotoPegawaiSample}
-                                width={100}
-                                className="img-thumbnail"
-                                alt="foto-pegawai"
-                              />
-                            </td>
-                            <td>Muhammad Fahrizal</td>
-                            <td>12/10/2021</td>
-                            <td>
-                              Lorem ipsum dolor sit amet consectetur adipisicing
-                              elit.
-                            </td>
-                          </tr>
+                          {data && data.pengguna.length > 0 ? (
+                            data.pengguna.map((item, index) => (
+                              <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td>
+                                  <img
+                                    src={getImage(item.pegawai.foto)}
+                                    width={100}
+                                    // className="img-thumbnail"
+                                    alt="foto-pegawai"
+                                  />
+                                </td>
+                                <td>{item.pegawai.nama}</td>
+                                <td>
+                                  {format(
+                                    new Date(item.tmt_penggunaan),
+                                    "dd/MM/y"
+                                  )}
+                                </td>
+                                <td>{item.keterangan}</td>
+                              </tr>
+                            ))
+                          ) : (
+                            <tr>
+                              <td align="center" colSpan={5}>
+                                Belum ada pengguna
+                              </td>
+                            </tr>
+                          )}
                         </tbody>
                       </Table>
                       <Button
@@ -333,17 +316,21 @@ const DetailKendaraan = () => {
         </Col>
       </Row>
 
-      {/* <ModalPreviewImage
-        modal={modalPreview}
-        setModal={setModalPreview}
-        data={data.foto}
-      />
+      {data && (
+        <>
+          <ModalPreviewImage
+            modal={modalPreview}
+            setModal={setModalPreview}
+            data={data.foto}
+          />
 
-      <ModalPreviewImagePegawai
-        modal={modalPreviewPegawai}
-        setModal={setModalPreviewPegawai}
-        data={data} */}
-      />
+          <ModalPreviewImagePegawai
+            modal={modalPreviewPegawai}
+            setModal={setModalPreviewPegawai}
+            pengguna={data.pengguna}
+          />
+        </>
+      )}
     </>
   );
 };

@@ -9,7 +9,7 @@ const editKendaraan = (id, values, setLoading, history) => {
   let failedMessage = "Edit Kendaraan Gagal";
 
   axiosInstance
-    .put(`kendaraan/update/${id}`, values, {
+    .post(`admin/kendaraan/${id}`, values, {
       header: {
         "Content-Type": `multipart/form-data; boundary=${values._boundary}`,
       },

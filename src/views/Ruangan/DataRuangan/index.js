@@ -1,7 +1,5 @@
-import kategori from "assets/dummyData/kategori";
-import ruangan from "assets/dummyData/ruangan";
+
 import Loading from "components/Loading";
-import { getAllKategori } from "context/actions/Kategori";
 import { getAllRuangan } from "context/actions/Ruangan";
 import { GlobalContext } from "context/Provider";
 import customStyles from "datatableStyle/customStyles";

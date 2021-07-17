@@ -1,6 +1,7 @@
 // import { FotoKendaraanSample } from "assets";
 import { FotoKendaraanSample } from "assets";
 import getFile from "context/actions/DownloadFile/getFile";
+import getImage from "context/actions/DownloadFile/getImage";
 import expandableComponentStyle from "datatableStyle/expandableComponentStyle";
 import React, { useState } from "react";
 import { Row, Col, Badge } from "reactstrap";
@@ -148,7 +149,7 @@ const ExpandableComponent = ({ data }) => {
               style={{
                 cursor: "pointer",
               }}
-              src={FotoKendaraanSample}
+              src={getImage(data.foto)}
               alt=""
               width={200}
               className="img-thumbnail"

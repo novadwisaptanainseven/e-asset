@@ -1,4 +1,5 @@
 import getFile from "context/actions/DownloadFile/getFile";
+import getImage from "context/actions/DownloadFile/getImage";
 import React from "react";
 import { Modal, Button } from "reactstrap";
 
@@ -27,7 +28,7 @@ const ModalPreviewImage = ({ modal, setModal, data }) => {
         </div>
         <div className="modal-body">
           <img
-            src={data ? getFile(data) : ""}
+            src={getImage(data)}
             alt="foto-barang"
             style={{ width: "100%" }}
           />

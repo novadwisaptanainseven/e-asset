@@ -1,15 +1,12 @@
-// import optionsPegawai from "assets/dummyData/optionsPegawai";
 import { LoadAnimationWhite } from "assets";
 import Loading from "components/Loading";
-import getFile from "context/actions/DownloadFile/getFile";
+import getImage from "context/actions/DownloadFile/getImage";
 
-import { getAllPegawai } from "context/actions/EPekerjaAPI/Pegawai";
 import { editKendaraan } from "context/actions/Kendaraan";
 import { getKendaraanById } from "context/actions/Kendaraan";
 import { Formik } from "formik";
-import React, { useCallback, useEffect, useState, useMemo } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useHistory, useRouteMatch } from "react-router";
-import Select from "react-select";
 import {
   Card,
   Col,
@@ -29,7 +26,6 @@ import {
   goBackToPrevPage,
   setInitState,
   handleFormatRp,
-  getNamaPegawai,
   getFileName,
 } from "../functions";
 
@@ -43,16 +39,21 @@ const EditKendaraan = () => {
   const [preview2, setPreview2] = useState();
   const [hargaFormatRp, setHargaFormatRp] = useState("");
   const [biayaStnkFormatRp, setBiayaStnkFormatRp] = useState("");
-  const [touchedSelect, setTouchedSelect] = useState(false);
   const [data, setData] = useState("");
-  const [pegawai, setPegawai] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
+
+  console.log(loading);
+
+  // Get kendaraan by id
+  useEffect(() => {
+    getKendaraanById(params.id, setData, setLoading);
+  }, [params]);
 
   // Menangani preview input gambar setelah dipilih
   const handleSelectedFile = useCallback(() => {
     if (!selectedFile) {
-      setPreview(data && data.foto ? getFile(data.foto) : null);
+      setPreview(data && data.foto ? getImage(data.foto) : null);
       return;
     }
 
@@ -113,14 +114,19 @@ const EditKendaraan = () => {
     const formData = new FormData();
 
     for (const item in values) {
-      formData.append(item, values[item]);
+      if (item !== "file" && item !== "foto") {
+        formData.append(item, values[item]);
+      }
+      if (values[item] !== undefined) {
+        formData.append(item, values[item]);
+      }
     }
 
     for (let item of formData.entries()) {
       console.log(item);
     }
 
-    // editKendaraan(params.id, formData, setLoadingSubmit, history);
+    editKendaraan(params.id, formData, setLoadingSubmit, history);
   };
 
   return (
@@ -709,18 +715,20 @@ const EditKendaraan = () => {
                               <Input
                                 type="file"
                                 id="file"
+                                name="file"
                                 placeholder="File"
+                                onBlur={handleBlur}
                                 onChange={(e) => {
+                                  onSelectFile2(e);
                                   setFieldValue("file", e.target.files[0]);
                                 }}
-                                onBlur={handleBlur}
                                 className={`form-control ${
                                   errors.file && touched.file
                                     ? "is-invalid"
                                     : null
-                                }
-                              `}
+                                }`}
                               />
+                              {preview2 && <FormText>{preview2}</FormText>}
                               {errors.file && touched.file && (
                                 <div className="invalid-feedback">
                                   {errors.file}
@@ -772,13 +780,9 @@ const EditKendaraan = () => {
                       <Button
                         type="submit"
                         color="primary"
-                        onClick={() => {
-                          !values.id_pegawai
-                            ? setTouchedSelect(true)
-                            : setTouchedSelect(false);
-                        }}
+                        disabled={loadingSubmit ? true : false}
                       >
-                        {loading ? (
+                        {loadingSubmit ? (
                           <img
                             width={30}
                             src={LoadAnimationWhite}
