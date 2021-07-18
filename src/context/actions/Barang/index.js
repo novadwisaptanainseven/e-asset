@@ -4,6 +4,7 @@ import { insertBarang } from "./insertBarang";
 import { editBarang } from "./editBarang";
 import { deleteBarang } from "./deleteBarang";
 import { generateQrCode2 } from "./generateQrCode2";
+import { softDeleteBarang } from "./softDeleteBarang";
 
 export {
   getAllBarang,
@@ -12,4 +13,5 @@ export {
   editBarang,
   deleteBarang,
   generateQrCode2,
+  softDeleteBarang,
 };

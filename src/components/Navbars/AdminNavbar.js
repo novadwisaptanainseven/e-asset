@@ -57,12 +57,12 @@ const AdminNavbar = (props) => {
         logout();
       });
     }
-  }, [Swal]);
+  }, []);
 
   // Get Current User
   useEffect(() => {
     cekUser(currentUserDispatch, Swal, history);
-  }, [currentUserDispatch, Swal, history]);
+  }, [currentUserDispatch, history]);
 
   useEffect(() => {
     console.log(data);

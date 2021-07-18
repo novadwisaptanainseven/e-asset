@@ -1,4 +1,3 @@
-// import { FotoBarangSample } from "assets";
 import Loading from "components/Loading";
 import { getBarangById } from "context/actions/Barang";
 import React, { useEffect, useState } from "react";
@@ -14,7 +13,6 @@ import {
   Table,
 } from "reactstrap";
 import { goBackToPrevPage, goToRincianBarang } from "../functions";
-import { FotoBarangSample } from "assets";
 import getFile from "context/actions/DownloadFile/getFile";
 import getImage from "context/actions/DownloadFile/getImage";
 
@@ -24,6 +22,8 @@ const DetailBarang = () => {
   const { params } = match;
   const [data, setData] = useState("");
   const [loading, setLoading] = useState(false);
+
+  console.log(loading);
 
   const getFileName = (file) => {
     let file2 = file.split("/");

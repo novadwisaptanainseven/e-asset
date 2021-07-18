@@ -22,6 +22,7 @@ import Kendaraan from "../views/Kendaraan";
 import IndexKendaraanPindah from "../views/KendaraanPindah";
 import IndexPengaturanAkun from "../views/PengaturanAkun";
 import IndexUsers from "../views/Users";
+import RecycleBin from "views/RecycleBin";
 
 const layoutAdmin = "/easset/admin";
 // const layoutAuth = "/easset/auth";
@@ -31,7 +32,7 @@ var routes = [
     path: "/recycle-bin",
     name: "Recycle Bin",
     icon: "ni ni-bag-17 text-orange",
-    component: RincianBarang,
+    component: RecycleBin,
     layout: layoutAdmin,
   },
   {

@@ -2,9 +2,9 @@ import getFile from "context/actions/DownloadFile/getFile";
 import getImage from "context/actions/DownloadFile/getImage";
 import expandableComponentStyle from "datatableStyle/expandableComponentStyle";
 import React, { useState } from "react";
-import { Row, Col, Badge } from "reactstrap";
-import { getFileName } from "../functions";
-import ModalPreviewImage from "./ModalPreviewImage";
+import { Row, Col } from "reactstrap";
+import ModalPreviewImage from "views/Kendaraan/DataKendaraan/ModalPreviewImage";
+import { getFileName } from "views/Kendaraan/functions";
 
 const ExpandableComponent = ({ data }) => {
   const [modal, setModal] = useState(false);
@@ -12,29 +12,6 @@ const ExpandableComponent = ({ data }) => {
   return (
     <>
       <div style={expandableComponentStyle}>
-        <Row className="mb-1">
-          <Col md="3">
-            <strong>Pengguna Kendaraan</strong>
-          </Col>
-          <Col>
-            {data.pengguna ? (
-              <>
-                <div>
-                  {data.pengguna.nama}, <a href=".">Atur Pengguna</a>
-                </div>
-              </>
-            ) : (
-              <>
-                <Badge color="danger" pill>
-                  Pengguna belum ada.{" "}
-                  <a className="text-dark link-pengguna-hover" href=".">
-                    Atur Pengguna
-                  </a>
-                </Badge>
-              </>
-            )}
-          </Col>
-        </Row>
         <Row className="mb-1">
           <Col md="3">
             <strong>Bahan</strong>

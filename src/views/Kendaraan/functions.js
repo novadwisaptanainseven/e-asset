@@ -1,5 +1,8 @@
 import { getImage } from "context/actions/EPekerjaAPI/DownloadFile";
-import { deleteKendaraan, generateQrCode2 } from "context/actions/Kendaraan";
+import {
+  generateQrCode2,
+  softDeleteKendaraan,
+} from "context/actions/Kendaraan";
 import { format } from "date-fns";
 import swal2 from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -77,8 +80,8 @@ export const handleFormatRp = (value, setHargaFormatRp) => {
 // Alert untuk hapus data
 export const showDeleteAlert = (id, dispatch) => {
   Swal.fire({
-    title: `Anda Yakin ingin Hapus Data dengan id: ${id} ?`,
-    text: "Data tidak dapat dipulihkan setelah Anda hapus",
+    title: `Anda yakin ingin hapus data dengan id: ${id} ?`,
+    text: "Data ini sementara akan dipindahkan ke sampah (Recycle Bin)",
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
@@ -86,7 +89,7 @@ export const showDeleteAlert = (id, dispatch) => {
     confirmButtonText: "Iya",
   }).then((result) => {
     if (result.isConfirmed) {
-      deleteKendaraan(id, dispatch, Swal);
+      softDeleteKendaraan(id, dispatch, Swal);
     }
   });
 };

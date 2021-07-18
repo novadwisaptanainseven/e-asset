@@ -21,8 +21,6 @@ import ModalPreviewImage from "../DataKendaraan/ModalPreviewImage";
 import ModalPreviewImagePegawai from "../DataKendaraan/ModalPreviewImagePegawai";
 import {
   getFileName,
-  getImagePegawai,
-  getNamaPegawai,
   goBackToPrevPage,
 } from "../functions";
 

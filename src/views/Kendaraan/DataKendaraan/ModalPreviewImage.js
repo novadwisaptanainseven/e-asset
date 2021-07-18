@@ -1,4 +1,3 @@
-import getFile from "context/actions/DownloadFile/getFile";
 import getImage from "context/actions/DownloadFile/getImage";
 import React from "react";
 import { Modal, Button } from "reactstrap";

@@ -1,7 +1,6 @@
 import { LoadAnimationWhite } from "assets";
 import { insertBarang } from "context/actions/Barang";
 import getSelectKategori from "context/actions/Barang/getSelectKategori";
-import { getAllBidang } from "context/actions/EPekerjaAPI/Bidang";
 import { Formik } from "formik";
 import React, { useCallback, useEffect, useState } from "react";
 import { useHistory } from "react-router";

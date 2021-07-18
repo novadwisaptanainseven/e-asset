@@ -18,7 +18,6 @@ import {
   Input,
 } from "reactstrap";
 import { goBackToPrevPage, setInitStateEdit } from "../functions";
-import initState from "./Formik/initState";
 import validationSchema from "./Formik/validationSchema";
 
 const EditKategori = () => {

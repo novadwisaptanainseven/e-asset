@@ -52,6 +52,19 @@ export const GlobalProvider = ({ children }) => {
     initStateRincianBarang
   );
 
+  // Recycle Bin
+  // Barang
+  const [barangSampahState, barangSampahDispatch] = useReducer(
+    reducer,
+    initStateMain
+  );
+
+  // Kendaraan
+  const [kendaraanSampahState, kendaraanSampahDispatch] = useReducer(
+    reducer,
+    initStateMain
+  );
+
   return (
     <GlobalContext.Provider
       value={{
@@ -77,6 +90,10 @@ export const GlobalProvider = ({ children }) => {
         kendaraanPindahDispatch,
         rincianBarangState,
         rincianBarangDispatch,
+        barangSampahState,
+        barangSampahDispatch,
+        kendaraanSampahState,
+        kendaraanSampahDispatch,
       }}
     >
       {children}

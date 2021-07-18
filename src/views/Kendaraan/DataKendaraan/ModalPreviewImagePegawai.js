@@ -3,7 +3,6 @@ import { ProfileImageBlank } from "assets";
 import { getImage } from "context/actions/EPekerjaAPI/DownloadFile";
 import React from "react";
 import { Modal, Button } from "reactstrap";
-import { getImagePegawai } from "../functions";
 
 const ModalPreviewImagePegawai = ({ modal, setModal, pengguna }) => {
   return (

@@ -157,7 +157,9 @@ const DataBarang = ({ path }) => {
             <Button
               color="danger"
               className="btn btn-sm"
-              onClick={() => showDeleteAlert(row.id_barang, barangDispatch)}
+              onClick={() =>
+                showDeleteAlert(row.id_barang, barangDispatch, setLoadingFilter)
+              }
             >
               <i className="fas fa-trash"></i>
             </Button>

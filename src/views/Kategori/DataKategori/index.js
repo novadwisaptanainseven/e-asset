@@ -1,4 +1,3 @@
-import kategori from "assets/dummyData/kategori";
 import Loading from "components/Loading";
 import { getAllKategori } from "context/actions/Kategori";
 import { GlobalContext } from "context/Provider";

@@ -175,10 +175,7 @@ const DataKendaraan = ({ path }) => {
               color="dark"
               className="btn btn-sm"
               onClick={() =>
-                handleGenerateQrCode(
-                  row.id_kendaraan,
-                  kendaraanDispatch,
-                )
+                handleGenerateQrCode(row.id_kendaraan, kendaraanDispatch)
               }
             >
               Generate

@@ -1,4 +1,3 @@
-import { LoadAnimationWhite } from "assets";
 import LoadingSubmit from "components/LoadingSubmit";
 import insertKategori from "context/actions/Kategori/insertKategori";
 import { Formik } from "formik";

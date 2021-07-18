@@ -24,7 +24,6 @@ import { Card, CardBody, Row, Col, CardTitle } from "reactstrap";
 // core components
 import { chartOptions, parseOptions } from "variables/charts.js";
 import { GlobalContext } from "context/Provider";
-import { getAllBarang } from "context/actions/Barang";
 import { LoadAnimationBlue } from "assets";
 import { getAllKendaraan } from "context/actions/Kendaraan";
 import { getAllBarangPindah } from "context/actions/BarangPindah";
@@ -34,7 +33,6 @@ import capitalize from "helpers/capitalize";
 const Index = (props) => {
   const {
     barangState,
-    barangDispatch,
     kendaraanState,
     kendaraanDispatch,
     barangPindahState,
