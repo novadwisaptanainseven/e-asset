@@ -1,8 +1,5 @@
 import { FilterComponent } from "datatableStyle/filterPencarian";
 import React from "react";
-import { useHistory, useRouteMatch } from "react-router-dom";
-import { Button } from "reactstrap";
-import { goToRiwayat } from "../functions";
 
 const SubHeaderComponentMemo = ({
   filterText,
@@ -10,12 +7,6 @@ const SubHeaderComponentMemo = ({
   resetPaginationToggle,
   setResetPaginationToggle,
 }) => {
-  const history = useHistory();
-  const match = useRouteMatch();
-  const { path } = match;
-
-  console.log(match);
-
   const handleClear = () => {
     if (filterText) {
       setResetPaginationToggle(!resetPaginationToggle);
@@ -33,9 +24,6 @@ const SubHeaderComponentMemo = ({
         onClear={handleClear}
         filterText={filterText}
       />
-      <Button color="primary" onClick={() => goToRiwayat(path, history)}>
-        Riwayat Penempatan Barang
-      </Button>
     </div>
   );
 };

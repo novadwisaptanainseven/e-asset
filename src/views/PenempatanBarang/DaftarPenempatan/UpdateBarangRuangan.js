@@ -1,25 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Modal, Button, Input, FormGroup, Row, Col, Alert } from "reactstrap";
 
-const TambahBarangRuangan = ({ modal, setModal }) => {
+const UpdateBarangRuangan = ({ modal, setModal }) => {
+  useEffect(() => {
+    if (modal.id) {
+      console.log(modal.id);
+    }
+  }, [modal]);
+
   return (
     <div>
       <Modal
         className="modal-dialog-centered"
-        isOpen={modal}
-        toggle={() => setModal(!modal)}
+        isOpen={modal.modal}
+        toggle={() => setModal({ ...modal, id: "", modal: !modal.modal })}
         size="lg"
       >
         <div className="modal-header">
           <h3 className="modal-title" id="modal-title-default">
-            Tambah Barang Ruangan
+            Update Barang Ruangan
           </h3>
           <button
             aria-label="Close"
             className="close"
             data-dismiss="modal"
             type="button"
-            onClick={() => setModal(false)}
+            onClick={() => setModal({ ...modal, id: "", modal: false })}
           >
             <span aria-hidden={true}>×</span>
           </button>
@@ -59,11 +65,11 @@ const TambahBarangRuangan = ({ modal, setModal }) => {
           </FormGroup>
           <FormGroup>
             <label htmlFor="tgl_penempatan" className="form-control-label">
-              Tgl. Penempatan
+              Tgl. Update Penempatan Barang
             </label>
             <Input
               type="date"
-              placeholder="Tanggal Penempatan Barang di Ruangan"
+              placeholder="Tanggal update penemapatan barang di Ruangan"
             />
           </FormGroup>
           <FormGroup>
@@ -80,7 +86,7 @@ const TambahBarangRuangan = ({ modal, setModal }) => {
             color="link"
             data-dismiss="modal"
             type="button"
-            onClick={() => setModal(false)}
+            onClick={() => setModal({ ...modal, id: "", modal: false })}
           >
             Tutup
           </Button>
@@ -90,4 +96,4 @@ const TambahBarangRuangan = ({ modal, setModal }) => {
   );
 };
 
-export default TambahBarangRuangan;
+export default UpdateBarangRuangan;

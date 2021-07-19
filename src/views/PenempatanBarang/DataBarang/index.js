@@ -12,8 +12,9 @@ import SubHeaderComponentMemo from "./SubHeaderComponentMemo";
 
 const DataBarang = ({ path }) => {
   const history = useHistory();
-  const { barangState, barangDispatch } = useContext(GlobalContext);
-  const { data: dataBarang } = barangState;
+  const { barangRuanganState, barangRuanganDispatch } =
+    useContext(GlobalContext);
+  const { data: dataBarang } = barangRuanganState;
   const [filterText, setFilterText] = useState("");
   const [loading, setLoadingFilter] = useState(false);
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
@@ -25,8 +26,8 @@ const DataBarang = ({ path }) => {
     const filter = {
       jenisBarang: "tetap",
     };
-    getAllBarang(barangDispatch, filter, setLoadingFilter);
-  }, [barangDispatch]);
+    getAllBarang(barangRuanganDispatch, filter, setLoadingFilter);
+  }, [barangRuanganDispatch]);
 
   const filteredData = !dataBarang
     ? []

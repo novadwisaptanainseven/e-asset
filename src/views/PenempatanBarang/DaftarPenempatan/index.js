@@ -16,12 +16,17 @@ import {
 import { goBackToPrevPage } from "../functions";
 import ExpandableComponent from "./ExpandableComponent";
 import TambahBarangRuangan from "./TambahBarangRuangan";
+import UpdateBarangRuangan from "./UpdateBarangRuangan";
 
 const DaftarPenempatan = () => {
   const history = useHistory();
   const match = useRouteMatch();
   const { params } = match;
   const [modalTambah, setModalTambah] = useState(false);
+  const [modalUpdate, setModalUpdate] = useState({
+    id: "",
+    modal: false,
+  });
 
   // Columns DataTable
   const columnsDataTable = [
@@ -60,7 +65,13 @@ const DaftarPenempatan = () => {
           <Button
             color="success"
             className="btn btn-sm"
-            // onClick={() => goToDaftar(path, history, row.id_barang)}
+            onClick={() =>
+              setModalUpdate({
+                ...modalUpdate,
+                id: row.id_barang_ruangan,
+                modal: true,
+              })
+            }
           >
             Update
           </Button>
@@ -132,12 +143,18 @@ const DaftarPenempatan = () => {
               </CardBody>
             </Card>
 
-            <Button
-              color="primary"
-              onClick={() => setModalTambah(!modalTambah)}
-            >
-              Tambah
-            </Button>
+            <div className="d-flex justify-content-between">
+              <Button
+                color="primary"
+                onClick={() => setModalTambah(!modalTambah)}
+              >
+                Tambah
+              </Button>
+              <div>
+                <Button color="warning">PDF</Button>
+                <Button color="success">Excel</Button>
+              </div>
+            </div>
 
             {barangRuangan ? (
               <>
@@ -163,6 +180,8 @@ const DaftarPenempatan = () => {
 
       {/* Modal Tambah Barang Ruangan */}
       <TambahBarangRuangan modal={modalTambah} setModal={setModalTambah} />
+      {/* Modal Update Barang Ruangan */}
+      <UpdateBarangRuangan modal={modalUpdate} setModal={setModalUpdate} />
     </Row>
   );
 };

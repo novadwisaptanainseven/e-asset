@@ -22,7 +22,7 @@ const barangRuangan = [
     user_updated: "Admin",
   },
   {
-    id_barang_ruangan: 1,
+    id_barang_ruangan: 3,
     id_barang: 6,
     id_ruangan: 3,
     nama_ruangan: "Ruang Program & Keuangan",

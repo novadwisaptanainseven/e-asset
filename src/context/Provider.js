@@ -25,6 +25,13 @@ export const GlobalProvider = ({ children }) => {
   const [ruanganState, ruanganDispatch] = useReducer(reducer, initState);
   // Barang
   const [barangState, barangDispatch] = useReducer(reducer, initStateMain);
+
+  // Penempatan Barang
+  const [barangRuanganState, barangRuanganDispatch] = useReducer(
+    reducer,
+    initStateMain
+  );
+
   // Riwayat Barang Pindah
   const [barangPindahState, barangPindahDispatch] = useReducer(
     reducer,
@@ -94,6 +101,8 @@ export const GlobalProvider = ({ children }) => {
         barangSampahDispatch,
         kendaraanSampahState,
         kendaraanSampahDispatch,
+        barangRuanganState,
+        barangRuanganDispatch,
       }}
     >
       {children}
