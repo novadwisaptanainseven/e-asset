@@ -80,7 +80,8 @@ const Sidebar = (props) => {
     });
   };
 
-  const { bgColor, routes, routesMaster, routesDashboard, logo } = props;
+  const { bgColor, routes, routesMaster, routesDashboard, routesBarang, logo } =
+    props;
   let navbarBrandProps;
   if (logo && logo.innerLink) {
     navbarBrandProps = {
@@ -233,11 +234,19 @@ const Sidebar = (props) => {
           {/* Navigation Dashboard */}
           <h6 className="navbar-heading text-muted">Dashboard</h6>
           <Nav navbar>{createLinks(routesDashboard)}</Nav>
+
           {/* Divider */}
           <hr className="my-3" />
           {/* Navigation Data Master */}
           <h6 className="navbar-heading text-muted">Data Master</h6>
           <Nav navbar>{createLinks(routesMaster)}</Nav>
+
+          {/* Divider */}
+          <hr className="my-3" />
+          {/* Navigation Data Barang */}
+          <h6 className="navbar-heading text-muted">Sub Barang</h6>
+          <Nav navbar>{createLinks(routesBarang)}</Nav>
+
           {/* Divider */}
           <hr className="my-3" />
           {/* Navigation */}

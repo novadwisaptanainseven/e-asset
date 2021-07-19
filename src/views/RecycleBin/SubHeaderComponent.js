@@ -12,6 +12,7 @@ const SubHeaderComponentMemo = ({
   type,
   dataBarang = null,
   dataKendaraan = null,
+  setLoading,
 }) => {
   const handleClear = () => {
     if (filterText) {
@@ -31,14 +32,14 @@ const SubHeaderComponentMemo = ({
             <Button
               disabled={dataBarang && dataBarang.length > 0 ? false : true}
               color="success"
-              onClick={() => showRestoreAllAlert(dispatch, type)}
+              onClick={() => showRestoreAllAlert(dispatch, type, setLoading)}
             >
               Pulihkan Semua
             </Button>
             <Button
               disabled={dataBarang && dataBarang.length > 0 ? false : true}
               color="danger"
-              onClick={() => showDeleteAllAlert(dispatch, type)}
+              onClick={() => showDeleteAllAlert(dispatch, type, setLoading)}
             >
               Hapus Semua
             </Button>
@@ -47,16 +48,20 @@ const SubHeaderComponentMemo = ({
         {type === "kendaraan" && (
           <>
             <Button
-              disabled={dataKendaraan && dataKendaraan.length > 0 ? false : true}
+              disabled={
+                dataKendaraan && dataKendaraan.length > 0 ? false : true
+              }
               color="success"
-              onClick={() => showRestoreAllAlert(dispatch, type)}
+              onClick={() => showRestoreAllAlert(dispatch, type, setLoading)}
             >
               Pulihkan Semua
             </Button>
             <Button
-              disabled={dataKendaraan && dataKendaraan.length > 0 ? false : true}
+              disabled={
+                dataKendaraan && dataKendaraan.length > 0 ? false : true
+              }
               color="danger"
-              onClick={() => showDeleteAllAlert(dispatch, type)}
+              onClick={() => showDeleteAllAlert(dispatch, type, setLoading)}
             >
               Hapus Semua
             </Button>

@@ -109,24 +109,24 @@ const DataBarang = ({ path }) => {
       sortable: true,
       wrap: true,
     },
-    {
-      name: "Jenis Barang",
-      selector: "jenis_barang",
-      sortable: true,
-      wrap: true,
-      cell: (row) => (
-        <div>
-          {row.jenis_barang === "tidak-tetap" && "Tidak Tetap"}
-          {row.jenis_barang === "tetap" && "Tetap"}
-        </div>
-      ),
-    },
-    {
-      name: "Kategori",
-      selector: "nama_kategori",
-      sortable: true,
-      wrap: true,
-    },
+    // {
+    //   name: "Jenis Barang",
+    //   selector: "jenis_barang",
+    //   sortable: true,
+    //   wrap: true,
+    //   cell: (row) => (
+    //     <div>
+    //       {row.jenis_barang === "tidak-tetap" && "Tidak Tetap"}
+    //       {row.jenis_barang === "tetap" && "Tetap"}
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   name: "Kategori",
+    //   selector: "nama_kategori",
+    //   sortable: true,
+    //   wrap: true,
+    // },
     {
       name: "Merk",
       selector: "merk",

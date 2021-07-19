@@ -20,6 +20,18 @@ const ExpandableComponent = ({ data }) => {
       <div style={expandableComponentStyle}>
         <Row className="mb-1">
           <Col md="3">
+            <strong>Jenis Barang</strong>
+          </Col>
+          <Col>{data.jenis_barang === "tetap" ? "Tetap" : "Tidak Tetap"}</Col>
+        </Row>
+        <Row className="mb-1">
+          <Col md="3">
+            <strong>Kategori</strong>
+          </Col>
+          <Col>{data.nama_kategori}</Col>
+        </Row>
+        <Row className="mb-1">
+          <Col md="3">
             <strong>No. Pabrik</strong>
           </Col>
           <Col>{data.no_pabrik}</Col>

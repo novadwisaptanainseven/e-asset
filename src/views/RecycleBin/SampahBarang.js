@@ -14,6 +14,7 @@ const SampahBarang = () => {
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const { barangSampahState, barangSampahDispatch } = useContext(GlobalContext);
   const { data } = barangSampahState;
+  const [loading, setLoading] = useState(false);
 
   // Get all barang sampah
   useEffect(() => {
@@ -91,7 +92,12 @@ const SampahBarang = () => {
               color="success"
               className="btn btn-sm"
               onClick={() =>
-                showRestoreAlert(row.id_barang, barangSampahDispatch, "barang")
+                showRestoreAlert(
+                  row.id_barang,
+                  barangSampahDispatch,
+                  "barang",
+                  setLoading
+                )
               }
             >
               <i className="fas fa-edit"></i>
@@ -100,7 +106,12 @@ const SampahBarang = () => {
               color="danger"
               className="btn btn-sm"
               onClick={() =>
-                showDeleteAlert(row.id_barang, barangSampahDispatch, "barang")
+                showDeleteAlert(
+                  row.id_barang,
+                  barangSampahDispatch,
+                  "barang",
+                  setLoading
+                )
               }
             >
               <i className="fas fa-trash"></i>
@@ -115,31 +126,38 @@ const SampahBarang = () => {
     <div>
       <h1>Sampah Barang</h1>
       {data ? (
-        <DataTable
-          columns={columnsDataTable}
-          data={filteredData}
-          noHeader
-          responsive={true}
-          customStyles={customStyles}
-          pagination
-          paginationResetDefaultPage={resetPaginationToggle}
-          subHeader
-          subHeaderComponent={
-            <SubHeaderComponentMemo
-              filterText={filterText}
-              setFilterText={setFilterText}
-              resetPaginationToggle={resetPaginationToggle}
-              setResetPaginationToggle={setResetPaginationToggle}
-              dispatch={barangSampahDispatch}
-              type="barang"
-              dataBarang={data}
+        <>
+          {!loading ? (
+            <DataTable
+              columns={columnsDataTable}
+              data={filteredData}
+              noHeader
+              responsive={true}
+              customStyles={customStyles}
+              pagination
+              paginationResetDefaultPage={resetPaginationToggle}
+              subHeader
+              subHeaderComponent={
+                <SubHeaderComponentMemo
+                  filterText={filterText}
+                  setFilterText={setFilterText}
+                  resetPaginationToggle={resetPaginationToggle}
+                  setResetPaginationToggle={setResetPaginationToggle}
+                  dispatch={barangSampahDispatch}
+                  type="barang"
+                  dataBarang={data}
+                  setLoading={setLoading}
+                />
+              }
+              expandableRows
+              expandOnRowClicked
+              highlightOnHover
+              expandableRowsComponent={<ExpandableComponent />}
             />
-          }
-          expandableRows
-          expandOnRowClicked
-          highlightOnHover
-          expandableRowsComponent={<ExpandableComponent />}
-        />
+          ) : (
+            <Loading />
+          )}
+        </>
       ) : (
         <Loading />
       )}

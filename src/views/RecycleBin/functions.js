@@ -1,14 +1,20 @@
-import { restoreBarangSampah } from "context/actions/RecycleBin";
-import { deleteAllBarangSampah } from "context/actions/RecycleBin";
-import { deleteBarangSampah } from "context/actions/RecycleBin";
-import { restoreAllBarangSampah } from "context/actions/RecycleBin";
+import {
+  restoreBarangSampah,
+  restoreAllBarangSampah,
+  restoreKendaraanSampah,
+  restoreAllKendaraanSampah,
+  deleteBarangSampah,
+  deleteAllBarangSampah,
+  deleteKendaraanSampah,
+  deleteAllKendaraanSampah,
+} from "context/actions/RecycleBin";
 import swal2 from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 const Swal = withReactContent(swal2);
 
 // Alert untuk hapus data tertentu
-export const showDeleteAlert = (id, dispatch, type = "") => {
+export const showDeleteAlert = (id, dispatch, type = "", setLoading) => {
   Swal.fire({
     title: `Anda yakin ingin hapus data ini secara permanen ?`,
     text: "Data tidak dapat dipulihkan setelah Anda hapus",
@@ -20,16 +26,16 @@ export const showDeleteAlert = (id, dispatch, type = "") => {
   }).then((result) => {
     if (result.isConfirmed) {
       if (type === "barang") {
-        deleteBarangSampah(id, dispatch, Swal);
+        deleteBarangSampah(id, dispatch, Swal, setLoading);
       } else if (type === "kendaraan") {
-        // deleteKendaraan(id, dispatch, Swal);
+        deleteKendaraanSampah(id, dispatch, Swal, setLoading);
       }
     }
   });
 };
 
 // Alert untuk restore data tertentu
-export const showRestoreAlert = (id, dispatch, type = "") => {
+export const showRestoreAlert = (id, dispatch, type = "", setLoading) => {
   Swal.fire({
     title: `Anda yakin ingin pulihkan data ini ?`,
     text: "Data sampah akan masuk kembali ke data master",
@@ -41,16 +47,16 @@ export const showRestoreAlert = (id, dispatch, type = "") => {
   }).then((result) => {
     if (result.isConfirmed) {
       if (type === "barang") {
-        restoreBarangSampah(id, dispatch, Swal);
+        restoreBarangSampah(id, dispatch, Swal, setLoading);
       } else if (type === "kendaraan") {
-        // deleteKendaraan(id, dispatch, Swal);
+        restoreKendaraanSampah(id, dispatch, Swal, setLoading);
       }
     }
   });
 };
 
 // Alert untuk hapus semua data
-export const showDeleteAllAlert = (dispatch, type = "") => {
+export const showDeleteAllAlert = (dispatch, type = "", setLoading) => {
   Swal.fire({
     title: `Anda yakin ingin hapus semua data sampah secara permanen ?`,
     text: "Data tidak dapat dipulihkan setelah Anda hapus",
@@ -62,16 +68,16 @@ export const showDeleteAllAlert = (dispatch, type = "") => {
   }).then((result) => {
     if (result.isConfirmed) {
       if (type === "barang") {
-        deleteAllBarangSampah(dispatch, Swal);
+        deleteAllBarangSampah(dispatch, Swal, setLoading);
       } else if (type === "kendaraan") {
-        // deleteKendaraan(id, dispatch, Swal);
+        deleteAllKendaraanSampah(dispatch, Swal, setLoading);
       }
     }
   });
 };
 
 // Alert untuk pulihkan semua data
-export const showRestoreAllAlert = (dispatch, type = "") => {
+export const showRestoreAllAlert = (dispatch, type = "", setLoading) => {
   Swal.fire({
     title: `Anda yakin ingin pulihkan semua data sampah ?`,
     text: "Semua data sampah akan masuk kembali ke data master",
@@ -83,9 +89,9 @@ export const showRestoreAllAlert = (dispatch, type = "") => {
   }).then((result) => {
     if (result.isConfirmed) {
       if (type === "barang") {
-        restoreAllBarangSampah(dispatch, Swal);
+        restoreAllBarangSampah(dispatch, Swal, setLoading);
       } else if (type === "kendaraan") {
-        // deleteKendaraan(id, dispatch, Swal);
+        restoreAllKendaraanSampah(dispatch, Swal, setLoading);
       }
     }
   });

@@ -25,11 +25,13 @@ import AdminFooter from "components/Footers/AdminFooter.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 
 import routes from "routes/routes";
+import routes_barang from "routes/routes barang";
 import routes_master from "routes/routes_master";
 import routes_dashboard from "routes/routes_dashboard";
 import Header from "components/Headers/Header";
 import swal2 from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import routesBarang from "routes/routes barang";
 
 const Swal = withReactContent(swal2);
 
@@ -94,6 +96,7 @@ const Admin = (props) => {
           <Sidebar
             {...props}
             routes={routes}
+            routesBarang={routesBarang}
             routesMaster={routes_master}
             routesDashboard={routes_dashboard}
             logo={{
@@ -113,6 +116,7 @@ const Admin = (props) => {
             <Container className="mt--7" fluid>
               <Switch>
                 {getRoutes(routes_dashboard)}
+                {getRoutes(routes_barang)}
                 {getRoutes(routes_master)}
                 {getRoutes(routes)}
                 <Redirect from="*" to="/easset/admin/index" />

@@ -1,13 +1,14 @@
 import axiosInstance from "helpers/axios";
-import { getBarangSampah } from ".";
+import { getKendaraanSampah } from ".";
 
-const restoreAllBarangSampah = (dispatch, Swal, setLoading) => {
+const restoreAllKendaraanSampah = (dispatch, Swal, setLoading) => {
   setLoading(true);
+
   axiosInstance
-    .put(`admin/barang-restore`)
+    .put(`admin/kendaraan-restore`)
     .then((res) => {
       console.log(res.data);
-      getBarangSampah(dispatch);
+      getKendaraanSampah(dispatch);
       setLoading(false);
       Swal.fire("Terpulihkan!", "Data berhasil dipulihkan.", "success");
     })
@@ -18,4 +19,4 @@ const restoreAllBarangSampah = (dispatch, Swal, setLoading) => {
     });
 };
 
-export default restoreAllBarangSampah;
+export default restoreAllKendaraanSampah;

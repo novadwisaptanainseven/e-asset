@@ -1,14 +1,14 @@
 import axiosInstance from "helpers/axios";
-import { getBarangSampah } from ".";
+import { getKendaraanSampah } from ".";
 
-const deleteAllBarangSampah = (dispatch, Swal, setLoading) => {
+const deleteAllKendaraanSampah = (dispatch, Swal, setLoading) => {
   setLoading(true);
 
   axiosInstance
-    .delete(`admin/barang-permanent-delete`)
+    .delete(`admin/kendaraan-permanent-delete`)
     .then((res) => {
       console.log(res.data);
-      getBarangSampah(dispatch);
+      getKendaraanSampah(dispatch);
       setLoading(false);
       Swal.fire(
         "Terhapus!",
@@ -23,4 +23,4 @@ const deleteAllBarangSampah = (dispatch, Swal, setLoading) => {
     });
 };
 
-export default deleteAllBarangSampah;
+export default deleteAllKendaraanSampah;
