@@ -1,7 +1,9 @@
 import barangRuangan from "assets/dummyData/penempatanBarang";
 import Loading from "components/Loading";
+import { getBarangRuangan } from "context/actions/PenempatanBarang";
 import customStyles from "datatableStyle/customStyles";
-import React, { useState } from "react";
+import { format } from "date-fns";
+import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import {
@@ -13,7 +15,7 @@ import {
   Button,
   UncontrolledAlert,
 } from "reactstrap";
-import { goBackToPrevPage } from "../functions";
+import { goBackToPrevPage, showDeleteAlert } from "../functions";
 import ExpandableComponent from "./ExpandableComponent";
 import TambahBarangRuangan from "./TambahBarangRuangan";
 import UpdateBarangRuangan from "./UpdateBarangRuangan";
@@ -27,6 +29,15 @@ const DaftarPenempatan = () => {
     id: "",
     modal: false,
   });
+  const [data, setData] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  console.log(loading);
+
+  // Get Barang Ruangan by ID Barang
+  useEffect(() => {
+    getBarangRuangan(params.id, setData, setLoading);
+  }, [params]);
 
   // Columns DataTable
   const columnsDataTable = [
@@ -49,6 +60,9 @@ const DaftarPenempatan = () => {
       selector: "tgl_penempatan",
       sortable: true,
       wrap: true,
+      cell: (row) => (
+        <div>{format(new Date(row.tgl_penempatan), "dd/MM/y")}</div>
+      ),
     },
     {
       name: "Keterangan",
@@ -75,6 +89,13 @@ const DaftarPenempatan = () => {
           >
             Update
           </Button>
+          <Button
+            color="danger"
+            className="btn btn-sm"
+            onClick={() => showDeleteAlert(row.id_barang_ruangan)}
+          >
+            Hapus
+          </Button>
         </div>
       ),
     },
@@ -91,7 +112,8 @@ const DaftarPenempatan = () => {
                 style={{ cursor: "pointer" }}
                 className="fas fa-long-arrow-alt-left text-primary mr-3"
               ></i>{" "}
-              Daftar Barang Ruangan (Meja)
+              Daftar Barang Ruangan (
+              {data && data.barang.nama_barang + " " + data.barang.merk})
             </h2>
           </CardHeader>
           <CardBody>
@@ -117,27 +139,27 @@ const DaftarPenempatan = () => {
                   <tr>
                     <th width={200}>Total Barang</th>
                     <th width={30}>:</th>
-                    <td>20</td>
+                    <td>{data.jumlah_barang}</td>
                   </tr>
                   <tr>
                     <th width={200}>Jumlah Barang Baik</th>
                     <th width={30}>:</th>
-                    <td>20</td>
+                    <td>{data && data.barang.jumlah_baik}</td>
                   </tr>
                   <tr>
                     <th width={200}>Jumlah Barang Rusak</th>
                     <th width={30}>:</th>
-                    <td>0</td>
+                    <td>{data.jumlah_rusak_tidak_terpakai}</td>
                   </tr>
                   <tr>
                     <th width={200}>Terpakai</th>
                     <th width={30}>:</th>
-                    <td>9</td>
+                    <td>{data.jumlah_baik_terpakai}</td>
                   </tr>
                   <tr>
                     <th>Tidak Terpakai</th>
                     <th>:</th>
-                    <td>11</td>
+                    <td>{data.jumlah_baik_tidak_terpakai}</td>
                   </tr>
                 </table>
               </CardBody>
@@ -156,11 +178,11 @@ const DaftarPenempatan = () => {
               </div>
             </div>
 
-            {barangRuangan ? (
+            {data ? (
               <>
                 <DataTable
                   columns={columnsDataTable}
-                  data={barangRuangan}
+                  data={data.barang_ruangan}
                   noHeader
                   responsive={true}
                   customStyles={customStyles}
@@ -179,7 +201,12 @@ const DaftarPenempatan = () => {
       </Col>
 
       {/* Modal Tambah Barang Ruangan */}
-      <TambahBarangRuangan modal={modalTambah} setModal={setModalTambah} />
+      <TambahBarangRuangan
+        modal={modalTambah}
+        setModal={setModalTambah}
+        data={data}
+        setData={setData}
+      />
       {/* Modal Update Barang Ruangan */}
       <UpdateBarangRuangan modal={modalUpdate} setModal={setModalUpdate} />
     </Row>

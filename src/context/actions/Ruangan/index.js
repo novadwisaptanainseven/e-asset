@@ -3,6 +3,7 @@ import insertRuangan from "./insertRuangan";
 import editRuangan from "./editRuangan";
 import getRuanganById from "./getRuanganById";
 import deleteRuangan from "./deleteRuangan";
+import getSelectRuangan from "./getSelectRuangan";
 
 export {
   getAllRuangan,
@@ -10,4 +11,5 @@ export {
   editRuangan,
   getRuanganById,
   deleteRuangan,
+  getSelectRuangan,
 };
