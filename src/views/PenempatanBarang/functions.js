@@ -1,3 +1,5 @@
+import { deleteBarangRuangan } from "context/actions/PenempatanBarang";
+import { format } from "date-fns";
 import swal2 from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 const Swal = withReactContent(swal2);
@@ -15,9 +17,14 @@ export const goToRiwayat = (path, history) => {
 };
 
 // Alert untuk hapus data
-export const showDeleteAlert = (id, setData) => {
+export const showDeleteAlert = (
+  idBarang,
+  idBarangRuangan,
+  setData,
+  setLoading
+) => {
   Swal.fire({
-    title: `Anda yakin ingin hapus data dengan id: ${id} ?`,
+    title: `Anda yakin ingin hapus data ini ?`,
     text: "Data ini tidak dapat dipulihkan kembali",
     icon: "warning",
     showCancelButton: true,
@@ -26,7 +33,7 @@ export const showDeleteAlert = (id, setData) => {
     confirmButtonText: "Iya",
   }).then((result) => {
     if (result.isConfirmed) {
-      // softDeleteKendaraan(id, dispatch, Swal);`
+      deleteBarangRuangan(idBarang, idBarangRuangan, setData, setLoading, Swal);
     }
   });
 };
@@ -53,3 +60,11 @@ export const showAlertError = (failedMessage = "", message, setLoading) => {
     setLoading(false);
   });
 };
+
+// Set inital values for formik
+export const setInitState = (data) => ({
+  id_ruangan: data ? data.id_ruangan : "",
+  jumlah: data ? data.jumlah : "",
+  tgl_update: data.tgl_update ? data.tgl_update : format(new Date(), "y-MM-dd"),
+  keterangan: data ? data.keterangan : "",
+});

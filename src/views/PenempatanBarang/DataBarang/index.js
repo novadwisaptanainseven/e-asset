@@ -1,5 +1,5 @@
 import Loading from "components/Loading";
-import { getAllBarang } from "context/actions/Barang";
+import { getAllBarangTetap } from "context/actions/PenempatanBarang";
 import { GlobalContext } from "context/Provider";
 import customStyles from "datatableStyle/customStyles";
 import React, { useContext, useEffect, useState } from "react";
@@ -16,17 +16,11 @@ const DataBarang = ({ path }) => {
     useContext(GlobalContext);
   const { data: dataBarang } = barangRuanganState;
   const [filterText, setFilterText] = useState("");
-  const [loading, setLoadingFilter] = useState(false);
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
-
-  console.log(loading);
 
   // Get all barang
   useEffect(() => {
-    const filter = {
-      jenisBarang: "tetap",
-    };
-    getAllBarang(barangRuanganDispatch, filter, setLoadingFilter);
+    getAllBarangTetap(barangRuanganDispatch);
   }, [barangRuanganDispatch]);
 
   const filteredData = !dataBarang
@@ -68,18 +62,6 @@ const DataBarang = ({ path }) => {
     {
       name: "Merk",
       selector: "merk",
-      sortable: true,
-      wrap: true,
-    },
-    {
-      name: "Jml. Baik",
-      selector: "jumlah_baik",
-      sortable: true,
-      wrap: true,
-    },
-    {
-      name: "Jml. Rusak",
-      selector: "jumlah_rusak",
       sortable: true,
       wrap: true,
     },

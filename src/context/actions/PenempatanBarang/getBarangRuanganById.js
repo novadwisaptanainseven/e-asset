@@ -1,10 +1,10 @@
 import axiosInstance from "helpers/axios";
 
-export const getBarangById = (id, setData, setLoading) => {
+const getBarangRuanganById = (id, setData, setLoading) => {
   setLoading(true);
 
   axiosInstance
-    .get(`admin/barang/${id}`)
+    .get(`admin/penempatan-barang/${id}`)
     .then((res) => {
       console.log(res.data);
       setData(res.data.data);
@@ -15,3 +15,5 @@ export const getBarangById = (id, setData, setLoading) => {
       setLoading(false);
     });
 };
+
+export default getBarangRuanganById;

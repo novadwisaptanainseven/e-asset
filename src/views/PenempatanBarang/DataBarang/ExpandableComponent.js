@@ -14,15 +14,27 @@ const ExpandableComponent = ({ data }) => {
         </Row>
         <Row className="mb-1">
           <Col md="3">
+            <strong>Jumlah Baik</strong>
+          </Col>
+          <Col>{data.jumlah_baik}</Col>
+        </Row>
+        <Row className="mb-1">
+          <Col md="3">
+            <strong>Jumlah Rusak</strong>
+          </Col>
+          <Col>{data.jumlah_rusak}</Col>
+        </Row>
+        <Row className="mb-1">
+          <Col md="3">
             <strong>Terpakai</strong>
           </Col>
-          <Col>{9}</Col>
+          <Col>{data.jumlah_baik_terpakai}</Col>
         </Row>
         <Row className="mb-1">
           <Col md="3">
             <strong>Tidak Terpakai</strong>
           </Col>
-          <Col>{11}</Col>
+          <Col>{data.jumlah_baik_tidak_terpakai}</Col>
         </Row>
       </div>
     </>

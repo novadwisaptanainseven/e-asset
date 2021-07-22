@@ -1,4 +1,3 @@
-import barangRuangan from "assets/dummyData/penempatanBarang";
 import Loading from "components/Loading";
 import { getBarangRuangan } from "context/actions/PenempatanBarang";
 import customStyles from "datatableStyle/customStyles";
@@ -92,7 +91,14 @@ const DaftarPenempatan = () => {
           <Button
             color="danger"
             className="btn btn-sm"
-            onClick={() => showDeleteAlert(row.id_barang_ruangan)}
+            onClick={() =>
+              showDeleteAlert(
+                params.id,
+                row.id_barang_ruangan,
+                setData,
+                setLoading
+              )
+            }
           >
             Hapus
           </Button>
@@ -208,7 +214,12 @@ const DaftarPenempatan = () => {
         setData={setData}
       />
       {/* Modal Update Barang Ruangan */}
-      <UpdateBarangRuangan modal={modalUpdate} setModal={setModalUpdate} />
+      <UpdateBarangRuangan
+        modal={modalUpdate}
+        setModal={setModalUpdate}
+        data={data}
+        setData={setData}
+      />
     </Row>
   );
 };

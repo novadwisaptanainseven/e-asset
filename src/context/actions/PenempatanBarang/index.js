@@ -1,17 +1,21 @@
 import getBarangRuangan from "./getBarangRuangan";
-import { getBarangById } from "./getBarangById";
+import getBarangRuanganById from "./getBarangRuanganById";
 import insertBarangRuangan from "./insertBarangRuangan";
-import { editBarang } from "./editBarang";
-import { deleteBarang } from "./deleteBarang";
+import editBarangRuangan from "./editBarangRuangan";
+import deleteBarangRuangan from "./deleteBarangRuangan";
 import { generateQrCode2 } from "./generateQrCode2";
 import { softDeleteBarang } from "./softDeleteBarang";
+import getAllBarangTetap from "./getAllBarangTetap";
+import getRiwayatPenempatanBarang from "./getRiwayatPenempatanBarang";
 
 export {
   getBarangRuangan,
-  getBarangById,
+  getBarangRuanganById,
   insertBarangRuangan,
-  editBarang,
-  deleteBarang,
+  editBarangRuangan,
+  deleteBarangRuangan,
   generateQrCode2,
   softDeleteBarang,
+  getAllBarangTetap,
+  getRiwayatPenempatanBarang,
 };

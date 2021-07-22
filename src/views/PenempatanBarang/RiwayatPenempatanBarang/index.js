@@ -1,16 +1,12 @@
 import riwayatPenempatanBarang from "assets/dummyData/riwayatPenempatanBarang";
+import Loading from "components/Loading";
+import { getRiwayatPenempatanBarang } from "context/actions/PenempatanBarang";
+import { GlobalContext } from "context/Provider";
 import customStyles from "datatableStyle/customStyles";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { useHistory } from "react-router-dom";
-import {
-  Row,
-  Col,
-  Card,
-  CardHeader,
-  CardBody,
-  Button,
-} from "reactstrap";
+import { Row, Col, Card, CardHeader, CardBody, Button } from "reactstrap";
 import { goBackToPrevPage } from "../functions";
 import ExpandableComponent from "./ExpandableComponent";
 import SubHeaderComponentMemo from "./SubHeaderComponentMemo";
@@ -19,20 +15,30 @@ const RiwayatPenempatanBarang = () => {
   const history = useHistory();
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+  const { rwPenempatanBarangState, rwPenempatanBarangDispatch } =
+    useContext(GlobalContext);
+  const { data: dataRiwayat } = rwPenempatanBarangState;
 
-  const filteredData = riwayatPenempatanBarang.filter((item) => {
-    if (
-      item.nama_ruangan.toLowerCase().includes(filterText.toLowerCase()) ||
-      item.penginput.toLowerCase().includes(filterText.toLowerCase()) ||
-      item.merk.toLowerCase().includes(filterText.toLowerCase()) ||
-      item.aktivitas.toLowerCase().includes(filterText.toLowerCase()) ||
-      item.nama_barang.toLowerCase().includes(filterText.toLowerCase())
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  });
+  // Get all riwayat penempatan barang
+  useEffect(() => {
+    getRiwayatPenempatanBarang(rwPenempatanBarangDispatch);
+  }, [rwPenempatanBarangDispatch]);
+
+  const filteredData = !dataRiwayat
+    ? []
+    : dataRiwayat.data.filter((item) => {
+        if (
+          item.nama_ruangan.toLowerCase().includes(filterText.toLowerCase()) ||
+          item.penginput.toLowerCase().includes(filterText.toLowerCase()) ||
+          item.merk.toLowerCase().includes(filterText.toLowerCase()) ||
+          item.aktivitas.toLowerCase().includes(filterText.toLowerCase()) ||
+          item.nama_barang.toLowerCase().includes(filterText.toLowerCase())
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      });
 
   const columnsDataTable = [
     {
@@ -104,28 +110,32 @@ const RiwayatPenempatanBarang = () => {
             </h2>
           </CardHeader>
           <CardBody>
-            <DataTable
-              columns={columnsDataTable}
-              data={filteredData}
-              noHeader
-              responsive={true}
-              customStyles={customStyles}
-              pagination
-              paginationResetDefaultPage={resetPaginationToggle}
-              subHeader
-              subHeaderComponent={
-                <SubHeaderComponentMemo
-                  filterText={filterText}
-                  setFilterText={setFilterText}
-                  resetPaginationToggle={resetPaginationToggle}
-                  setResetPaginationToggle={setResetPaginationToggle}
-                />
-              }
-              expandableRows
-              expandOnRowClicked
-              highlightOnHover
-              expandableRowsComponent={<ExpandableComponent />}
-            />
+            {dataRiwayat ? (
+              <DataTable
+                columns={columnsDataTable}
+                data={filteredData}
+                noHeader
+                responsive={true}
+                customStyles={customStyles}
+                pagination
+                paginationResetDefaultPage={resetPaginationToggle}
+                subHeader
+                subHeaderComponent={
+                  <SubHeaderComponentMemo
+                    filterText={filterText}
+                    setFilterText={setFilterText}
+                    resetPaginationToggle={resetPaginationToggle}
+                    setResetPaginationToggle={setResetPaginationToggle}
+                  />
+                }
+                expandableRows
+                expandOnRowClicked
+                highlightOnHover
+                expandableRowsComponent={<ExpandableComponent />}
+              />
+            ) : (
+              <Loading />
+            )}
           </CardBody>
         </Card>
       </Col>
